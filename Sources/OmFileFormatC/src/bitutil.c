@@ -404,7 +404,7 @@ uint32_t bitdienc32(uint32_t *in, unsigned n, uint32_t *out, uint32_t start, uin
     *op++ = x;
   }
     #else
-  uint32_t b = 0,*op = out, x, *_ip;
+  uint32_t b = 0, u = 0, o = 0, *op = out, x, *_ip;
   BITDE(uint32_t, in, n, mindelta, b |= x; *op++ = x);
     #endif
   return b;
@@ -427,7 +427,7 @@ uint64_t bitf164(uint64_t *in, unsigned n, uint64_t *px, uint64_t start) { if(px
 
 //------------------- Zigzag ---------------------------
 #define ZE(i,_it_,_usize_) u = TEMPLATE2(zigzagenc, _usize_)((_it_)_ip[i]-(_it_)start); start = _ip[i]
-#define BITZENC(_ut_, _it_, _usize_, _in_,_n_, _act_) { _ut_ *_ip; o = 0; x = -1;\
+#define BITZENC(_ut_, _it_, _usize_, _in_,_n_, _act_) { _ut_ *_ip; x = -1;\
   for(_ip = _in_; _ip != _in_+(_n_&~(4-1)); _ip += 4) { ZE(0,_it_,_usize_);_act_; ZE(1,_it_,_usize_);_act_; ZE(2,_it_,_usize_);_act_; ZE(3,_it_,_usize_);_act_; }\
   for(;_ip != _in_+_n_; _ip++) { ZE(0,_it_,_usize_); _act_; }\
 }
@@ -534,7 +534,7 @@ uint32_t bitzenc32(uint32_t *in, unsigned n, uint32_t *out, uint32_t start, uint
     *op++ = x;
   }
     #else
-  uint32_t b = 0, *op = out,x;
+  uint32_t b = 0, u = 0, *op = out,x;
   BITZENC(uint32_t, int32_t, 32,in, n, b |= x; *op++ = x);
     #endif
   return bsr32(b);
