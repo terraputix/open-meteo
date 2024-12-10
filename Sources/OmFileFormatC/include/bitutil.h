@@ -25,21 +25,22 @@
 
 #ifdef BITUTIL_IN
   #ifdef __AVX2__
-#include <immintrin.h>
+#include <simde/x86/avx2.h>
   #elif defined(__AVX__)
-#include <immintrin.h>
+#include <simde/x86/axv.h>
   #elif defined(__SSE4_1__)
-#include <smmintrin.h>
+#include <simde/x86/sse4.1.h>
   #elif defined(__SSSE3__)
+
     #ifdef __powerpc64__
 #define __SSE__   1
 #define __SSE2__  1
 #define __SSE3__  1
 #define NO_WARN_X86_INTRINSICS 1
     #endif
-#include <tmmintrin.h>
+#include <simde/x86/ssse3.h>
   #elif defined(__SSE2__)
-#include <emmintrin.h>
+#include <simde/x86/sse2.h>
   #elif defined(__ARM_NEON)
 #include <arm_neon.h>
   #endif
@@ -251,10 +252,10 @@ static ALWAYS_INLINE uint32_t mm_cvtsi128_si32(__m128i v) { return _mm_cvtsi128_
 //----------------------------------------- bitreverse scalar + SIMD -------------------------------------------
   #if __clang__ && defined __has_builtin
     #if __has_builtin(__builtin_bitreverse64)
-#define BUILTIN_BITREVERSE      
+#define BUILTIN_BITREVERSE
     #else
-#define BUILTIN_BITREVERSE  
-    #endif 
+#define BUILTIN_BITREVERSE
+    #endif
   #endif
   #ifdef BUILTIN_BITREVERSE
 #define rbit8(x)  __builtin_bitreverse8( x)
@@ -393,7 +394,7 @@ static ALWAYS_INLINE __m256i mm256_rbit_si128(__m256i v) { return mm256_rbit_epi
 #define bitget8( _bw_,_br_,_b_,_x_,_ip_) bitget31(_bw_,_br_,_b_,_x_)
 #define bitget16(_bw_,_br_,_b_,_x_,_ip_) bitget31(_bw_,_br_,_b_,_x_)
 #define bitget32(_bw_,_br_,_b_,_x_,_ip_) bitget57(_bw_,_br_,_b_,_x_)
-#define bitget64(_bw_,_br_,_b_,_x_,_ip_) if((_b_)>45) { unsigned _v; bitget57(_bw_,_br_,(_b_)-32,_x_); bitdnorm(_bw_,_br_,_ip_); BITGET64(_bw_,_br_,32,_v); _x_ = _x_<<32|_v; } else bitget57(_bw_,_br_,_b_,_x_)  
+#define bitget64(_bw_,_br_,_b_,_x_,_ip_) if((_b_)>45) { unsigned _v; bitget57(_bw_,_br_,(_b_)-32,_x_); bitdnorm(_bw_,_br_,_ip_); BITGET64(_bw_,_br_,32,_v); _x_ = _x_<<32|_v; } else bitget57(_bw_,_br_,_b_,_x_)
 #endif
 
 //---------- max. bit length + transform for sorted/unsorted arrays, delta,delta 1, delta > 1, zigzag, zigzag of delta, xor, FOR,----------------

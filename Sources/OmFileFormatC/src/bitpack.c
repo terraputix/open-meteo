@@ -260,7 +260,7 @@ size_t bitnfpack64( uint64_t *__restrict in, size_t n, unsigned char *__restrict
 }
 
   #ifdef __AVX2__
-#include <immintrin.h>
+#include <simde/x86/avx2.h>
 #include "bitpack_.h"
 
 #define OPPE(__op)
