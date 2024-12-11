@@ -90,7 +90,7 @@ typedef struct {
 
 
 
-/// After reading data for the variable, initlise it. This is literally a simple cast to an opague pointer. Source memory must remain accessible!
+/// After reading data for the variable, initialise it. This is literally a simple cast to an opaque pointer. Source memory must remain accessible!
 const OmVariable_t* om_variable_init(const char* src);
 
 /// Get the name of of a given variable. No guarantee for zero termination!

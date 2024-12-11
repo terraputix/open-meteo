@@ -169,7 +169,7 @@ uint64_t om_encoder_compress_lut(const OmEncoder_t* encoder, const uint64_t* loo
 
 uint64_t om_encoder_compress_chunk(
     const OmEncoder_t* encoder,
-    const void* array,
+    const uint8_t* array,
     const uint64_t* arrayDimensions,
     const uint64_t* arrayOffset,
     const uint64_t* arrayCount,

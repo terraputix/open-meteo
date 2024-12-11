@@ -11,7 +11,7 @@
 
 
 const OmVariable_t* om_variable_init(const char* src) {
-    return src;
+    return (const OmVariable_t*)src;
 }
 
 OmString_t om_variable_get_name(const OmVariable_t* variable) {
