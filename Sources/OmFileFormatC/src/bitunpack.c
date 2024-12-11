@@ -166,13 +166,13 @@ size_t bitnfunpack64( unsigned char *__restrict in, size_t n, uint64_t *__restri
   #ifdef __AVX2__ //-------------------------------- AVX2 ----------------------------------------------------------------------------
 #include <simde/x86/avx2.h>
 
-    #ifdef __AVX512F__
-#define mm256_maskz_expand_epi32(_m_,_v_) _mm256_maskz_expand_epi32(_m_,_v_)
-#define mm256_maskz_loadu_epi32( _m_,_v_) _mm256_maskz_loadu_epi32( _m_,_v_)
-    #else
-#if !(defined(_M_X64) || defined(__amd64__)) && (defined(__i386__) || defined(_M_IX86))
-static inline __m128i _mm_cvtsi64_si128(__int64 a) {  return _mm_loadl_epi64((__m128i*)&a); }
-    #endif
+//     #ifdef __AVX512F__
+// #define mm256_maskz_expand_epi32(_m_,_v_) _mm256_maskz_expand_epi32(_m_,_v_)
+// #define mm256_maskz_loadu_epi32( _m_,_v_) _mm256_maskz_loadu_epi32( _m_,_v_)
+//     #else
+// #if !(defined(_M_X64) || defined(__amd64__)) && (defined(__i386__) || defined(_M_IX86))
+// static inline __m128i _mm_cvtsi64_si128(__int64 a) {  return _mm_loadl_epi64((__m128i*)&a); }
+// #endif
 static ALIGNED(unsigned char, permv[256][8], 32) = {
 {0,0,0,0,0,0,0,0},
 {0,1,1,1,1,1,1,1},
@@ -434,7 +434,7 @@ static ALIGNED(unsigned char, permv[256][8], 32) = {
 #define u2vmask(_m_,_tv_)                  _mm256_sllv_epi32(_mm256_set1_epi8(_m_), _tv_)
 #define mm256_maskz_expand_epi32(_m_, _v_) _mm256_permutevar8x32_epi32(_v_,  _mm256_cvtepu8_epi32(_mm_cvtsi64_si128(ctou64(permv[_m_]))) )
 #define mm256_maskz_loadu_epi32(_m_,_v_)   _mm256_blendv_epi8(zv, mm256_maskz_expand_epi32(xm, _mm256_loadu_si256((__m256i*)pex)), u2vmask(xm,tv)) // emulate AVX512 _mm256_maskz_loadu_epi32 on AVX2
-  #endif
+  // #endif
 
 //-----------------------------------------------------------------------------
 #define VO32( _op_, _i_, ov, _nb_,_parm_) _mm256_storeu_si256(_op_++, ov)
@@ -1085,7 +1085,7 @@ unsigned char *bitfunpack128v32( const unsigned char *__restrict in, unsigned n,
   const unsigned char *ip = in+PAD8(128*b); __m128i sv = _mm_set1_epi32(start); BITUNPACK128V32(in, b, out, sv); return (unsigned char *)ip;
 }
 
-    #if defined(__SSSE3__) || defined(__ARM_NEON)
+    // #if defined(__SSSE3__) || defined(__ARM_NEON)
 #define BITMAX16 15
 #define BITMAX32 31
 
@@ -1134,7 +1134,7 @@ unsigned char *_bitzunpack128v32( const unsigned char *__restrict in, unsigned n
 }
 #define BITMAX16 16
 #define BITMAX32 32
-    #endif
+    // #endif
 
 #define VO16(_op_, i, _ov_, _nb_,_sv_) _sv_ = mm_scani_epi16(_ov_,_sv_,cv); _mm_storeu_si128(_op_++, _sv_);
 #define VO32(_op_, i, _ov_, _nb_,_sv_) _sv_ = mm_scani_epi32(_ov_,_sv_,cv); _mm_storeu_si128(_op_++, _sv_);
@@ -1176,7 +1176,7 @@ unsigned char *bitf1unpack128v32( const unsigned char *__restrict in, unsigned n
   const unsigned char *ip = in+PAD8(128*b); __m128i sv = _mm_set_epi32(start+4,start+3,start+2,start+1),                                 cv = _mm_set1_epi32(4); BITUNPACK128V32(in, b, out, sv); return (unsigned char *)ip;
 }
 
-    #if defined(__SSSE3__) || defined(__ARM_NEON)
+    // #if defined(__SSSE3__) || defined(__ARM_NEON)
 #define BITMAX16 15
 #define BITMAX32 31
 
@@ -1216,7 +1216,7 @@ unsigned char *_bits1unpack128v32( const unsigned char *__restrict in, unsigned 
 }
 #define BITMAX16 16
 #define BITMAX32 32
-    #endif
+    // #endif
 
 size_t bitnunpack128v16(  unsigned char *__restrict in, size_t n, uint16_t *__restrict out) { uint16_t *op;       _BITNUNPACKV( in, n, out, 128, 16, bitunpack128v); }
 size_t bitnunpack128v32(  unsigned char *__restrict in, size_t n, uint32_t *__restrict out) { uint32_t *op;       _BITNUNPACKV( in, n, out, 128, 32, bitunpack128v); }

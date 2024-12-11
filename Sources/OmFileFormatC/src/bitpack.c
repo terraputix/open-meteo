@@ -38,11 +38,11 @@
 #include "bitpack.h"
 #define PAD8(_x_) ( (((_x_)+8-1)/8) )
 
-  #ifdef __ARM_NEON
-#define PREFETCH(_ip_,_rw_)
-  #else
+//   #ifdef __ARM_NEON
+// #define PREFETCH(_ip_,_rw_)
+//   #else
 #define PREFETCH(_ip_,_rw_) __builtin_prefetch(_ip_,_rw_)
-  #endif
+  // #endif
 
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 

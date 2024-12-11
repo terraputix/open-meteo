@@ -24,26 +24,26 @@
 //     "Integer Compression: max.bits, delta, zigzag, xor"
 
 #ifdef BITUTIL_IN
-  #ifdef __AVX2__
 #include <simde/x86/avx2.h>
-  #elif defined(__AVX__)
-#include <simde/x86/axv.h>
-  #elif defined(__SSE4_1__)
-#include <simde/x86/sse4.1.h>
-  #elif defined(__SSSE3__)
+//   #ifdef __AVX2__
+//   #elif defined(__AVX__)
+// #include <simde/x86/avx.h>
+//   #elif defined(__SSE4_1__)
+// #include <simde/x86/sse4.1.h>
+//   #elif defined(__SSSE3__)
 
-    #ifdef __powerpc64__
-#define __SSE__   1
-#define __SSE2__  1
-#define __SSE3__  1
-#define NO_WARN_X86_INTRINSICS 1
-    #endif
-#include <simde/x86/ssse3.h>
-  #elif defined(__SSE2__)
-#include <simde/x86/sse2.h>
-  #elif defined(__ARM_NEON)
-#include <arm_neon.h>
-  #endif
+//     #ifdef __powerpc64__
+// #define __SSE__   1
+// #define __SSE2__  1
+// #define __SSE3__  1
+// #define NO_WARN_X86_INTRINSICS 1
+//     #endif
+// #include <simde/x86/ssse3.h>
+//   #elif defined(__SSE2__)
+// #include <simde/x86/sse2.h>
+// //   #elif defined(__ARM_NEON)
+// // #include <arm_neon.h>
+//   #endif
   #if defined(_MSC_VER) && _MSC_VER < 1600
 #include "vs/stdint.h"
   #else
@@ -51,11 +51,11 @@
   #endif
 #include "sse_neon.h"
 
-  #ifdef __ARM_NEON
-#define PREFETCH(_ip_,_rw_)
-  #else
+//   #ifdef __ARM_NEON
+// #define PREFETCH(_ip_,_rw_)
+//   #else
 #define PREFETCH(_ip_,_rw_) __builtin_prefetch(_ip_,_rw_)
-  #endif
+  // #endif
 //------------------------ zigzag encoding -------------------------------------------------------------
 static inline unsigned char  zigzagenc8( signed char    x) { return x << 1 ^   x >> 7;  }
 static inline          char  zigzagdec8( unsigned char  x) { return x >> 1 ^ -(x &  1); }
@@ -79,13 +79,13 @@ static ALWAYS_INLINE __m128i mm_zzagd_epi32(__m128i v) { return _mm_xor_si128( _
 //static ALWAYS_INLINE __m128i mm_zzagd_epi64(__m128i v) { return _mm_xor_si128(_mm_srli_epi64(v,1), _mm_srai_epi64( m_slli_epi64(v,63),63) ); }
 
   #endif
-  #ifdef __AVX2__
+  // #ifdef __AVX2__
 static ALWAYS_INLINE __m256i mm256_zzage_epi32(__m256i v) { return _mm256_xor_si256(_mm256_slli_epi32(v,1), _mm256_srai_epi32(v,31)); }
 static ALWAYS_INLINE __m256i mm256_zzagd_epi32(__m256i v) { return _mm256_xor_si256(_mm256_srli_epi32(v,1), _mm256_srai_epi32(_mm256_slli_epi32(v,31),31) ); }
-  #endif
+  // #endif
 
 //-------------- AVX2 delta + prefix sum (scan) / xor encode/decode ---------------------------------------------------------------------------------------
-  #ifdef __AVX2__
+  // #ifdef __AVX2__
 static ALWAYS_INLINE __m256i mm256_delta_epi32(__m256i v, __m256i sv) { return _mm256_sub_epi32(v, _mm256_alignr_epi8(v, _mm256_permute2f128_si256(sv, v, _MM_SHUFFLE(0, 2, 0, 1)), 12)); }
 static ALWAYS_INLINE __m256i mm256_delta_epi64(__m256i v, __m256i sv) { return _mm256_sub_epi64(v, _mm256_alignr_epi8(v, _mm256_permute2f128_si256(sv, v, _MM_SHUFFLE(0, 2, 0, 1)),  8)); }
 static ALWAYS_INLINE __m256i mm256_xore_epi32( __m256i v, __m256i sv) { return _mm256_xor_si256(v, _mm256_alignr_epi8(v, _mm256_permute2f128_si256(sv, v, _MM_SHUFFLE(0, 2, 0, 1)), 12)); }
@@ -114,9 +114,9 @@ static ALWAYS_INLINE __m256i mm256_xord_epi64(__m256i v, __m256i sv) {
 }
 
 static ALWAYS_INLINE __m256i mm256_scani_epi32(__m256i v, __m256i sv, __m256i vi) { return _mm256_add_epi32(mm256_scan_epi32(v, sv), vi); }
-  #endif
+  // #endif
 
-  #if defined(__SSSE3__) || defined(__ARM_NEON)
+  // #if defined(__SSSE3__) || defined(__ARM_NEON)
 static ALWAYS_INLINE __m128i mm_delta_epi16(__m128i v, __m128i sv) { return _mm_sub_epi16(v, _mm_alignr_epi8(v, sv, 14)); }
 static ALWAYS_INLINE __m128i mm_delta_epi32(__m128i v, __m128i sv) { return _mm_sub_epi32(v, _mm_alignr_epi8(v, sv, 12)); }
 static ALWAYS_INLINE __m128i mm_xore_epi16( __m128i v, __m128i sv) { return _mm_xor_si128(v, _mm_alignr_epi8(v, sv, 14)); }
@@ -138,16 +138,16 @@ static ALWAYS_INLINE __m128i mm_xord_epi16(__m128i v, __m128i sv) { MM_HDEC_EPI1
 static ALWAYS_INLINE __m128i mm_scani_epi16(__m128i v, __m128i sv, __m128i vi) { return _mm_add_epi16(mm_scan_epi16(v, sv), vi); }
 static ALWAYS_INLINE __m128i mm_scani_epi32(__m128i v, __m128i sv, __m128i vi) { return _mm_add_epi32(mm_scan_epi32(v, sv), vi); }
 
-  #elif defined(__SSE2__)
-static ALWAYS_INLINE __m128i mm_delta_epi16(__m128i v, __m128i sv) { return _mm_sub_epi16(v, _mm_or_si128(_mm_srli_si128(sv, 14), _mm_slli_si128(v, 2))); }
-static ALWAYS_INLINE __m128i mm_xore_epi16( __m128i v, __m128i sv) { return _mm_xor_si128(v, _mm_or_si128(_mm_srli_si128(sv, 14), _mm_slli_si128(v, 2))); }
-static ALWAYS_INLINE __m128i mm_delta_epi32(__m128i v, __m128i sv) { return _mm_sub_epi32(v, _mm_or_si128(_mm_srli_si128(sv, 12), _mm_slli_si128(v, 4))); }
-static ALWAYS_INLINE __m128i mm_xore_epi32( __m128i v, __m128i sv) { return _mm_xor_si128(v, _mm_or_si128(_mm_srli_si128(sv, 12), _mm_slli_si128(v, 4))); }
-  #endif
+//   #elif defined(__SSE2__)
+// static ALWAYS_INLINE __m128i mm_delta_epi16(__m128i v, __m128i sv) { return _mm_sub_epi16(v, _mm_or_si128(_mm_srli_si128(sv, 14), _mm_slli_si128(v, 2))); }
+// static ALWAYS_INLINE __m128i mm_xore_epi16( __m128i v, __m128i sv) { return _mm_xor_si128(v, _mm_or_si128(_mm_srli_si128(sv, 14), _mm_slli_si128(v, 2))); }
+// static ALWAYS_INLINE __m128i mm_delta_epi32(__m128i v, __m128i sv) { return _mm_sub_epi32(v, _mm_or_si128(_mm_srli_si128(sv, 12), _mm_slli_si128(v, 4))); }
+// static ALWAYS_INLINE __m128i mm_xore_epi32( __m128i v, __m128i sv) { return _mm_xor_si128(v, _mm_or_si128(_mm_srli_si128(sv, 12), _mm_slli_si128(v, 4))); }
+//   #endif
 
-#if !defined(_M_X64) && !defined(__x86_64__) && defined(__AVX__)
-#define _mm256_extract_epi64(v, index) ((__int64)((uint64_t)(uint32_t)_mm256_extract_epi32((v), (index) * 2) | (((uint64_t)(uint32_t)_mm256_extract_epi32((v), (index) * 2 + 1)) << 32)))
-#endif
+// #if !defined(_M_X64) && !defined(__x86_64__) && defined(__AVX__)
+// #define _mm256_extract_epi64(v, index) ((__int64)((uint64_t)(uint32_t)_mm256_extract_epi32((v), (index) * 2) | (((uint64_t)(uint32_t)_mm256_extract_epi32((v), (index) * 2 + 1)) << 32)))
+// #endif
 
 //------------------ Horizontal OR -----------------------------------------------
   #ifdef __AVX2__
@@ -315,7 +315,7 @@ static ALWAYS_INLINE uint64_t rbit64(uint64_t x) {
 }
   #endif
 
-  #if defined(__SSSE3__) || defined(__ARM_NEON)
+  // #if defined(__SSSE3__) || defined(__ARM_NEON)
 static ALWAYS_INLINE __m128i mm_rbit_epi8(__m128i v) { // reverse bits in bytes
 __m128i fv     = _mm_set_epi8(15, 7,11, 3,13, 5, 9, 1,14, 6,10, 2,12, 4, 8, 0), cv0f_8 = _mm_set1_epi8(0xf);
 __m128i lv = _mm_shuffle_epi8(fv,_mm_and_si128(               v,     cv0f_8));
@@ -331,9 +331,9 @@ static ALWAYS_INLINE __m128i mm_rbit_epi16(__m128i v) { return mm_rbit_epi8(mm_r
 static ALWAYS_INLINE __m128i mm_rbit_epi32(__m128i v) { return mm_rbit_epi8(mm_rev_epi32(v)); }
 static ALWAYS_INLINE __m128i mm_rbit_epi64(__m128i v) { return mm_rbit_epi8(mm_rev_epi64(v)); }
 //static ALWAYS_INLINE __m128i mm_rbit_si128(__m128i v) { return mm_rbit_epi8(mm_rev_si128(v)); }
-  #endif
+  // #endif
 
-  #ifdef __AVX2__
+  // #ifdef __AVX2__
 static ALWAYS_INLINE __m256i mm256_rbit_epi8(__m256i v) {
   __m256i fv = _mm256_setr_epi8(0, 8, 4,12, 2,10, 6,14, 1, 9, 5,13, 3,11, 7,15, 0, 8, 4,12, 2,10, 6,14, 1, 9, 5,13, 3,11, 7,15), cv0f_8 = _mm256_set1_epi8(0xf);
   __m256i lv = _mm256_shuffle_epi8(fv,_mm256_and_si256(                  v,     cv0f_8));
@@ -350,15 +350,15 @@ static ALWAYS_INLINE __m256i mm256_rbit_epi16(__m256i v) { return mm256_rbit_epi
 static ALWAYS_INLINE __m256i mm256_rbit_epi32(__m256i v) { return mm256_rbit_epi8(mm256_rev_epi32(v)); }
 static ALWAYS_INLINE __m256i mm256_rbit_epi64(__m256i v) { return mm256_rbit_epi8(mm256_rev_epi64(v)); }
 static ALWAYS_INLINE __m256i mm256_rbit_si128(__m256i v) { return mm256_rbit_epi8(mm256_rev_si128(v)); }
-  #endif
+  // #endif
 
 // ------------------ bitio genaral macros ---------------------------
-  #ifdef __AVX2__
-    #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
-#include <intrin.h>
-    #else
-#include <x86intrin.h>
-    #endif
+  // #ifdef __AVX2__
+//     #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
+// #include <intrin.h>
+//     #else
+// #include <simde/x86/avx2.h>
+//     #endif
 #define bzhi_u32(_u_, _b_)               _bzhi_u32(_u_, _b_)
 
     #if !(defined(_M_X64) || defined(__amd64__)) && (defined(__i386__) || defined(_M_IX86))
@@ -406,7 +406,7 @@ static ALWAYS_INLINE __m256i mm256_rbit_si128(__m256i v) { return mm256_rbit_epi
 #define bitget16(_bw_,_br_,_b_,_x_,_ip_) bitget31(_bw_,_br_,_b_,_x_)
 #define bitget32(_bw_,_br_,_b_,_x_,_ip_) bitget57(_bw_,_br_,_b_,_x_)
 #define bitget64(_bw_,_br_,_b_,_x_,_ip_) if((_b_)>45) { unsigned _v; bitget57(_bw_,_br_,(_b_)-32,_x_); bitdnorm(_bw_,_br_,_ip_); BITGET64(_bw_,_br_,32,_v); _x_ = _x_<<32|_v; } else bitget57(_bw_,_br_,_b_,_x_)
-#endif
+// #endif
 
 //---------- max. bit length + transform for sorted/unsorted arrays, delta,delta 1, delta > 1, zigzag, zigzag of delta, xor, FOR,----------------
 #ifdef __cplusplus

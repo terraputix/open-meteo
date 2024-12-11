@@ -228,7 +228,7 @@ struct _PACKED doubleu   { double             d; };
       #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
 #include <intrin.h>
       #else
-#include <x86intrin.h>
+#include <simde/x86/avx2.h>
       #endif
 #define bzhi32(_u_, _b_)                 _bzhi_u32(_u_, _b_)
 
@@ -238,8 +238,8 @@ struct _PACKED doubleu   { double             d; };
 #define bzhi64(_u_, _b_)                 _bzhi_u64(_u_, _b_)
       #endif
     #else
-#define bzhi_u64(_u_, _b_)               BZHI64(_u_, _b_) 
-#define bzhi_u32(_u_, _b_)               BZHI32(_u_, _b_) 
+#define bzhi_u64(_u_, _b_)               BZHI64(_u_, _b_)
+#define bzhi_u32(_u_, _b_)               BZHI32(_u_, _b_)
     #endif
 
 #define SIZE_ROUNDUP(_n_, _a_) (((size_t)(_n_) + (size_t)((_a_) - 1)) & ~(size_t)((_a_) - 1))
