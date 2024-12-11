@@ -68,10 +68,9 @@ typedef struct {
     // followed by the string value
     // name is always last
     //char[name_size] name;
-} OmVariablStringV3_t;
+} OmVariableStringV3_t;
 
-
-/// only expose an opague pointer
+/// only expose an opaque pointer
 typedef void* OmVariable_t;
 
 
@@ -92,7 +91,7 @@ typedef struct {
 
 
 /// After reading data for the variable, initlise it. This is literally a simple cast to an opague pointer. Source memory must remain accessible!
-const OmVariable_t* om_variable_init(const void* src);
+const OmVariable_t* om_variable_init(const char* src);
 
 /// Get the name of of a given variable. No guarantee for zero termination!
 OmString_t om_variable_get_name(const OmVariable_t* variable);
@@ -120,7 +119,7 @@ uint32_t om_variable_get_children_count(const OmVariable_t* variable);
 bool om_variable_get_children(const OmVariable_t* variable, uint32_t children_offset, uint32_t children_count, uint64_t* children_offsets, uint64_t* children_sizes);
 
 /// Read a variable as a scalar
-OmError_t om_variable_get_scalar(const OmVariable_t* variable, void* value);
+OmError_t om_variable_get_scalar(const OmVariable_t* variable, char* value);
 
 
 
@@ -131,13 +130,13 @@ OmError_t om_variable_get_scalar(const OmVariable_t* variable, void* value);
 size_t om_variable_write_scalar_size(uint16_t name_size, uint32_t children_count, OmDataType_t data_type);
 
 /// Write a scalar variable with name and children variables
-void om_variable_write_scalar(void* dst, uint16_t name_size, uint32_t children_count, const uint64_t* children_offsets, const uint64_t* children_sizes, const char* name, OmDataType_t data_type, const void* value);
+void om_variable_write_scalar(char* dst, uint16_t name_size, uint32_t children_count, const uint64_t* children_offsets, const uint64_t* children_sizes, const char* name, OmDataType_t data_type, const char* value);
 
 /// Get the size of meta attributes of a numeric array if written to a file. Does not contain any data. Only offsets for the actual data.
 size_t om_variable_write_numeric_array_size(uint16_t name_size, uint32_t children_count, uint64_t dimension_count);
 
 /// Write meta data for a numeric array to file
-void om_variable_write_numeric_array(void* dst, uint16_t name_size, uint32_t children_count, const uint64_t* children_offsets, const uint64_t* children_sizes, const char* name, OmDataType_t data_type, OmCompression_t compression_type, float scale_factor, float add_offset, uint64_t dimension_count, const uint64_t *dimensions, const uint64_t *chunks, uint64_t lut_size, uint64_t lut_offset);
+void om_variable_write_numeric_array(char* dst, uint16_t name_size, uint32_t children_count, const uint64_t* children_offsets, const uint64_t* children_sizes, const char* name, OmDataType_t data_type, OmCompression_t compression_type, float scale_factor, float add_offset, uint64_t dimension_count, const uint64_t *dimensions, const uint64_t *chunks, uint64_t lut_size, uint64_t lut_offset);
 
 
 

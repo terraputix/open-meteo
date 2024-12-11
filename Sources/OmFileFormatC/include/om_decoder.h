@@ -263,6 +263,6 @@ uint64_t om_decoder_read_buffer_size(const OmDecoder_t* decoder);
  *
  * @returns `false` if an error occurred.
  */
-bool om_decoder_decode_chunks(const OmDecoder_t *decoder, OmRange_t chunkIndex, const void *data, uint64_t dataCount, void *into, void *chunkBuffer, OmError_t* error);
+bool om_decoder_decode_chunks(const OmDecoder_t *decoder, OmRange_t chunkIndex, const void* data, uint64_t dataCount, void* into, void* chunkBuffer, OmError_t* error);
 
 #endif // OM_DECODER_H
