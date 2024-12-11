@@ -3653,21 +3653,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_1(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  9),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 11),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 12),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 13),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 14),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  9),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 11),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 12),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 13),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 14),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_1(ip,  op, nb,parm) {\
@@ -3676,13 +3676,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_2(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*8+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*8+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*8+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*8+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*8+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*8+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 12),mv);                                                                                                                 VO16(op,i*8+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*8+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*8+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*8+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*8+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*8+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 12),mv);                                                                                                                 VO16(op,i*8+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_2(ip,  op, nb,parm) {\
@@ -3692,21 +3692,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_3(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  9),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 12),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 11),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 13);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  9),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 12),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 11),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 13);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_3(ip,  op, nb,parm) {\
@@ -3715,9 +3715,9 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_4(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*4+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*4+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*4+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);                                                                                                                     VO16(op,i*4+ 3,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*4+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*4+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);                                                                                                                     VO16(op,i*4+ 3,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_4(ip,  op, nb,parm) {\
@@ -3729,21 +3729,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_5(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  9),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 11);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv, 10),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  9),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 11);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_5(ip,  op, nb,parm) {\
@@ -3752,13 +3752,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_6(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*8+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*8+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*8+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*8+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*8+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*8+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*8+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 10);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*8+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*8+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*8+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*8+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*8+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*8+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 10);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_6(ip,  op, nb,parm) {\
@@ -3768,21 +3768,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_7(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv,  9);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  7),mv);                                                                                                                 VO16(op,i*16+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  8),mv);                                                                                                                 VO16(op,i*16+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv,  9);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_7(ip,  op, nb,parm) {\
@@ -3791,7 +3791,7 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_8(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*2+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv,  8);                                                                                                                     VO16(op,i*2+ 1,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv,  8);                                                                                                                     VO16(op,i*2+ 1,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_8(ip,  op, nb,parm) {\
@@ -3807,21 +3807,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_9(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  7);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  6),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+11,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  5),mv);                                                                                                                 VO16(op,i*16+13,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  7);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_9(ip,  op, nb,parm) {\
@@ -3830,13 +3830,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_10(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*8+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*8+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*8+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*8+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*8+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*8+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*8+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  6);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*8+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*8+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*8+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*8+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*8+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*8+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  6);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_10(ip,  op, nb,parm) {\
@@ -3846,21 +3846,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_11(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 10), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  9), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+10,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+13,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  5);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 10), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  9), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  3),mv);                                                                                                                 VO16(op,i*16+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+10,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  4),mv);                                                                                                                 VO16(op,i*16+12,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+13,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  5);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_11(ip,  op, nb,parm) {\
@@ -3870,9 +3870,9 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_12(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*4+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*4+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*4+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  4);                                                                                                                     VO16(op,i*4+ 3,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*4+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*4+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  4);                                                                                                                     VO16(op,i*4+ 3,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_12(ip,  op, nb,parm) {\
@@ -3884,21 +3884,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_13(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  9), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 12), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 11), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+11,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+12,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+13,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 10), mv));       VO16(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  3);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  9), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 12), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  1),mv);                                                                                                                 VO16(op,i*16+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 11), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi16(iv,  2),mv);                                                                                                                 VO16(op,i*16+10,ov,nb,parm); \
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+11,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+12,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+13,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 10), mv));       VO16(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  3);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_13(ip,  op, nb,parm) {\
@@ -3907,13 +3907,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_14(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*8+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*8+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*8+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*8+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*8+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 10), mv));       VO16(op,i*8+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 12), mv));       VO16(op,i*8+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  2);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*8+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*8+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*8+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*8+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 10), mv));       VO16(op,i*8+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 12), mv));       VO16(op,i*8+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  2);                                                                                                                     VO16(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_14(ip,  op, nb,parm) {\
@@ -3923,21 +3923,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V16_15(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO16(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv,  9), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 10), mv));       VO16(op,i*16+10,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 11), mv));       VO16(op,i*16+11,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 12), mv));       VO16(op,i*16+12,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  3);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 13), mv));       VO16(op,i*16+13,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  2);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi16(iv, 14), mv));       VO16(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi16(iv,  1);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi16(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  1), mv));       VO16(op,i*16+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  2), mv));       VO16(op,i*16+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  3), mv));       VO16(op,i*16+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  4), mv));       VO16(op,i*16+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  5), mv));       VO16(op,i*16+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  6), mv));       VO16(op,i*16+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  7), mv));       VO16(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  8), mv));       VO16(op,i*16+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv,  9), mv));       VO16(op,i*16+ 9,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 10), mv));       VO16(op,i*16+10,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 11), mv));       VO16(op,i*16+11,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 12), mv));       VO16(op,i*16+12,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  3);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 13), mv));       VO16(op,i*16+13,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  2);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi16(iv, 14), mv));       VO16(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi16(iv,  1);                                                                                                                     VO16(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V16_15(ip,  op, nb,parm) {\
@@ -3973,37 +3973,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_1(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 25),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 27),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 28),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 29),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 30),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 25),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 27),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 28),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 29),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 30),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_1(ip,  op, nb,parm) {\
@@ -4012,21 +4012,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_2(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 28),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 28),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_2(ip,  op, nb,parm) {\
@@ -4036,37 +4036,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_3(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 27),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 25),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 28),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 27),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 25),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 28),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_3(ip,  op, nb,parm) {\
@@ -4075,13 +4075,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_4(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*8+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*8+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*8+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*8+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*8+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*8+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*8+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*8+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*8+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*8+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*8+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*8+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*8+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_4(ip,  op, nb,parm) {\
@@ -4093,37 +4093,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_5(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 25),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 25),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 26),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_5(ip,  op, nb,parm) {\
@@ -4132,21 +4132,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_6(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_6(ip,  op, nb,parm) {\
@@ -4156,37 +4156,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_7(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 24),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 23),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_7(ip,  op, nb,parm) {\
@@ -4195,9 +4195,9 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_8(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*4+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*4+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*4+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);                                                                                                                     VO32(op,i*4+ 3,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*4+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*4+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);                                                                                                                     VO32(op,i*4+ 3,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_8(ip,  op, nb,parm) {\
@@ -4213,37 +4213,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_9(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 22),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 21),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_9(ip,  op, nb,parm) {\
@@ -4252,21 +4252,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_10(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_10(ip,  op, nb,parm) {\
@@ -4276,37 +4276,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_11(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 21);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 19),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 20),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 21);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_11(ip,  op, nb,parm) {\
@@ -4315,13 +4315,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_12(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*8+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*8+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*8+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*8+ 3,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*8+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*8+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*8+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*8+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*8+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*8+ 3,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*8+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*8+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*8+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_12(ip,  op, nb,parm) {\
@@ -4333,37 +4333,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_13(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 19);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 17),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 18),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 19);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_13(ip,  op, nb,parm) {\
@@ -4372,21 +4372,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_14(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 18);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*16+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 7,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*16+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 18);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_14(ip,  op, nb,parm) {\
@@ -4396,37 +4396,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_15(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
-  ov = _mm_and_si128( mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 17);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 15),mv);                                                                                                                 VO32(op,i*32+ 1,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+15,ov,nb,parm); \
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 16),mv);                                                                                                                 VO32(op,i*32+16,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+30,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 17);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_15(ip,  op, nb,parm) {\
@@ -4435,7 +4435,7 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_16(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*2+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 16);                                                                                                                     VO32(op,i*2+ 1,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 16);                                                                                                                     VO32(op,i*2+ 1,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_16(ip,  op, nb,parm) {\
@@ -4459,37 +4459,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_17(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 14),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 13),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_17(ip,  op, nb,parm) {\
@@ -4498,21 +4498,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_18(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+11,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*16+13,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_18(ip,  op, nb,parm) {\
@@ -4522,37 +4522,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_19(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 12),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 11),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_19(ip,  op, nb,parm) {\
@@ -4561,13 +4561,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_20(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*8+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*8+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*8+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*8+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*8+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*8+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*8+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*8+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*8+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*8+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*8+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*8+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*8+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_20(ip,  op, nb,parm) {\
@@ -4579,37 +4579,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_21(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 11);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv, 10),mv);                                                                                                                 VO32(op,i*32+ 2,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  9),mv);                                                                                                                 VO32(op,i*32+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+ 8,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+11,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+20,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+23,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+26,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+29,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 11);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_21(ip,  op, nb,parm) {\
@@ -4618,21 +4618,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_22(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+10,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+13,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*16+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+10,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*16+12,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+13,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_22(ip,  op, nb,parm) {\
@@ -4642,37 +4642,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_23(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  9);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+ 3,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 7,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+14,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  7),mv);                                                                                                                 VO32(op,i*32+17,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  8),mv);                                                                                                                 VO32(op,i*32+24,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+28,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  9);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_23(ip,  op, nb,parm) {\
@@ -4681,9 +4681,9 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_24(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*4+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*4+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*4+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);                                                                                                                     VO32(op,i*4+ 3,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*4+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*4+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);                                                                                                                     VO32(op,i*4+ 3,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_24(ip,  op, nb,parm) {\
@@ -4699,37 +4699,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_25(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  7);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+ 4,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+ 9,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  5),mv);                                                                                                                 VO32(op,i*32+13,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+18,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  6),mv);                                                                                                                 VO32(op,i*32+22,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+27,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  7);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_25(ip,  op, nb,parm) {\
@@ -4738,21 +4738,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_26(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+11,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+12,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+13,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  6);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*16+ 5,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*16+10,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+11,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+12,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+13,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  6);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_26(ip,  op, nb,parm) {\
@@ -4762,37 +4762,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_27(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 25), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 26), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  5);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 25), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+ 6,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  4),mv);                                                                                                                 VO32(op,i*32+12,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 26), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+19,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  3),mv);                                                                                                                 VO32(op,i*32+25,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  5);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_27(ip,  op, nb,parm) {\
@@ -4801,13 +4801,13 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_28(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*8+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*8+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*8+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*8+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*8+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*8+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*8+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  4);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*8+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*8+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*8+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*8+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*8+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*8+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  4);                                                                                                                     VO32(op,i*8+ 7,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_28(ip,  op, nb,parm) {\
@@ -4819,37 +4819,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_29(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 27), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 25), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 28), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov = _mm_and_si128( mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 26), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  3);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 27), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  2),mv);                                                                                                                 VO32(op,i*32+10,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 25), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 28), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov = _mm_and_si128( _mm_srli_epi32(iv,  1),mv);                                                                                                                 VO32(op,i*32+21,ov,nb,parm); \
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 26), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  3);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_29(ip,  op, nb,parm) {\
@@ -4858,21 +4858,21 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_30(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*16+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*16+10,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*16+11,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*16+12,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 26), mv));       VO32(op,i*16+13,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 28), mv));       VO32(op,i*16+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  2);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*16+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*16+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*16+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*16+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*16+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*16+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*16+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*16+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*16+ 9,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*16+10,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*16+11,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*16+12,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 26), mv));       VO32(op,i*16+13,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 28), mv));       VO32(op,i*16+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  2);                                                                                                                     VO32(op,i*16+15,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_30(ip,  op, nb,parm) {\
@@ -4882,37 +4882,37 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
 
 #define BITUNBLK128V32_31(ip, i, op, nb,parm) { __m128i ov,iv = _mm_loadu_si128((__m128i *)ip++);\
   ov = _mm_and_si128(               iv     ,mv);                                                                                                                 VO32(op,i*32+ 0,ov,nb,parm); \
-  ov =                mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+10,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+11,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+12,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+13,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+14,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+15,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+17,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+18,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+19,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+20,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+21,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+22,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+23,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+24,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 25), mv));       VO32(op,i*32+25,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 26), mv));       VO32(op,i*32+26,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 27), mv));       VO32(op,i*32+27,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 28), mv));       VO32(op,i*32+28,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  3);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 29), mv));       VO32(op,i*32+29,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  2);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( mm_slli_epi32(iv, 30), mv));       VO32(op,i*32+30,ov,nb,parm);\
-  ov =                mm_srli_epi32(iv,  1);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
+  ov =                _mm_srli_epi32(iv, 31);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  1), mv));       VO32(op,i*32+ 1,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 30);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  2), mv));       VO32(op,i*32+ 2,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 29);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  3), mv));       VO32(op,i*32+ 3,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 28);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  4), mv));       VO32(op,i*32+ 4,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 27);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  5), mv));       VO32(op,i*32+ 5,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 26);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  6), mv));       VO32(op,i*32+ 6,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 25);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  7), mv));       VO32(op,i*32+ 7,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 24);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  8), mv));       VO32(op,i*32+ 8,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 23);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv,  9), mv));       VO32(op,i*32+ 9,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 22);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 10), mv));       VO32(op,i*32+10,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 21);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 11), mv));       VO32(op,i*32+11,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 20);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 12), mv));       VO32(op,i*32+12,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 19);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 13), mv));       VO32(op,i*32+13,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 18);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 14), mv));       VO32(op,i*32+14,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 17);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 15), mv));       VO32(op,i*32+15,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 16);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 16), mv));       VO32(op,i*32+16,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 15);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 17), mv));       VO32(op,i*32+17,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 14);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 18), mv));       VO32(op,i*32+18,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 13);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 19), mv));       VO32(op,i*32+19,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 12);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 20), mv));       VO32(op,i*32+20,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 11);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 21), mv));       VO32(op,i*32+21,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv, 10);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 22), mv));       VO32(op,i*32+22,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  9);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 23), mv));       VO32(op,i*32+23,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  8);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 24), mv));       VO32(op,i*32+24,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  7);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 25), mv));       VO32(op,i*32+25,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  6);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 26), mv));       VO32(op,i*32+26,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  5);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 27), mv));       VO32(op,i*32+27,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  4);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 28), mv));       VO32(op,i*32+28,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  3);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 29), mv));       VO32(op,i*32+29,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  2);      iv = _mm_loadu_si128((__m128i *)ip++); ov = _mm_or_si128(ov, _mm_and_si128( _mm_slli_epi32(iv, 30), mv));       VO32(op,i*32+30,ov,nb,parm);\
+  ov =                _mm_srli_epi32(iv,  1);                                                                                                                     VO32(op,i*32+31,ov,nb,parm); ;\
 }
 
 #define BITUNPACK128V32_31(ip,  op, nb,parm) {\
@@ -6050,4 +6050,3 @@ unsigned char *TEMPLATE2(_BITUNPACK_,64)( const unsigned char *__restrict in, un
     /*case 33 ... 63: break;*/\
   }\
 }
-
