@@ -31,7 +31,7 @@ const char* om_error_string(OmError_t error) {
     return "";
 }
 
-void om_common_copy_float_to_int16(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy_float_to_int16(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         float val = ((float *)src)[i];
         if (isnan(val)) {
@@ -43,7 +43,7 @@ void om_common_copy_float_to_int16(uint64_t length, float scale_factor, float ad
     }
 }
 
-void om_common_copy_float_to_int16_log10(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy_float_to_int16_log10(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         float val = ((float *)src)[i];
         if (isnan(val)) {
@@ -55,39 +55,39 @@ void om_common_copy_float_to_int16_log10(uint64_t length, float scale_factor, fl
     }
 }
 
-void om_common_copy_int16_to_float(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy_int16_to_float(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         int16_t val = ((int16_t *)src)[i];
         ((float *)dst)[i] = (val == INT16_MAX) ? NAN : (float)val / scale_factor - add_offset;
     }
 }
 
-void om_common_copy_int16_to_float_log10(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy_int16_to_float_log10(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         int16_t val = ((int16_t *)src)[i];
         ((float *)dst)[i] = (val == INT16_MAX) ? NAN : powf(10, (float)val / scale_factor) - 1;
     }
 }
 
-void om_common_copy8(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy8(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         ((int8_t *)dst)[i] = ((int8_t *)src)[i];
     }
 }
 
-void om_common_copy16(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy16(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         ((int16_t *)dst)[i] = ((int16_t *)src)[i];
     }
 }
 
-void om_common_copy32(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy32(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         ((int32_t *)dst)[i] = ((int32_t *)src)[i];
     }
 }
 
-void om_common_copy64(uint64_t length, float scale_factor, float add_offset, const void* src, void* dst) {
+void om_common_copy64(uint64_t length, float scale_factor, float add_offset, const uint8_t* src, uint8_t* dst) {
     for (uint64_t i = 0; i < length; ++i) {
         ((int64_t *)dst)[i] = ((int64_t *)src)[i];
     }

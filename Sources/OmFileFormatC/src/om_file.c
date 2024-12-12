@@ -19,7 +19,7 @@ size_t om_trailer_size() {
     return sizeof(OmTrailer_t);
 }
 
-OmHeaderType_t om_header_type(const void* src) {
+OmHeaderType_t om_header_type(const char* src) {
     const OmHeaderV3_t* meta = (const OmHeaderV3_t*)src;
     if (meta->magic_number1 != 'O' || meta->magic_number2 != 'M' || meta->version > 3 || meta->version <= 0) {
         return OM_HEADER_INVALID;
@@ -27,7 +27,7 @@ OmHeaderType_t om_header_type(const void* src) {
     return meta->version == 3 ? OM_HEADER_READ_TRAILER : OM_HEADER_LEGACY;
 }
 
-bool om_trailer_read(const void* src, uint64_t* offset, uint64_t* size) {
+bool om_trailer_read(const char* src, uint64_t* offset, uint64_t* size) {
     const OmTrailer_t* meta = (const OmTrailer_t*)src;
     if (meta->magic_number1 != 'O' || meta->magic_number2 != 'M' || meta->version != 3) {
         *offset = 0;
@@ -39,7 +39,7 @@ bool om_trailer_read(const void* src, uint64_t* offset, uint64_t* size) {
     return true;
 }
 
-void om_header_write(void* dest) {
+void om_header_write(char* dest) {
     *(OmHeaderV3_t*)dest = (OmHeaderV3_t){
         .magic_number1 = 'O',
         .magic_number2 = 'M',
@@ -47,7 +47,7 @@ void om_header_write(void* dest) {
     };
 }
 
-void om_trailer_write(void* dest, uint64_t offset, uint64_t size) {
+void om_trailer_write(char* dest, uint64_t offset, uint64_t size) {
     *(OmTrailer_t*)dest = (OmTrailer_t){
         .magic_number1 = 'O',
         .magic_number2 = 'M',

@@ -62,15 +62,15 @@ size_t om_trailer_size();
 size_t om_header_write_size();
 
 /// Check if the header is a OM file header and return if its a legacy version or a new version file
-OmHeaderType_t om_header_type(const void* src);
+OmHeaderType_t om_header_type(const char* src);
 
 /// Read the trailer of an OM file to get the root variable. Size is set to 0 if this is not an OM file.
-bool om_trailer_read(const void* src, uint64_t* offset, uint64_t* size);
+bool om_trailer_read(const char* src, uint64_t* offset, uint64_t* size);
 
 /// Write an header for newer OM files
-void om_header_write(void* dest);
+void om_header_write(char* dest);
 
 /// Write an trailer for newer OM files including the root variable
-void om_trailer_write(void* dest, uint64_t offset, uint64_t size);
+void om_trailer_write(char* dest, uint64_t offset, uint64_t size);
 
 #endif // OM_FILE_H
