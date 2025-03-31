@@ -42,7 +42,7 @@ enum CerraVariableDerived: String, RawRepresentableString, GenericVariableMixabl
     case cloud_cover_mid
     case cloud_cover_high
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -50,15 +50,15 @@ enum CerraVariableDerived: String, RawRepresentableString, GenericVariableMixabl
 
 struct CerraReader: GenericReaderDerivedSimple, GenericReaderProtocol {
     let reader: GenericReaderCached<CdsDomain, CerraVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     typealias Domain = CdsDomain
-    
+
     typealias Variable = CerraVariable
-    
+
     typealias Derived = CerraVariableDerived
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -66,13 +66,13 @@ struct CerraReader: GenericReaderDerivedSimple, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func prefetchData(variables: [CerraHourlyVariable], time: TimerangeDtAndSettings) throws {
         for variable in variables {
             switch variable {
@@ -83,7 +83,7 @@ struct CerraReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             }
         }
     }
-    
+
     func prefetchData(derived: CerraVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .apparent_temperature:
@@ -173,7 +173,7 @@ struct CerraReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             try prefetchData(raw: .direct_radiation, time: time)
         }
     }
-    
+
     func get(variable: CerraHourlyVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch variable {
         case .raw(let variable):
@@ -182,8 +182,8 @@ struct CerraReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             return try get(derived: variable, time: time)
         }
     }
-    
-    
+
+
     func get(derived: CerraVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .dew_point_2m:
@@ -210,7 +210,7 @@ struct CerraReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             let temperature = try get(raw: .temperature_2m, time: time).data
             let windspeed = try get(raw: .wind_speed_10m, time: time).data
             let dewpoint = try get(derived: .dewpoint_2m, time: time).data
-            
+
             let et0 = swrad.indices.map { i in
                 return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: self.modelElevation.numeric, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
             }
@@ -363,19 +363,19 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
     case albedo
     case snow_depth
     case snow_depth_water_equivalent
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     var isElevationCorrectable: Bool {
         return self == .temperature_2m
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .temperature_2m:
@@ -414,11 +414,11 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
             return .linear
         }
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
          return false
     }
-    
+
     /// Name used to query the ECMWF CDS API via python
     var cdsApiName: String {
         switch self {
@@ -442,7 +442,7 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
         case .snow_depth_water_equivalent: return "snow_depth_water_equivalent"
         }
     }
-    
+
     var isAccumulatedSinceModelStart: Bool {
         switch self {
         case .shortwave_radiation:
@@ -457,7 +457,7 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
             return false
         }
     }
-    
+
     var isHeightLevel: Bool {
         switch self {
         case .wind_speed_100m: fallthrough
@@ -465,7 +465,7 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
         default: return false
         }
     }
-    
+
     /// Applied to the netcdf file after reading
     var netCdfScaling: (offest: Double, scalefactor: Double)? {
         switch self {
@@ -477,7 +477,7 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
         default: return nil
         }
     }
-    
+
     /// shortName attribute in GRIB
     var gribShortName: [String] {
         switch self {
@@ -501,7 +501,7 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
         case .snow_depth_water_equivalent: return ["sde"]
         }
     }
-    
+
     /// Scalefactor to compress data
     var scalefactor: Float {
         switch self {
@@ -525,7 +525,7 @@ enum CerraVariable: String, CaseIterable, GenericVariable {
         case .snow_depth_water_equivalent: return 10 // 0.1mm res
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .wind_speed_10m: fallthrough

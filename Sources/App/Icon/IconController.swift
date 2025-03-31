@@ -53,7 +53,7 @@ enum IconPressureVariableDerivedType: String, CaseIterable {
 struct IconPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: IconPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -116,9 +116,8 @@ enum IconSurfaceVariableDerived: String, CaseIterable, GenericVariableMixable {
     case sunshine_duration
     case global_tilted_irradiance
     case global_tilted_irradiance_instant
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return self == .snow_height
     }
 }
-

@@ -13,7 +13,7 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
     case ecmwf_ifs_analysis
     case ecmwf_ifs_analysis_long_window
     case ecmwf_ifs_long_window
-    
+
     var dtSeconds: Int {
         switch self {
         case .era5_daily, .era5_land_daily:
@@ -26,11 +26,11 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
             return 3600
         }
     }
-    
+
     var isGlobal: Bool {
         self != .cerra
     }
-    
+
     var cdsDatasetName: String {
         switch self {
         case .era5, .era5_ocean, .era5_ensemble:
@@ -45,7 +45,7 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
             fatalError()
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         switch self {
         case .era5_daily:
@@ -58,7 +58,7 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
             return domainRegistry
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .era5:
@@ -85,15 +85,15 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
             return .ecmwf_ifs_analysis
         }
     }
-    
+
     var hasYearlyFiles: Bool {
         return true
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     /// Use store 14 days per om file
     var omFileLength: Int {
         // 24 hours over 21 days = 504 timesteps per file
@@ -102,7 +102,7 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
         // In case for a 1 year API call, around 51 kb will have to be decompressed with 34 IO operations
         return 24 * 21
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .era5:
@@ -129,7 +129,7 @@ enum CdsDomain: String, GenericDomain, CaseIterable {
             return 24*3600
         }
     }
-    
+
     var grid: Gridable {
         switch self {
         case .era5, .era5_daily:

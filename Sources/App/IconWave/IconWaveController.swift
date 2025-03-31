@@ -6,11 +6,11 @@ enum IconWaveDomainApi: String, CaseIterable, RawRepresentableString, MultiDomai
     var genericDomain: (any GenericDomain)? {
         return nil
     }
-    
+
     func getReader(gridpoint: Int, options: GenericReaderOptions) throws -> (any GenericReaderProtocol)? {
         return nil
     }
-    
+
     case best_match
     case ewam
     case gwam
@@ -22,7 +22,7 @@ enum IconWaveDomainApi: String, CaseIterable, RawRepresentableString, MultiDomai
     case ncep_gefswave025
     case meteofrance_wave
     case meteofrance_currents
-    
+
     var countEnsembleMember: Int {
         switch self {
         case .ecmwf_wam025_ensemble:
@@ -33,7 +33,7 @@ enum IconWaveDomainApi: String, CaseIterable, RawRepresentableString, MultiDomai
             return 1
         }
     }
-    
+
     func getReader(lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> [any GenericReaderProtocol] {
         switch self {
         case .best_match:
@@ -106,7 +106,7 @@ enum MarineVariable: String, GenericVariableMixable {
     case sea_level_height_msl
     case invert_barometer_height
     case sea_surface_temperature
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -119,7 +119,7 @@ struct IconWaveController {
         let numberOfLocationsMaximum = try await req.ensureApiKey("marine-api", apikey: params.apikey)
         let currentTime = Timestamp.now()
         let allowedRange = Timestamp(1940, 1, 1) ..< currentTime.add(86400 * 17)
-        
+
         let prepared = try params.prepareCoordinates(allowTimezones: true)
         guard case .coordinates(let prepared) = prepared else {
             throw ForecastapiError.generic(message: "Bounding box not supported")
@@ -132,14 +132,14 @@ struct IconWaveController {
 
         let nParamsMinutely = paramsMinutely?.count ?? 0
         let nVariables = ((paramsHourly?.count ?? 0) + (paramsDaily?.count ?? 0) + nParamsMinutely) * domains.reduce(0, {$0 + $1.countEnsembleMember})
-        
+
         let locations: [ForecastapiResult<IconWaveDomainApi>.PerLocation] = try prepared.map { prepared in
             let coordinates = prepared.coordinate
             let timezone = prepared.timezone
             let time = try params.getTimerange2(timezone: timezone, current: currentTime, forecastDaysDefault: 7, forecastDaysMax: 16, startEndDate: prepared.startEndDate, allowedRange: allowedRange, pastDaysMax: 92, forecastDaysMinutely15Default: 7)
             let timeLocal = TimerangeLocal(range: time.dailyRead.range, utcOffsetSeconds: timezone.utcOffsetSeconds)
             let currentTimeRange = TimerangeDt(start: currentTime.floor(toNearest: 3600), nTime: 1, dtSeconds: 3600)
-            
+
             let readers: [ForecastapiResult<IconWaveDomainApi>.PerModel] = try domains.compactMap { domain in
                 guard let reader = try GenericReaderMulti<MarineVariable, IconWaveDomainApi>(domain: domain, lat: coordinates.latitude, lon: coordinates.longitude, elevation: .nan, mode: params.cell_selection ?? .sea, options: params.readerOptions) else {
                     return nil
@@ -147,7 +147,7 @@ struct IconWaveController {
                 let hourlyDt = (params.temporal_resolution ?? .hourly).dtSeconds ?? reader.modelDtSeconds
                 let timeHourlyRead = time.hourlyRead.with(dtSeconds: hourlyDt)
                 let timeHourlyDisplay = time.hourlyDisplay.with(dtSeconds: hourlyDt)
-                
+
                 return .init(
                     model: domain,
                     latitude: reader.modelLat,
@@ -253,7 +253,7 @@ typealias IconWaveReader = GenericReader<IconWaveDomain, IconWaveVariable>
 
 struct IconWaveMixer: GenericReaderMixer {
     let reader: [IconWaveReader]
-    
+
     static func makeReader(domain: IconWaveDomain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> IconWaveReader? {
         return try IconWaveReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode)
     }

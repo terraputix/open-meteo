@@ -21,7 +21,7 @@ extension Process {
             return
         }
     }
-    
+
     /// Set alarm to terminate the process in case it gets stuck
     public static func alarm(seconds: Int) {
         #if os(Linux)
@@ -36,7 +36,7 @@ extension Process {
 #if os(Linux)
 /// Disable Idle sleep, Not supported for linux
 func disableIdleSleep() {
-    
+
 }
 #else
 import IOKit.pwr_mgt

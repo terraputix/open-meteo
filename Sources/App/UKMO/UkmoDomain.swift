@@ -9,7 +9,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
     case global_deterministic_10km
     case global_ensemble_20km
     case uk_deterministic_2km
-    
+
     var grid: Gridable {
         switch self {
         case .global_deterministic_10km:
@@ -34,7 +34,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             let projection = LambertAzimuthalEqualAreaProjection(λ0: -2.5, ϕ1: 54.9, radius: 6371229)
             return ProjectionGrid(
                 nx: 1042,
-                ny: 970, 
+                ny: 970,
                 latitudeProjectionOrigion: -1036000,
                 longitudeProjectionOrigion: -1158000,
                 dx: 2000,
@@ -43,7 +43,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             )
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .global_deterministic_10km:
@@ -54,26 +54,26 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return .ukmo_global_ensemble_20km
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var dtSeconds: Int {
         switch self {
         case .global_deterministic_10km, .uk_deterministic_2km, .global_ensemble_20km:
             return 3600
         }
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var omFileLength: Int {
         switch self {
         case .global_deterministic_10km:
@@ -84,7 +84,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return 198 + 1
         }
     }
-    
+
     var ensembleMembers: Int {
         switch self {
         case .uk_deterministic_2km, .global_deterministic_10km:
@@ -93,7 +93,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return 18
         }
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .global_deterministic_10km, .global_ensemble_20km:
@@ -102,7 +102,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return 3600
         }
     }
-    
+
     /// Cams has delay of 8 hours
     var lastRun: Timestamp {
         let t = Timestamp.now()
@@ -115,7 +115,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return t.add(hours: -6).floor(toNearestHour: 1)
         }
     }
-    
+
     var modelNameOnS3: String {
         switch self {
         case .global_deterministic_10km:
@@ -126,7 +126,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return "global-ensemble"
         }
     }
-    
+
     var s3Bucket: String {
         switch self {
         case .global_deterministic_10km, .uk_deterministic_2km:
@@ -135,7 +135,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return "met-office-global-ensemble-model-data"
         }
     }
-    
+
     /**
      Return forecast hours for each run as a unix Timestamp. Works better for 15 minutely steps.
      */
@@ -155,7 +155,7 @@ enum UkmoDomain: String, GenericDomain, CaseIterable {
             return (Array(0..<54) + stride(from: 54, to: 144, by: 3) + stride(from: 144, through: through, by: 6)).map({run.add(hours: $0)})
         }
     }
-    
+
     var runsPerDay: Int {
         switch self {
         case .global_deterministic_10km, .global_ensemble_20km:

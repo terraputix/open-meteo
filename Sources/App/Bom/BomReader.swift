@@ -21,7 +21,7 @@ enum BomVariableDerived: String, CaseIterable, GenericVariableMixable {
     case shortwave_radiation_instant
     case global_tilted_irradiance
     case global_tilted_irradiance_instant
-    
+
     case et0_fao_evapotranspiration
     case vapour_pressure_deficit
     case vapor_pressure_deficit
@@ -39,15 +39,15 @@ enum BomVariableDerived: String, CaseIterable, GenericVariableMixable {
     case cloudcover_high
     case windgusts_10m
     case sunshine_duration
-    
+
     case soil_temperature_10_to_45cm
     case soil_temperature_40_to_100cm
     case soil_temperature_100_to_200cm
-    
+
     case soil_moisture_10_to_40cm
     case soil_moisture_40_to_100cm
     case soil_moisture_100_to_200cm
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -57,17 +57,17 @@ typealias BomVariableCombined = VariableOrDerived<BomVariable, BomVariableDerive
 
 struct BomReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = BomDomain
-    
+
     typealias Variable = BomVariable
-    
+
     typealias Derived = BomVariableDerived
-    
+
     typealias MixingVar = BomVariableCombined
-    
+
     let reader: GenericReaderCached<BomDomain, BomVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -75,21 +75,21 @@ struct BomReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: BomVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: BomVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(derived: BomVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .apparent_temperature:
@@ -181,7 +181,7 @@ struct BomReader: GenericReaderDerived, GenericReaderProtocol {
             try prefetchData(raw: .soil_moisture_100_to_300cm, time: time)
         }
     }
-    
+
     func get(derived: BomVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .windspeed_10m:

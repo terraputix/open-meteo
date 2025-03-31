@@ -4,7 +4,7 @@ import Foundation
 enum KmaDomain: String, GenericDomain, CaseIterable {
     case gdps
     case ldps
-    
+
     var grid: Gridable {
         switch self {
         case .gdps:
@@ -49,7 +49,7 @@ enum KmaDomain: String, GenericDomain, CaseIterable {
             )
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .gdps:
@@ -58,11 +58,11 @@ enum KmaDomain: String, GenericDomain, CaseIterable {
             return .kma_ldps
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var dtSeconds: Int {
         switch self {
         case .gdps:
@@ -71,15 +71,15 @@ enum KmaDomain: String, GenericDomain, CaseIterable {
             return 1*3600
         }
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var omFileLength: Int {
         switch self {
         case .gdps:
@@ -90,18 +90,18 @@ enum KmaDomain: String, GenericDomain, CaseIterable {
             return 48 + 24
         }
     }
-    
+
     var ensembleMembers: Int {
         return 1
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .gdps, .ldps:
             return 6*3600
         }
     }
-    
+
     var lastRun: Timestamp {
         let t = Timestamp.now()
         switch self {

@@ -6,10 +6,10 @@ import Vapor
 public struct ForecastapiController: RouteCollection {
     /// Dedicated thread pool for API calls reading data from disk. Prevents blocking of the main thread pools.
     static var runLoop = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
-    
+
     /// Single thread
     static var isolationLoop = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-    
+
     public func boot(routes: RoutesBuilder) throws {
         let categoriesRoute = routes.grouped("v1")
         let era5 = WeatherApiController(
@@ -24,9 +24,9 @@ public struct ForecastapiController: RouteCollection {
         )
         categoriesRoute.getAndPost("era5", use: era5.query)
         categoriesRoute.getAndPost("archive", use: era5.query)
-        
+
         categoriesRoute.getAndPost("forecast", use: WeatherApiController(
-            historyStartDate: Timestamp(2016, 1, 1), 
+            historyStartDate: Timestamp(2016, 1, 1),
             defaultModel: .best_match,
             alias: ["historical-forecast-api", "previous-runs-api"]).query
         )
@@ -73,7 +73,7 @@ public struct ForecastapiController: RouteCollection {
             has15minutely: false,
             defaultModel: .arpae_cosmo_seamless).query
         )
-        
+
         categoriesRoute.getAndPost("elevation", use: DemController().query)
         categoriesRoute.getAndPost("air-quality", use: CamsController().query)
         categoriesRoute.getAndPost("seasonal", use: SeasonalForecastController().query)
@@ -94,7 +94,7 @@ struct WeatherApiController {
     let defaultModel: MultiDomains
     let subdomain: String
     let alias: [String]
-    
+
     init(forecastDay: Int = 7, forecastDaysMax: Int = 16, historyStartDate: Timestamp = Timestamp(2020, 1, 1), has15minutely: Bool = true, hasCurrentWeather: Bool = true, defaultModel: MultiDomains, subdomain: String = "api", alias: [String] = []) {
         self.forecastDay = forecastDay
         self.forecastDaysMax = forecastDaysMax
@@ -105,7 +105,7 @@ struct WeatherApiController {
         self.subdomain = subdomain
         self.alias = alias
     }
-    
+
     func query(_ req: Request) async throws -> Response {
         let host = try await req.ensureSubdomain(subdomain, alias: alias)
         /// True if running on `historical-forecast-api.open-meteo.com` -> Limit to current day, disable forecast
@@ -114,10 +114,10 @@ struct WeatherApiController {
         let forecastDayDefault = isHistoricalForecastApi ? 1 : self.forecastDay
         let params = req.method == .POST ? try req.content.decode(ApiQueryParameter.self) : try req.query.decode(ApiQueryParameter.self)
         let numberOfLocationsMaximum = try await req.ensureApiKey(subdomain, alias: alias, apikey: params.apikey)
-        
+
         let currentTime = Timestamp.now()
         let allowedRange = historyStartDate ..< currentTime.with(hour: 0).add(days: forecastDaysMax)
-        
+
         let domains = try MultiDomains.load(commaSeparatedOptional: params.models)?.map({ $0 == .best_match ? defaultModel : $0 }) ?? [defaultModel]
         let paramsMinutely = has15minutely ? try ForecastVariable.load(commaSeparatedOptional: params.minutely_15) : nil
         let defaultCurrentWeather = [ForecastVariable.surface(.init(.temperature, 0)), .surface(.init(.windspeed, 0)), .surface(.init(.winddirection, 0)), .surface(.init(.is_day, 0)), .surface(.init(.weathercode, 0))]
@@ -129,17 +129,17 @@ struct WeatherApiController {
         let nParamsCurrent = paramsCurrent?.count ?? 0
         let nParamsDaily = paramsDaily?.count ?? 0
         let nVariables = (nParamsHourly + nParamsMinutely + nParamsCurrent + nParamsDaily) * domains.count
-        
+
         /// Prepare readers based on geometry
         /// Readers are returned as a callback to release memory after data has been retrieved
         let prepared = try GenericReaderMulti<ForecastVariable, MultiDomains>.prepareReaders(domains: domains, params: params, currentTime: currentTime, forecastDayDefault: forecastDayDefault, forecastDaysMax: forecastDaysMax, pastDaysMax: 92, allowedRange: allowedRange)
-        
+
         let locations: [ForecastapiResult<MultiDomains>.PerLocation] = try prepared.map { prepared in
             let timezone = prepared.timezone
             let time = prepared.time
             let timeLocal = TimerangeLocal(range: time.dailyRead.range, utcOffsetSeconds: timezone.utcOffsetSeconds)
             let currentTimeRange = TimerangeDt(start: currentTime.floor(toNearest: 3600/4), nTime: 1, dtSeconds: 3600/4)
-            
+
             let readers: [ForecastapiResult<MultiDomains>.PerModel] = try prepared.perModel.compactMap { readerAndDomain in
                 guard let reader = try readerAndDomain.reader() else {
                     return nil
@@ -148,7 +148,7 @@ struct WeatherApiController {
                 let timeHourlyRead = time.hourlyRead.with(dtSeconds: hourlyDt)
                 let timeHourlyDisplay = time.hourlyDisplay.with(dtSeconds: hourlyDt)
                 let domain = readerAndDomain.domain
-                
+
                 return .init(
                     model: domain,
                     latitude: reader.modelLat,
@@ -218,7 +218,7 @@ struct WeatherApiController {
                                     let duration = Zensun.calculateDaylightDuration(localMidnight: time.dailyDisplay.range, lat: reader.modelLat)
                                     return ApiColumn(variable: .daylight_duration, unit: .seconds, variables: [.float(duration)])
                                 }
-                                
+
                                 guard let d = try reader.getDaily(variable: variable, params: params, time: time.dailyRead.toSettings()) else {
                                     return ApiColumn(variable: variable, unit: .undefined, variables: [.float([Float](repeating: .nan, count: time.dailyRead.count))])
                                 }
@@ -274,7 +274,7 @@ extension ForecastVariable {
  - If Central Europe, use ICON_D2, ICON_EU, ICON + GFS
  - If Japan, use JMA_MSM + ICON + GFS
  - default ICON + GFS
- 
+
  Note Nov 2022: Use the term `seamless` instead of `mix`
  */
 enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixerDomain {
@@ -288,7 +288,7 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
     case gfs_hrrr
     case gfs_graphcast025
     case ncep_nbm_conus
-    
+
     case meteofrance_seamless
     case meteofrance_mix
     case meteofrance_arpege_seamless
@@ -303,35 +303,35 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
     case arome_seamless
     case arome_france
     case arome_france_hd
-    
+
     case jma_seamless
     case jma_mix
     case jma_msm
     case jms_gsm
     case jma_gsm
-    
+
     case gem_seamless
     case gem_global
     case gem_regional
     case gem_hrdps_continental
-    
+
     case icon_seamless
     case icon_mix
     case icon_global
     case icon_eu
     case icon_d2
-    
+
     case ecmwf_ifs04
     case ecmwf_ifs025
     case ecmwf_aifs025
     case ecmwf_aifs025_single
-    
+
     case metno_nordic
-    
+
     case cma_grapes_global
-    
+
     case bom_access_global
-    
+
     case archive_best_match
     case era5_seamless
     case era5
@@ -342,34 +342,34 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
     case ecmwf_ifs_analysis
     case ecmwf_ifs_analysis_long_window
     case ecmwf_ifs_long_window
-    
+
     case arpae_cosmo_seamless
     case arpae_cosmo_2i
     case arpae_cosmo_2i_ruc
     case arpae_cosmo_5m
-    
+
     case knmi_harmonie_arome_europe
     case knmi_harmonie_arome_netherlands
     case dmi_harmonie_arome_europe
     case knmi_seamless
     case dmi_seamless
     case metno_seamless
-    
+
     case ukmo_seamless
     case ukmo_global_deterministic_10km
     case ukmo_uk_deterministic_2km
-    
+
     case satellite_radiation_seamless
     case eumetsat_sarah3
     case eumetsat_lsa_saf_msg
     case eumetsat_lsa_saf_iodc
     case jma_jaxa_himawari
-    
+
     case kma_seamless
     case kma_gdps
     case kma_ldps
 
-    
+
     /// Return the required readers for this domain configuration
     /// Note: last reader has highes resolution data
     func getReader(lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> [any GenericReaderProtocol] {
@@ -380,7 +380,7 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
             }
             let gfsProbabilites = try ProbabilityReader.makeGfsReader(lat: lat, lon: lon, elevation: elevation, mode: mode)
             let iconProbabilities = try ProbabilityReader.makeIconReader(lat: lat, lon: lon, elevation: elevation, mode: mode)
-            
+
             guard let gfs: any GenericReaderProtocol = try GfsReader(domains: [.gfs025, .gfs013], lat: lat, lon: lon, elevation: elevation, mode: mode, options: options) else {
                 throw ModelError.domainInitFailed(domain: IconDomains.icon.rawValue)
             }
@@ -433,18 +433,18 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
             if (22.4+5..<47.65-5).contains(lat), (120+5..<150-5).contains(lon), let jma_msm = try JmaReader(domain: .msm, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options) {
                 return [gfsProbabilites, iconProbabilities, gfs, icon, jma_msm]
             }
-            
+
             // Remaining eastern europe
             if let iconEu = try IconReader(domain: .iconEu, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options) {
                 return [gfsProbabilites, iconProbabilities, gfs, icon, iconEu]
             }
-            
+
             // Northern africa
             if let arpege_europe = try MeteoFranceReader(domain: .arpege_europe, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options) {
                 let arpegeProbabilities: (any GenericReaderProtocol)? = try ProbabilityReader.makeMeteoFranceEuropeReader(lat: lat, lon: lon, elevation: elevation, mode: mode)
                 return [gfsProbabilites, iconProbabilities, arpegeProbabilities, gfs, icon, arpege_europe].compactMap({$0})
             }
-            
+
             // Remaining parts of the world
             return [gfsProbabilites, iconProbabilities, gfs, icon]
         case .gfs_mix, .gfs_seamless:
@@ -629,7 +629,7 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
             return [reader].compactMap({$0})
         }
     }
-    
+
     var genericDomain: (any GenericDomain)? {
         switch self {
         case .gfs025:
@@ -690,7 +690,7 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
             return nil
         }
     }
-    
+
     func getReader(gridpoint: Int, options: GenericReaderOptions) throws -> (any GenericReaderProtocol)? {
         switch self {
         case .gfs025:
@@ -751,7 +751,7 @@ enum MultiDomains: String, RawRepresentableString, CaseIterable, MultiDomainMixe
             return nil
         }
     }
-    
+
     var countEnsembleMember: Int {
         return 1
     }
@@ -761,7 +761,7 @@ enum ModelError: AbortError {
     var status: NIOHTTP1.HTTPResponseStatus {
         return .badRequest
     }
-    
+
     case domainInitFailed(domain: String)
 }
 
@@ -774,7 +774,7 @@ enum ForecastSurfaceVariable: String, GenericVariableMixable {
     case windspeed
     /// Maps to `winddirection_10m`. Used for compatibility with `current_weather` block
     case winddirection
-    
+
     case wet_bulb_temperature_2m
     case apparent_temperature
     case cape
@@ -971,8 +971,8 @@ enum ForecastSurfaceVariable: String, GenericVariableMixable {
     case ice_pellets_probability
     case snowfall_probability
     case albedo
-    
-    
+
+
     case wind_speed_10m_spread
     case wind_speed_100m_spread
     case wind_direction_10m_spread
@@ -999,7 +999,7 @@ enum ForecastSurfaceVariable: String, GenericVariableMixable {
     case precipitation_spread
     case direct_radiation_spread
     case boundary_layer_height_spread
-    
+
     /// Some variables are kept for backwards compatibility
     var remapped: Self {
         switch self {
@@ -1016,7 +1016,7 @@ enum ForecastSurfaceVariable: String, GenericVariableMixable {
         }
     }
 
-    
+
     /// Soil moisture or snow depth are cumulative processes and have offests if mutliple models are mixed
     var requiresOffsetCorrectionForMixing: Bool {
         switch self {
@@ -1055,7 +1055,7 @@ enum ForecastPressureVariableType: String, GenericVariableMixable {
     case cloudcover
     case cloud_cover
     case vertical_velocity
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -1064,7 +1064,7 @@ enum ForecastPressureVariableType: String, GenericVariableMixable {
 struct ForecastPressureVariable: PressureVariableRespresentable, GenericVariableMixable {
     let variable: ForecastPressureVariableType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -1084,7 +1084,7 @@ enum ForecastHeightVariableType: String, GenericVariableMixable {
     case cloudcover
     case cloud_cover
     case vertical_velocity
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -1093,7 +1093,7 @@ enum ForecastHeightVariableType: String, GenericVariableMixable {
 struct ForecastHeightVariable: HeightVariableRespresentable, GenericVariableMixable {
     let variable: ForecastHeightVariableType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -1205,8 +1205,8 @@ enum ForecastVariableDaily: String, DailyVariableCalculatable, RawRepresentableS
     case wet_bulb_temperature_2m_max
     case wet_bulb_temperature_2m_mean
     case wet_bulb_temperature_2m_min
-    
-    
+
+
     var aggregation: DailyAggregation<ForecastVariable> {
         switch self {
         case .temperature_2m_max:

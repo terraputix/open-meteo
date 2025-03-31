@@ -10,7 +10,7 @@ enum ArpaeSurfaceVariable: String, CaseIterable, GenericVariableMixable, Generic
     case precipitation
     case snowfall_water_equivalent
     case surface_temperature
-    
+
     var storePreviousForecast: Bool {
         switch self {
         case .temperature_2m, .dew_point_2m: return true
@@ -21,11 +21,11 @@ enum ArpaeSurfaceVariable: String, CaseIterable, GenericVariableMixable, Generic
         default: return false
         }
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var multiplyAdd: (multiply: Float, add: Float)? {
         switch self {
         case .temperature_2m, .surface_temperature, .dew_point_2m:
@@ -38,11 +38,11 @@ enum ArpaeSurfaceVariable: String, CaseIterable, GenericVariableMixable, Generic
             return nil
         }
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .temperature_2m: return 20
@@ -56,7 +56,7 @@ enum ArpaeSurfaceVariable: String, CaseIterable, GenericVariableMixable, Generic
         case .snowfall_water_equivalent: return 10
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .temperature_2m:
@@ -79,7 +79,7 @@ enum ArpaeSurfaceVariable: String, CaseIterable, GenericVariableMixable, Generic
             return .backwards_sum
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .temperature_2m: return .celsius
@@ -93,7 +93,7 @@ enum ArpaeSurfaceVariable: String, CaseIterable, GenericVariableMixable, Generic
         case .snowfall_water_equivalent: return .millimetre
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         switch self {
         case .surface_temperature:

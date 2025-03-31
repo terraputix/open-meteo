@@ -5,10 +5,10 @@ import SwiftNetCDF
 
 /**
  Download MeteoFrance wave model from Marine Data Store
- 
+
  Wave: https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_WAV_001_027/description
  Currents: https://data.marine.copernicus.eu/product/GLOBAL_ANALYSISFORECAST_PHY_001_024/description
- 
+
  Important: Ocean tides use the field "total_sea_level" which is the height above the global mean sea level.
  This is not the height above lowest atmospherical tide LAT which is usually used in navigation.
  To estimate the LAT, we can compute the minimum of "total_sea_level - invert_barometer" over 2.5 years. Ideal would be 18 years.
@@ -20,19 +20,19 @@ struct MfWaveDownload: AsyncCommand {
 
         @Option(name: "run")
         var run: String?
-        
+
         @Flag(name: "create-netcdf")
         var createNetcdf: Bool
-        
+
         @Option(name: "concurrent", short: "c", help: "Numer of concurrent download/conversion jobs")
         var concurrent: Int?
-        
+
         @Option(name: "upload-s3-bucket", help: "Upload open-meteo database to an S3 bucket after processing")
         var uploadS3Bucket: String?
-        
+
         @Option(name: "timeinterval", short: "t", help: "Timeinterval to download past forecasts. Format 20220101-20220131")
         var timeinterval: String?
-        
+
         @Flag(name: "only-tides", help: "Only download tides and skip currents in MF PHY model")
         var onlyTides: Bool
     }
@@ -40,13 +40,13 @@ struct MfWaveDownload: AsyncCommand {
     var help: String {
         "Download a specified wave model run"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         let domain = try MfWaveDomain.load(rawValue: signature.domain)
-        
+
         let nConcurrent = signature.concurrent ?? 1
         let logger = context.application.logger
-        
+
         if let timeinterval = signature.timeinterval {
             // MF wave has 0z and 12z run
             // MF current only 0z
@@ -61,27 +61,27 @@ struct MfWaveDownload: AsyncCommand {
             }
             return
         }
-        
+
         let run = try signature.run.flatMap(Timestamp.fromRunHourOrYYYYMMDD) ?? domain.lastRun
         logger.info("Downloading domain '\(domain.rawValue)' run '\(run.iso8601_YYYY_MM_dd_HH_mm)'")
-        
+
         let handles = try await download(application: context.application, domain: domain, run: run, onlyTides: signature.onlyTides)
         try await GenericVariableHandle.convert(logger: logger, domain: domain, createNetcdf: signature.createNetcdf, run: run, handles: handles, concurrent: nConcurrent, writeUpdateJson: true, uploadS3Bucket: signature.uploadS3Bucket, uploadS3OnlyProbabilities: false)
     }
-    
+
     /// Download all timesteps and preliminarily covnert it to compressed files
     func download(application: Application, domain: MfWaveDomain, run: Timestamp, onlyTides: Bool) async throws -> [GenericVariableHandle] {
         let logger = application.logger
         try FileManager.default.createDirectory(atPath: domain.downloadDirectory, withIntermediateDirectories: true)
-        
+
         Process.alarm(seconds: 6 * 3600)
         defer { Process.alarm(seconds: 0) }
-        
+
         let curl = Curl(logger: logger, client: application.dedicatedHttpClient)
         let nx = domain.grid.nx
         let ny = domain.grid.ny
         let writer = OmFileSplitter.makeSpatialWriter(domain: domain)
-        
+
         // Note: The actual domain data area is slightly different
         /*if domain == .mfwave && !FileManager.default.fileExists(atPath: domain.surfaceElevationFileOm.getFilePath()) {
             let url = domain.getBathymetryUrl()
@@ -110,12 +110,12 @@ struct MfWaveDownload: AsyncCommand {
             try domain.surfaceElevationFileOm.createDirectory()
             try elevation.writeOmFile2D(file: domain.surfaceElevationFileOm.getFilePath(), grid: domain.grid, createNetCdf: false)
         }*/
-        
+
         let phyModel = domain == .mfsst || domain == .mfcurrents
-        
+
         /// Only hindcast available after 12 hours
         let isOlderThan12Hours = run.add(hours: 23) < Timestamp.now()
-        
+
         /// No data for `2023-10-31`
         if domain == .mfwave && [Timestamp(2023,11,1,0), Timestamp(2023,11,1,12)].contains(run) {
             logger.warning("Not data for \(run.format_YYYYMMddHH)")
@@ -125,7 +125,7 @@ struct MfWaveDownload: AsyncCommand {
             logger.warning("Skipping due to NRT change \(run.format_YYYYMMddHH)")
             return []
         }
-        
+
         /// For MF Wave, runs before November 2023 only offer 12z runs instead of 0z+12z. Followed by 4 days of 24h offsets
         /// Figuring this out, drives you mad....
         let runDownload: Timestamp
@@ -144,24 +144,24 @@ struct MfWaveDownload: AsyncCommand {
         default:
             runDownload = run
         }
-        
+
         /// Dates before 22th November 2022 are not 7 day releases, but use run-1d
         let afterNRTSwitch = run > Timestamp(2022, 11, 23)
-        
+
         // Every 7th run, the past 14 days are updated with hindcast data for 7 days
         let isNRTUpdateDate = phyModel && isOlderThan12Hours && afterNRTSwitch && (run.timeIntervalSince1970 / (24*3600)) % 7 == 6
-        
+
         // Only NRT update days are kept on S3. Other runs can be ignored
         if phyModel && isOlderThan12Hours && !isNRTUpdateDate && afterNRTSwitch && isOlderThan12Hours {
             logger.warning("Not an NRT update date. Skipping run \(run.format_YYYYMMddHH)")
             return []
         }
-        
+
         /// Each run contains data from 1 day back
         let startTime = run.add(days: isNRTUpdateDate ? -14 : -1).add(hours: domain == .mfsst ? 6 : 0)
         /// 10 days forecast. 12z run has one timestep less -> therefore floor to 24h
         let endTimeForecast = run.add(days: 10).floor(toNearestHour: 24).add(hours: domain == .mfsst ? 6 : 0)
-        
+
         let endTimeHindcastOnly = run.add(days: isNRTUpdateDate ? (-7-1) : -1).add(hours: domain.stepHoursPerFile).add(hours: domain == .mfsst ? 6 : 0)
 
         if isOlderThan12Hours {
@@ -173,11 +173,11 @@ struct MfWaveDownload: AsyncCommand {
             dtSeconds: domain.stepHoursPerFile*3600
         )
         logger.info("Downloadig timerange \(downloadRange.prettyString())")
-        
+
         // Iterate from d-1 to d+10 in 12 hour steps
         let handles = try await downloadRange.asyncMap { step -> [GenericVariableHandle] in
             logger.info("Downloading file with timestap \(step.iso8601_YYYY_MM_dd_HH_mm) from run \(runDownload.format_YYYYMMddHH)")
-            
+
             let url = domain.getUrl(run: runDownload, step: step)
             return try await url.asyncFlatMap({ url in
                 if onlyTides && !url.contains("MOL") {
@@ -204,7 +204,7 @@ struct MfWaveDownload: AsyncCommand {
                         guard let variable = ncvar.toMfVariable() else {
                             return []
                         }
-                        
+
                         // Currents use floating point arrays
                         if let ncFloat = ncvar.asType(Float.self) {
                             return try timestamps.enumerated().map { (i,timestamp) -> GenericVariableHandle in
@@ -237,7 +237,7 @@ struct MfWaveDownload: AsyncCommand {
                                 )
                             }
                         }
-                        
+
                         // Wave model use Int16 with scalefactor
                         guard let ncInt16 = ncvar.asType(Int16.self) else {
                             fatalError("Variable \(variable) is not Int16 type")
@@ -286,7 +286,7 @@ extension MfWaveDomain {
     func getBathymetryUrl() -> String {
         return "https://s3.waw3-1.cloudferro.com/mdl-native-14/native/GLOBAL_ANALYSISFORECAST_PHY_001_024/cmems_mod_glo_phy_anfc_0.083deg_static_202211/GLO-MFC_001_024_mask_bathy.nc"
     }
-    
+
     func getUrl(run: Timestamp, step: Timestamp) -> [String] {
         let server = "https://s3.waw3-1.cloudferro.com/mdl-native-14/native/"
         let r = step.toComponents()

@@ -3,7 +3,7 @@ import Foundation
 /*enum CamsVariableDaily: String, Codable {
     case uv_index
     case uv_index_clear_sky
-    
+
 }
 
 extension CamsMixer {
@@ -14,7 +14,7 @@ extension CamsMixer {
             return DataAndUnit(data.data.max(by: 24), data.unit)
         }
     }
-    
+
     func prefetchData(variables: [CamsVariableDaily]) throws {
         for variable in variables {
             switch variable {

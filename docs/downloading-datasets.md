@@ -4,7 +4,7 @@ Because data is consumed from different national weather services with different
 Please note, that only the command arguments are listed below. Whether you are using Docker, prebuilt or native, the command differs a bit. There is an example to download ECMWF forecasts at each installation method above. All arguments that are available for the binary, are accessible via `<exe> --help`. Please mind that `<exe> --help` should be the path to your executable:
 
 ```
-# openmeteo-api --help                          
+# openmeteo-api --help
 Usage: /usr/local/bin/openmeteo-api <command>
 
 Commands:
@@ -53,8 +53,8 @@ As a minimum requirement, ICON global should be downloaded. To download the 00 r
 
 ```bash
 <exe> download icon --run 00 --only-variables temperature_2m,weather_code
-``` 
- 
+```
+
 If `only-variables` is omitted, all ICON weather variables are downloaded, which could take a couple of hours.
 
 For the first run, the ICON downloader will download additional domain geometry information and prepare reproduction weights. It might take a while.

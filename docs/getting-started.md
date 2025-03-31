@@ -75,7 +75,7 @@ As illustrated earlier, the `sync` command enables the direct download of the Op
 Please refer to the [Weather API tutorial](https://github.com/open-meteo/open-data/tree/main/tutorial_weather_api) for more more information.
 
 
-### Automatic Data Synchronization  
+### Automatic Data Synchronization
 
 The prebuilt Ubuntu images automatically install a synchronization service. Modify the configuration in /etc/default/openmeteo-api.env:
 ```

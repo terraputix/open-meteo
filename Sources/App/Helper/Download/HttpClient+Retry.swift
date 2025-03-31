@@ -11,7 +11,7 @@ extension HTTPClientResponse {
             throw CurlError.downloadFailed(code: status)
         }
     }
-    
+
     /// True is status code contains an error that is retirable. E.g. Gateway timeout or too many requests
     var isTransientError: Bool {
         return [
@@ -61,7 +61,7 @@ extension HTTPClient {
                 throw CurlErrorNonRetry.unauthorized
             } catch {
                 var wait = TimeAmount.nanoseconds(min(backoffFactor.nanoseconds * Int64(pow(2, Double(n-1))), backoffMaximum.nanoseconds))
-                
+
                 if let ioerror = error as? IOError, [104,54].contains(ioerror.errnoCode), n <= 2 {
                     /// MeteoFrance API resets the connection very frequently causing large delays in downloading
                     /// Immediately retry twice
@@ -70,7 +70,7 @@ extension HTTPClient {
                 if let error404WaitTime, case CurlError.fileNotFound = error {
                     wait = error404WaitTime
                 }
-                
+
                 let timeElapsed = Date().timeIntervalSince(startTime)
                 if Date().timeIntervalSince(lastPrint) > 60 {
                     logger.info("Download failed. Attempt \(n). Elapsed \(timeElapsed.prettyPrint). Retry in \(wait.prettyPrint). Error '\(error) [\(type(of: error))]'")

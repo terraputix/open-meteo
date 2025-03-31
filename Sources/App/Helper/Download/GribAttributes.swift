@@ -25,10 +25,10 @@ struct GribAttributes {
     let perturbationNumber: Int?
     let parameterNumber: Int?
     let constituentType: Int?
-    
+
     /// For ERA5 ensemble, `em` mean and `es` spread
     let dataType: String?
-    
+
     enum LevelType: String {
         case surface
         case isobaricInhPa
@@ -39,7 +39,7 @@ struct GribAttributes {
         case hybrid
         case unknown // only KMA
     }
-    
+
     enum StepType: String {
         case accum
         case avg
@@ -49,7 +49,7 @@ struct GribAttributes {
         case diff
         case rms
     }
-    
+
     init(message: GribMessage) throws {
         shortName = try message.getOrThrow(attribute: "shortName")
         stepRange = try message.getOrThrow(attribute: "stepRange")
@@ -64,7 +64,7 @@ struct GribAttributes {
             throw GribAttributeError.invalidLevelType(given: typeOfLevelStr)
         }
         self.typeOfLevel = typeOfLevel
-        
+
         parameterName = try message.getOrThrow(attribute: "parameterName")
         parameterUnits = try message.getOrThrow(attribute: "parameterUnits")
 
@@ -83,14 +83,14 @@ extension GribMessage {
     func getAttributes() throws -> GribAttributes {
         return try GribAttributes(message: self)
     }
-    
+
     fileprivate func getOrThrow(attribute: String) throws -> String {
         guard let value = get(attribute: attribute) else {
             throw GribAttributeError.couldNotGetAttribute(attribute: attribute)
         }
         return value
     }
-    
+
     func getValidTimestamp() throws -> Timestamp {
         let validityTime = try getOrThrow(attribute: "validityTime")
         let validityDate = try getOrThrow(attribute: "validityDate")

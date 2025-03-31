@@ -1,7 +1,7 @@
 import Foundation
 
 protocol EcmwfVariableDownloadable: GenericVariable {
-    
+
 }
 
 enum EcmwfWaveVariable: String, CaseIterable, EcmwfVariableDownloadable, GenericVariableMixable {
@@ -9,8 +9,8 @@ enum EcmwfWaveVariable: String, CaseIterable, EcmwfVariableDownloadable, Generic
     case wave_height
     case wave_period
     case wave_period_peak
-    
-    
+
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .wave_height:
@@ -21,7 +21,7 @@ enum EcmwfWaveVariable: String, CaseIterable, EcmwfVariableDownloadable, Generic
             return .linearDegrees
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .wave_height:
@@ -45,27 +45,27 @@ enum EcmwfWaveVariable: String, CaseIterable, EcmwfVariableDownloadable, Generic
             return direction
         }
     }
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     var isElevationCorrectable: Bool {
         return false
     }
-        
+
     var omFileName: (file: String, level: Int) {
         return (nameInFiles, 0)
     }
-    
+
     var nameInFiles: String {
         return rawValue
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var gribName: String? {
         // mp2    Mean zero-crossing wave period
         switch self {
@@ -233,26 +233,26 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
     case divergence_of_wind_200hPa
     case divergence_of_wind_100hPa
     case divergence_of_wind_50hPa
-    
+
     case wind_gusts_10m
-    
+
     // Cloudcover is calculated while downloading
     case cloud_cover
     case cloud_cover_low
     case cloud_cover_mid
     case cloud_cover_high
-    
+
     /// Generated while downloading
     case relative_humidity_2m
-    
-    
+
+
     enum DownloadOrProcess {
         /// Only download the selected variable, bu to not create a om database
         case downloadOnly
         /// Download and reate database
         case downloadAndProcess
     }
-    
+
     var storePreviousForecast: Bool {
         switch self {
         case .temperature_2m, .relative_humidity_2m: return true
@@ -266,7 +266,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
         default: return false
         }
     }
-    
+
     /// If true, download
     var includeInEnsemble: DownloadOrProcess? {
         switch self {
@@ -329,7 +329,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
         default: return nil
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         switch self {
         case .soil_temperature_0_to_7cm, .soil_temperature_7_to_28cm, .soil_temperature_28_to_100cm, .soil_temperature_100_to_255cm:
@@ -340,21 +340,21 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
             return false
         }
     }
-    
+
     static let pressure_levels = [1000, 925, 850, 700, 500, 300, 250, 200, 50]
-    
+
     var omFileName: (file: String, level: Int) {
         return (nameInFiles, 0)
     }
-    
+
     var nameInFiles: String {
         return rawValue
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .precipitation_type: return .dimensionless
@@ -503,7 +503,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
             return .metrePerSecond
         }
     }
-    
+
     /// pressure level in hPa or meter in the grib files
     var level: Int? {
         switch self {
@@ -660,7 +660,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
             return nil
         }
     }
-    
+
     var gribName: String? {
         switch self {
         case .precipitation_type: return "ptype"
@@ -814,7 +814,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
             return "10fg"
         }
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .precipitation_type: return 1
@@ -958,7 +958,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
             return 10
         }
     }
-    
+
     func multiplyAdd(domain: EcmwfDomain) -> (multiply: Float, add: Float)? {
         switch self {
         case .surface_temperature: fallthrough
@@ -1005,7 +1005,7 @@ enum EcmwfVariable: String, CaseIterable, Hashable, EcmwfVariableDownloadable, G
             return nil
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .precipitation, .showers, .snowfall_water_equivalent: fallthrough
@@ -1170,12 +1170,12 @@ enum EcmwfVariableDerived: String, GenericVariableMixable {
     case rain
     case showers
     case wet_bulb_temperature_2m
-    
+
     case cloudcover
     case cloudcover_low
     case cloudcover_mid
     case cloudcover_high
-    
+
     case terrestrial_radiation
     case terrestrial_radiation_instant
     case direct_normal_irradiance
@@ -1187,7 +1187,7 @@ enum EcmwfVariableDerived: String, GenericVariableMixable {
     case shortwave_radiation_instant
     case global_tilted_irradiance
     case global_tilted_irradiance_instant
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }

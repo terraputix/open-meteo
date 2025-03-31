@@ -20,7 +20,7 @@ docker run -d --rm -v open-meteo-data:/app/data -p 8080:8080 open-meteo
 # Download the digital elevation model
 docker run -it --rm -v open-meteo-data:/app/data open-meteo sync copernicus_dem90 static
 
-# Download global temperature forecast from GFS 13 km resolution 
+# Download global temperature forecast from GFS 13 km resolution
 docker run -it --rm -v open-meteo-data:/app/data open-meteo sync ncep_gfs013 temperature_2m --past-days 3
 
 # Get your forecast
@@ -91,6 +91,6 @@ swift run
 swift run openmeteo-api download-ecmwf --run 00
 ```
 
-Notes: 
+Notes:
 - To restart `swift run` press `ctrl+c` and run `swift run` again
 - Add `-c release` to swift run to switch to a faster release build

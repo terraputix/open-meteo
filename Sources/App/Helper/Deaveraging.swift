@@ -9,7 +9,7 @@ extension Array3DFastTime {
     mutating func deavergeOverTime() {
         data.deavergeOverTime(nTime: nTime)
     }
-    
+
     /// Deaccumulates a time series by subtracting the previous value from the current value.
     ///
     /// This function operates on an array of floating-point numbers that represents a time series, where each element in the array corresponds to a measurement at a specific time.
@@ -29,7 +29,7 @@ extension Array2DFastTime {
     mutating func deavergeOverTime() {
         data.deavergeOverTime(nTime: nTime)
     }
-    
+
     /// Deaccumulates a time series by subtracting the previous value from the current value.
     ///
     /// This function operates on an array of floating-point numbers that represents a time series, where each element in the array corresponds to a measurement at a specific time.
@@ -81,7 +81,7 @@ extension Array where Element == Float {
             }
         }
     }
-    
+
     /// Deaccumulates a time series by subtracting the previous value from the current value.
     /// Assumes data is oriented spatially
     mutating func deaccumulateOverTimeSpatial(nTime: Int) {
@@ -108,8 +108,8 @@ extension Array where Element == Float {
             }
         }
     }
-    
-    
+
+
     mutating func deaccumulateOverTime(nTime: Int) {
         precondition(nTime <= self.count)
         precondition(self.count % nTime == 0)

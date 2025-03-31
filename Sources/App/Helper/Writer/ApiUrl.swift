@@ -18,14 +18,14 @@ struct ApiVariable {
     let gddLimit: Int32
     let inclination: Int32
     let facing: Int32
-    
+
     /// Decode from URL. Takes substrings to save allocations
     static func from(_ s: Substring) -> Self? {
         // decode variable
         // switch pressure / model decoding
         // switch depth decoding
         // switch aggregation decoding
-        
+
         return nil
     }
 }
@@ -56,7 +56,7 @@ extension api_result_VariableType {
         }
         return match
     }
-    
+
     /// Variable can have data on pressure level like 850 hPa
     var hasPressureLevel: Bool {
         switch self {
@@ -71,7 +71,7 @@ extension api_result_VariableType {
         default: false
         }
     }
-    
+
     /// Variable can be defined on an altitude. E.g. 10 m above ground
     var hasAltitudeLevel: Bool {
         switch self {
@@ -83,7 +83,7 @@ extension api_result_VariableType {
         default: false
         }
     }
-    
+
     /// Variable has depth/soil level. E.g. 10 cm below ground
     var hasDepthLevel: Bool {
         switch self {
@@ -93,16 +93,16 @@ extension api_result_VariableType {
         default: false
         }
     }
-    
+
     /// Variable has gdd base and limit
     var hasGddBase: Bool {
         self == .growingDegreeDays
     }
-    
+
     var hasInclinationFacing: Bool {
         false
     }
-    
+
     /// String how it is used in the URL
     var string: String {
         switch self {

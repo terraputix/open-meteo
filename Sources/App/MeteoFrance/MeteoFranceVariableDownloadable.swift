@@ -2,10 +2,10 @@
 protocol MeteoFranceVariableDownloadable: GenericVariable {
     var multiplyAdd: (multiply: Float, add: Float)? { get }
     func skipHour0(domain: MeteoFranceDomain) -> Bool
-    
+
     /// AROME france HD has very few variables
     func availableFor(domain: MeteoFranceDomain, forecastSecond: Int) -> Bool
-    
+
     /// Return the `coverage` id for the given variable or nil if it is not available for this domain
     func getCoverageId(domain: MeteoFranceDomain) -> (variable: String, height: Int?, pressure: Int?, periodMinutes: Int?)
 }
@@ -89,11 +89,11 @@ extension MeteoFranceSurfaceVariable: MeteoFranceVariableDownloadable {
             return ("CONVECTIVE_AVAILABLE_POTENTIAL_ENERGY__GROUND_OR_WATER_SURFACE", nil, nil, nil)
         }
     }
-    
-    
+
+
     func availableFor(domain: MeteoFranceDomain, forecastSecond: Int) -> Bool {
         let forecastHour = forecastSecond / 3600
-        
+
         switch domain {
         case .arpege_europe:
             switch self {
@@ -224,7 +224,7 @@ extension MeteoFranceSurfaceVariable: MeteoFranceVariableDownloadable {
             return false
         }
     }
-    
+
     func skipHour0(domain: MeteoFranceDomain) -> Bool {
         switch self {
         case .cloud_cover: return domain.family == .arome || domain.family == .aromepi
@@ -238,7 +238,7 @@ extension MeteoFranceSurfaceVariable: MeteoFranceVariableDownloadable {
         default: return false
         }
     }
-    
+
     var multiplyAdd: (multiply: Float, add: Float)? {
         switch self {
         case .temperature_20m:
@@ -278,7 +278,7 @@ extension MeteoFrancePressureVariable: MeteoFranceVariableDownloadable {
         }
         return true
     }
-    
+
     func getCoverageId(domain: MeteoFranceDomain) -> (variable: String, height: Int?, pressure: Int?, periodMinutes: Int?)  {
         // consider vertical velocity
         switch variable {
@@ -294,11 +294,11 @@ extension MeteoFrancePressureVariable: MeteoFranceVariableDownloadable {
             return ("RELATIVE_HUMIDITY__ISOBARIC_SURFACE", nil, level, nil)
         }
     }
-    
+
     func skipHour0(domain: MeteoFranceDomain) -> Bool {
         return false
     }
-    
+
     var multiplyAdd: (multiply: Float, add: Float)? {
         switch variable {
         case .temperature:

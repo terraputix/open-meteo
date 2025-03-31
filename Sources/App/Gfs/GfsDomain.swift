@@ -7,32 +7,32 @@ import OmFileFormat
  GFS013 inventory: https://www.nco.ncep.noaa.gov/pmb/products/gfs/gfs.t00z.sfluxgrbf001.grib2.shtml
  NAM inventory: https://www.nco.ncep.noaa.gov/pmb/products/nam/nam.t00z.conusnest.hiresf06.tm00.grib2.shtml
  HRR inventory: https://www.nco.ncep.noaa.gov/pmb/products/hrrr/hrrr.t00z.wrfprsf02.grib2.shtml
- 
- 
+
+
  */
 enum GfsDomain: String, GenericDomain, CaseIterable {
     /// T1534 sflux grid
     case gfs013
-    
+
     case gfs025
     //case nam_conus // disabled because it only add 12 forecast hours
     case hrrr_conus
-    
+
     case hrrr_conus_15min
-    
+
     /// Actually contains raw member data.
     /// Contains up to 35 days of forecast, BUT the first 16 days are calculated at first, followed by day 16-25 18 hours later and only for 0z run.
     case gfs025_ens
-    
+
     /// 0.5° ensemble version for up to 25 days of forecast... Low forecast skill obviously.
     case gfs05_ens
-    
+
     case gfswave025
-    
+
     case gfswave016
-    
+
     case gfswave025_ens
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .gfs013:
@@ -55,7 +55,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return .ncep_gfswave016
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         switch self {
         case .hrrr_conus_15min:
@@ -66,19 +66,19 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return domainRegistry
         }
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var runsPerDay: Int {
         return (24*3600) / updateIntervalSeconds
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .gfs013, .gfs025:
@@ -91,7 +91,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return 6*3600
         }
     }
-    
+
     var dtSeconds: Int {
         switch self {
         case .gfs013:
@@ -110,7 +110,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return 3600
         }
     }
-    
+
     var isGlobal: Bool {
         switch self {
         case .gfs013:
@@ -129,7 +129,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return true
         }
     }
-    
+
     /// Based on the current time , guess the current run that should be available soon on the open-data server
     var lastRun: Timestamp {
         let t = Timestamp.now()
@@ -154,7 +154,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
 
         }
     }
-    
+
     var ensembleMembers: Int {
         switch self {
         case .gfs05_ens:
@@ -165,7 +165,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return 1
         }
     }
-    
+
     /// `SecondFlush` is used to download the hours 390-840 from GFS ensemble 0.5° which are 18 hours later available
     func forecastHours(run: Int, secondFlush: Bool) -> [Int] {
         switch self {
@@ -192,7 +192,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return Array(stride(from: 0, to: 120, by: 1)) + Array(stride(from: 120, through: 384, by: 3))
         }
     }
-    
+
     /// Pressure levels. Variables HGT, TMP, RH/SPFH , UGRD, VGRD... TCDC starts at 50mb for GFS, HRR has only RH and Cloud Mixing Ratio
     /// https://earthscience.stackexchange.com/questions/12204/what-is-the-mixing-ratio-of-a-cloud
     /// http://funnel.sfsu.edu/courses/metr302/f96/handouts/moist_sum.html
@@ -224,9 +224,9 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
         case .gfswave025, .gfswave025_ens, .gfswave016:
             return []
         }
-        
+
     }
-    
+
     var omFileLength: Int {
         switch self {
         case .gfs05_ens:
@@ -249,7 +249,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return (384 + 4*24)/3 + 1
         }
     }
-    
+
     var grid: Gridable {
         switch self {
         case .gfs05_ens:
@@ -285,7 +285,7 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
             return ProjectionGrid(nx: 1799, ny: 1059, latitude: 21.138...47.8424, longitude: (-122.72)...(-60.918), projection: proj)
         }
     }
-    
+
     /// Returns two grib files, in case grib messages are split in two differnent files
     func getGribUrl(run: Timestamp, forecastHour: Int, member: Int, useAws: Bool) -> [String] {
         //https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.20220813/00/atmos/gfs.t00z.pgrb2.0p25.f084.idx
@@ -297,19 +297,19 @@ enum GfsDomain: String, GenericDomain, CaseIterable {
         let useArchive = useAws || (Timestamp.now().timeIntervalSince1970 - run.timeIntervalSince1970) > 36*3600
         /// 4 week archive
         let gfsAws = "https://noaa-gfs-bdp-pds.s3.amazonaws.com/"
-        
+
         let gfsNomads = "https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/"
         let yyyymmdd = run.format_YYYYMMdd
         let hh = run.hh
-        
+
         let gefsAws = "https://noaa-gefs-pds.s3.amazonaws.com/"
         let gefsNomads = "https://nomads.ncep.noaa.gov/pub/data/nccf/com/gens/prod/"
         let gefsServer = useArchive ? gefsAws : gefsNomads
-        
+
         let hrrrNomads = "https://nomads.ncep.noaa.gov/pub/data/nccf/com/hrrr/prod/"
         let hrrrAws = "https://noaa-hrrr-bdp-pds.s3.amazonaws.com/"
         let hrrrServer = useArchive ? hrrrAws : hrrrNomads
-        
+
         switch self {
         case .gfs05_ens:
             let memberString = member == 0 ? "gec00" : "gep\(member.zeroPadded(len: 2))"

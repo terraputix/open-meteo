@@ -11,16 +11,16 @@ struct DownloadArpaeCommand: AsyncCommand {
     struct Signature: CommandSignature {
         @Option(name: "run")
         var run: String?
-        
+
         @Argument(name: "domain")
         var domain: String
-        
+
         @Option(name: "upload-s3-bucket", help: "Upload open-meteo database to an S3 bucket after processing")
         var uploadS3Bucket: String?
-        
+
         @Flag(name: "create-netcdf")
         var createNetcdf: Bool
-        
+
         @Option(name: "concurrent", short: "c", help: "Numer of concurrent download/conversion jobs")
         var concurrent: Int?
     }
@@ -28,10 +28,10 @@ struct DownloadArpaeCommand: AsyncCommand {
     var help: String {
         "Download a specified CMA model run"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         disableIdleSleep()
-        
+
         let domain = try ArpaeDomain.load(rawValue: signature.domain)
         let run = try signature.run.flatMap(Timestamp.fromRunHourOrYYYYMMDD) ?? domain.lastRun
         let logger = context.application.logger
@@ -42,7 +42,7 @@ struct DownloadArpaeCommand: AsyncCommand {
         let handles = try await download(application: context.application, domain: domain, run: run, concurrent: nConcurrent)
         try await GenericVariableHandle.convert(logger: logger, domain: domain, createNetcdf: signature.createNetcdf, run: run, handles: handles, concurrent: nConcurrent, writeUpdateJson: true, uploadS3Bucket: signature.uploadS3Bucket, uploadS3OnlyProbabilities: false)
     }
-    
+
     /// Download an ARPAE model from MISTRAL meteo hub
     /// 1. Fetch a metadata API to get the GRIB file name
     /// 2. Download GRIB file and convert to a temporary chunked file for later timeseries update
@@ -52,10 +52,10 @@ struct DownloadArpaeCommand: AsyncCommand {
         let deadLineHours: Double = 3
         let curl = Curl(logger: logger, client: application.dedicatedHttpClient, deadLineHours: deadLineHours)
         Process.alarm(seconds: Int(deadLineHours + 1) * 3600)
-        
+
         let writer = OmFileSplitter.makeSpatialWriter(domain: domain)
         let previous = GribDeaverager()
-        
+
         let meta = try await waitForRun(curl: curl, domain: domain, run: run)
         let handles = try await curl.withGribStream(url: meta.url, bzip2Decode: false, nConcurrent: concurrent) { messages in
             return try await messages.mapStream(nConcurrent: concurrent) { message -> GenericVariableHandle? in
@@ -79,12 +79,12 @@ struct DownloadArpaeCommand: AsyncCommand {
                 //try message.debugGrid(grid: domain.grid, flipLatidude: false, shift180Longitude: false)
                 var grib2d = GribArray2D(nx: domain.grid.nx, ny: domain.grid.ny)
                 try grib2d.load(message: message)
-                
+
                 // Scaling before compression with scalefactor
                 if let fma = variable.multiplyAdd {
                     grib2d.array.data.multiplyAdd(multiply: fma.multiply, add: fma.add)
                 }
-                
+
                 // Deaccumulate precipitation
                 guard await previous.deaccumulateIfRequired(variable: variable, member: 0, stepType: stepType, stepRange: stepRange, grib2d: &grib2d) else {
                     return nil
@@ -98,7 +98,7 @@ struct DownloadArpaeCommand: AsyncCommand {
         Process.alarm(seconds: 0)
         return handles
     }
-    
+
     func getVariable(shortName: String, levelStr: String) -> ArpaeSurfaceVariable? {
         switch (shortName, levelStr) {
         case ("2t", "2"):
@@ -122,7 +122,7 @@ struct DownloadArpaeCommand: AsyncCommand {
         default: return nil
         }
     }
-    
+
     /// Check the Mistral API for a new run
     /// Uses metadata endpoint like https://meteohub.mistralportal.it/api/datasets/COSMO-2I/opendata
     fileprivate func waitForRun(curl: Curl, domain: ArpaeDomain, run: Timestamp) async throws -> ArpaeMetaResponse {
@@ -157,11 +157,11 @@ fileprivate struct ArpaeMetaResponse: Decodable {
     let date: String
     let run: String
     let filename: String
-    
+
     var url: String {
         "https://meteohub.mistralportal.it/api/opendata/\(filename)"
     }
-    
+
     static func metaUrl(for domain: ArpaeDomain) -> String {
         "https://meteohub.mistralportal.it/api/datasets/\(domain.apiName)/opendata"
     }

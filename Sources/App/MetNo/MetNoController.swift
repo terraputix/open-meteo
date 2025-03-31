@@ -5,15 +5,15 @@ typealias MetNoHourlyVariable = VariableOrDerived<MetNoVariable, MetNoVariableDe
 
 struct MetNoReader: GenericReaderDerivedSimple, GenericReaderProtocol {
     let reader: GenericReaderCached<MetNoDomain, MetNoVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     typealias Domain = MetNoDomain
-    
+
     typealias Variable = MetNoVariable
-    
+
     typealias Derived = MetNoVariableDerived
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -21,13 +21,13 @@ struct MetNoReader: GenericReaderDerivedSimple, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func prefetchData(derived: MetNoVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .apparent_temperature:
@@ -107,7 +107,7 @@ struct MetNoReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             try prefetchData(derived: .direct_radiation, time: time)
         }
     }
-    
+
     func get(derived: MetNoVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .apparent_temperature:
@@ -128,7 +128,7 @@ struct MetNoReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             let windspeed = try get(raw: .wind_speed_10m, time: time).data
             let rh = try get(raw: .relative_humidity_2m, time: time).data
             let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-            
+
             let et0 = swrad.indices.map { i in
                 return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
             }
@@ -251,7 +251,7 @@ enum MetNoVariableDerived: String, GenericVariableMixable {
     /*case cloudcover_low
     case cloudcover_mid
     case cloudcover_high*/
-    
+
     case apparent_temperature
     case dewpoint_2m
     case dew_point_2m
@@ -283,7 +283,7 @@ enum MetNoVariableDerived: String, GenericVariableMixable {
     case winddirection_10m
     case windgusts_10m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }

@@ -10,28 +10,28 @@ struct DownloadBomCommand: AsyncCommand {
     struct Signature: CommandSignature {
         @Option(name: "run")
         var run: String?
-        
+
         @Argument(name: "domain")
         var domain: String
-        
+
         @Option(name: "server", help: "Root server path")
         var server: String?
-        
+
         @Option(name: "upload-s3-bucket", help: "Upload open-meteo database to an S3 bucket after processing")
         var uploadS3Bucket: String?
-        
+
         @Flag(name: "create-netcdf")
         var createNetcdf: Bool
-        
+
         @Flag(name: "upper-level")
         var upperLevel: Bool
-        
+
         @Option(name: "concurrent", short: "c", help: "Numer of concurrent download/conversion jobs")
         var concurrent: Int?
-        
+
         @Flag(name: "skip-existing", help: "ONLY FOR TESTING! Do not use in production. May update the database with stale data")
         var skipExisting: Bool
-        
+
         @Flag(name: "upload-s3-only-probabilities", help: "Only upload probabilities files to S3")
         var uploadS3OnlyProbabilities: Bool
     }
@@ -39,16 +39,16 @@ struct DownloadBomCommand: AsyncCommand {
     var help: String {
         "Download a specified Bom model run"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         disableIdleSleep()
-        
+
         let domain = try BomDomain.load(rawValue: signature.domain)
         let run = try signature.run.flatMap(Timestamp.fromRunHourOrYYYYMMDD) ?? domain.lastRun
         let logger = context.application.logger
 
         logger.info("Downloading domain \(domain) run '\(run.iso8601_YYYY_MM_dd_HH_mm)'")
-        
+
         guard let server = signature.server else {
             fatalError("Parameter 'server' is required")
         }
@@ -62,7 +62,7 @@ struct DownloadBomCommand: AsyncCommand {
             try await download(application: context.application, domain: domain, run: run, server: server, concurrent: nConcurrent, skipFilesIfExisting: signature.skipExisting)
         try await GenericVariableHandle.convert(logger: logger, domain: domain, createNetcdf: signature.createNetcdf, run: run, handles: handles, concurrent: nConcurrent, writeUpdateJson: true, uploadS3Bucket: signature.uploadS3Bucket, uploadS3OnlyProbabilities: signature.uploadS3OnlyProbabilities)
     }
-    
+
     func downloadElevation(application: Application, domain: BomDomain, server: String, run: Timestamp) async throws {
         let logger = application.logger
         let surfaceElevationFileOm = domain.surfaceElevationFileOm.getFilePath()
@@ -70,15 +70,15 @@ struct DownloadBomCommand: AsyncCommand {
             return
         }
         try domain.surfaceElevationFileOm.createDirectory()
-        
+
         logger.info("Downloading height and elevation data")
-        
+
         let curl = Curl(logger: logger, client: application.dedicatedHttpClient, deadLineHours: 4, waitAfterLastModifiedBeforeDownload: TimeInterval(60*500))
         var base = "\(server)\(run.format_YYYYMMdd)/\(run.hh)00/an/"
         if domain == .access_global_ensemble {
             base = "\(server)\(run.format_YYYYMMdd)/\(run.hh)00/cf/"
         }
-        
+
         let topogFile = "\(domain.downloadDirectory)topog.nc"
         let lndMaskFile = "\(domain.downloadDirectory)lnd_mask.nc"
         if !FileManager.default.fileExists(atPath: topogFile) {
@@ -97,7 +97,7 @@ struct DownloadBomCommand: AsyncCommand {
                 bzip2Decode: false
             )
         }
-        
+
         guard var elevation = try NetCDF.open(path: topogFile, allowUpdate: false)?.getVariable(name: "topog")?.asType(Float.self)?.read() else {
             fatalError("Could not read topog file")
         }
@@ -110,11 +110,11 @@ struct DownloadBomCommand: AsyncCommand {
                 elevation[i] = -999
             }
         }
-        
+
         elevation.shift180LongitudeAndFlipLatitude(nt: 1, ny: domain.grid.ny, nx: domain.grid.nx)
         try elevation.writeOmFile2D(file: surfaceElevationFileOm, grid: domain.grid)
     }
-    
+
     /// Download model level wind on 40, 80 and 120 m. Model level have 1h delay
     func downloadModelLevel(application: Application, domain: BomDomain, run: Timestamp, server: String, concurrent: Int, skipFilesIfExisting: Bool) async throws -> [GenericVariableHandle] {
         let logger = application.logger
@@ -122,7 +122,7 @@ struct DownloadBomCommand: AsyncCommand {
         let curl = Curl(logger: logger, client: application.dedicatedHttpClient, deadLineHours: deadLineHours, waitAfterLastModifiedBeforeDownload: TimeInterval(60*15))
         Process.alarm(seconds: Int(deadLineHours + 1) * 3600)
         let variables = ["wnd_ucmp", "wnd_vcmp"]
-    
+
         // Download u/v wind
         try await variables.foreachConcurrent(nConcurrent: concurrent) { variable in
             let base = "\(server)\(run.format_YYYYMMdd)/\(run.hh)00/"
@@ -145,7 +145,7 @@ struct DownloadBomCommand: AsyncCommand {
                 )
             }
         }
-         
+
         // Convert
         let map: [(level: Float, speed: BomVariable, direction: BomVariable)] = [
             (36.664, .wind_speed_40m, .wind_direction_40m),
@@ -174,7 +174,7 @@ struct DownloadBomCommand: AsyncCommand {
         Process.alarm(seconds: 0)
         return handles
     }
-    
+
     /// Download variables, convert to temporary om files and return all handles
     /// Ensemble do no have `rh_scrn` and `cld_phys_thunder_p`
     func downloadEnsemble(application: Application, domain: BomDomain, run: Timestamp, server: String, concurrent: Int, skipFilesIfExisting: Bool) async throws -> [GenericVariableHandle] {
@@ -182,7 +182,7 @@ struct DownloadBomCommand: AsyncCommand {
         let deadLineHours: Double = 6
         let curl = Curl(logger: logger, client: application.dedicatedHttpClient, deadLineHours: deadLineHours, waitAfterLastModifiedBeforeDownload: TimeInterval(60*15))
         Process.alarm(seconds: Int(deadLineHours + 1) * 3600)
-        
+
         // list of variables to download
         // http://www.bom.gov.au/nwp/doc/access/docs/ACCESS-G.all-flds.slv.surface.shtml
         let variables: [(name: String, om: BomVariable?)] = [
@@ -216,7 +216,7 @@ struct DownloadBomCommand: AsyncCommand {
             ("dewpt_scrn", nil),
             //("cld_phys_thunder_p", nil)
         ]
-        
+
         let handles: [GenericVariableHandle] = try await variables.mapConcurrent(nConcurrent: concurrent) { variable -> [GenericVariableHandle] in
             var handles =  try await (0..<domain.ensembleMembers).asyncFlatMap { member -> [GenericVariableHandle] in
                 let base = "\(server)\(run.format_YYYYMMdd)/\(run.hh)00/"
@@ -250,7 +250,7 @@ struct DownloadBomCommand: AsyncCommand {
             }
             return handles
         }.flatMap({$0})
-        
+
         let handlesSnow = try await (0..<domain.ensembleMembers).asyncFlatMap { member -> [GenericVariableHandle] in
             logger.info("Calculate weather codes and snow sum member_\(member)")
             return try await zip(
@@ -280,7 +280,7 @@ struct DownloadBomCommand: AsyncCommand {
                 ]
             }.flatMap({$0})
         }
-        
+
         let handlesRh = try await (0..<domain.ensembleMembers).asyncFlatMap { member -> [GenericVariableHandle] in
             logger.info("Calculate relative humidity member_\(member)")
             return try await zip(
@@ -295,7 +295,7 @@ struct DownloadBomCommand: AsyncCommand {
                 return GenericVariableHandle(variable: BomVariable.relative_humidity_2m, time: timestamp, member: member, fn: fnRh)
             }
         }
-        
+
         let handlesWind = try await (0..<domain.ensembleMembers).asyncFlatMap { member -> [GenericVariableHandle] in
             logger.info("Calculate wind member_\(member)")
             return try await zip(
@@ -318,14 +318,14 @@ struct DownloadBomCommand: AsyncCommand {
         Process.alarm(seconds: 0)
         return handles + handlesSnow + handlesWind + handlesRh
     }
-    
+
     /// Download variables, convert to temporary om files and return all handles
     func download(application: Application, domain: BomDomain, run: Timestamp, server: String, concurrent: Int, skipFilesIfExisting: Bool) async throws -> [GenericVariableHandle] {
         let logger = application.logger
         let deadLineHours: Double = 6
         let curl = Curl(logger: logger, client: application.dedicatedHttpClient, deadLineHours: deadLineHours, waitAfterLastModifiedBeforeDownload: TimeInterval(60*15))
         Process.alarm(seconds: Int(deadLineHours + 1) * 3600)
-        
+
         // list of variables to download
         // http://www.bom.gov.au/nwp/doc/access/docs/ACCESS-G.all-flds.slv.surface.shtml
         let variables: [(name: String, om: BomVariable?)] = [
@@ -358,7 +358,7 @@ struct DownloadBomCommand: AsyncCommand {
             ("accum_ls_snow", nil),
             ("cld_phys_thunder_p", nil)
         ]
-        
+
         let handles = try await variables.mapConcurrent(nConcurrent: concurrent) { variable -> [GenericVariableHandle] in
             let base = "\(server)\(run.format_YYYYMMdd)/\(run.hh)00/"
             let analysisFile = "\(domain.downloadDirectory)\(variable.name)_an.nc"
@@ -389,7 +389,7 @@ struct DownloadBomCommand: AsyncCommand {
                 return GenericVariableHandle(variable: omVariable, time: timestamp, member: 0, fn: fn)
             }
         }
-        
+
         logger.info("Calculate weather codes and snow sum")
         let handlesSnow = try await zip(
             zip(zip(
@@ -418,7 +418,7 @@ struct DownloadBomCommand: AsyncCommand {
                 GenericVariableHandle(variable: BomVariable.weather_code, time: timestamp, member: 0, fn: fnWeatherCode)
             ]
         }
-        
+
         logger.info("Calculate wind")
         let handlesWind = try await zip(
             try combineAnalysisForecast(domain: domain, variable: "uwnd10m", run: run),
@@ -439,12 +439,12 @@ struct DownloadBomCommand: AsyncCommand {
         Process.alarm(seconds: 0)
         return handles.flatMap({$0}) + handlesSnow.flatMap({$0}) + handlesWind.flatMap({$0})
     }
-    
+
     /// Process timsteps only on forecast
     /// Performs deaccumulation if required
     func iterateForecast(domain: BomDomain, member: Int, variable: String, run: Timestamp, level: Float? = nil) throws -> AnySequence<(Timestamp, [Float])> {
         let forecastFile = "\(domain.downloadDirectory)\(variable)_fc_\(member).nc"
-        
+
         guard let ncForecast = try NetCDF.open(path: forecastFile, allowUpdate: false) else {
             fatalError("Could not open \(forecastFile)")
         }
@@ -511,13 +511,13 @@ struct DownloadBomCommand: AsyncCommand {
             }
         }
     }
-    
+
     /// Process timsteps from 2 netcdf files: analysis and forecast
     /// Performs deaccumulation if required
     func combineAnalysisForecast(domain: BomDomain, variable: String, run: Timestamp, level: Float? = nil) throws -> AnySequence<(Timestamp, [Float])> {
         let analysisFile = "\(domain.downloadDirectory)\(variable)_an.nc"
         let forecastFile = "\(domain.downloadDirectory)\(variable)_fc.nc"
-        
+
         guard let ncForecast = try NetCDF.open(path: forecastFile, allowUpdate: false) else {
             fatalError("Could not open \(forecastFile)")
         }
@@ -544,14 +544,14 @@ struct DownloadBomCommand: AsyncCommand {
         let nx = 2048
         // somehow vwind on model level has 1537 elements
         let ny = 1536
-        
+
         let isAccumulated = variable.starts(with: "accum_")
         // process indiviual timesteps
         return AnySequence<(Timestamp, [Float])> { () -> AnyIterator<(Timestamp, [Float])> in
             var pos = 0
             var previousStepData: [Float]? = nil
             return AnyIterator<(Timestamp, [Float])> { () -> (Timestamp, [Float])? in
-                
+
                 if pos > timeForecast.count {
                     return nil
                 }
@@ -620,7 +620,7 @@ struct DownloadBomCommand: AsyncCommand {
                     } catch {
                         fatalError("Error during read data for \(variable) levelIndex=\(levelIndex) dimensions=\(varForecast.dimensionsFlat) error=\(error)")
                     }
-                    
+
                 }
             }
         }

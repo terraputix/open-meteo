@@ -3,15 +3,15 @@ import Foundation
 
 struct EcmwfReader: GenericReaderDerived, GenericReaderProtocol {
     let reader: GenericReaderCached<EcmwfDomain, Variable>
-    
+
     let options: GenericReaderOptions
-    
+
     typealias Domain = EcmwfDomain
-    
+
     typealias Variable = EcmwfVariable
-    
+
     typealias Derived = EcmwfVariableDerived
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -19,17 +19,17 @@ struct EcmwfReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func prefetchData(raw: EcmwfVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func get(raw: EcmwfVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         /// Adjust surface pressure to target elevation. Surface pressure is stored for `modelElevation`, but we want to get the pressure on `targetElevation`
         if raw == .surface_pressure {
@@ -39,7 +39,7 @@ struct EcmwfReader: GenericReaderDerived, GenericReaderProtocol {
         }
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func get(derived: Derived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .wind_speed_10m, .windspeed_10m:
@@ -549,7 +549,7 @@ struct EcmwfReader: GenericReaderDerived, GenericReaderProtocol {
             return DataAndUnit(gti, .wattPerSquareMetre)
         }
     }
-    
+
     func prefetchData(derived: Derived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .terrestrial_radiation, .terrestrial_radiation_instant:

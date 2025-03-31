@@ -5,16 +5,16 @@ import OmFileFormat
 enum EcmwfDomain: String, GenericDomain {
     case ifs04
     case ifs04_ensemble
-    
+
     case ifs025
     case ifs025_ensemble
-    
+
     case wam025
     case wam025_ensemble
-    
+
     case aifs025
     case aifs025_single
-    
+
     func getDownloadForecastSteps(run: Int) -> [Int] {
         if self == .aifs025 || self == .aifs025_single {
             return Array(stride(from: 0, through: 360, by: dtHours))
@@ -26,7 +26,7 @@ enum EcmwfDomain: String, GenericDomain {
         default: fatalError("Invalid run")
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .ifs04:
@@ -47,7 +47,7 @@ enum EcmwfDomain: String, GenericDomain {
             return .ecmwf_wam025_ensemble
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         switch self {
         case .wam025:
@@ -56,15 +56,15 @@ enum EcmwfDomain: String, GenericDomain {
             return domainRegistry
         }
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var omFileLength: Int {
         switch self {
         case .ifs04, .ifs04_ensemble, .ifs025, .ifs025_ensemble, .wam025, .wam025_ensemble:
@@ -75,7 +75,7 @@ enum EcmwfDomain: String, GenericDomain {
             return (360 + 3*24) / dtHours // 72
         }
     }
-    
+
     var dtSeconds: Int {
         switch self {
         case .aifs025, .aifs025_single:
@@ -83,9 +83,9 @@ enum EcmwfDomain: String, GenericDomain {
         default:
             return 3*3600
         }
-        
+
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .ifs04, .ifs04_ensemble:
@@ -98,7 +98,7 @@ enum EcmwfDomain: String, GenericDomain {
             return 6*3600
         }
     }
-    
+
     var grid: Gridable {
         switch self {
         case .ifs04, .ifs04_ensemble:
@@ -106,9 +106,9 @@ enum EcmwfDomain: String, GenericDomain {
         case .ifs025, .ifs025_ensemble, .aifs025, .wam025, .wam025_ensemble, .aifs025_single:
             return RegularGrid(nx: 1440, ny: 721, latMin: -90, lonMin: -180, dx: 360/1440, dy: 180/(721-1))
         }
-        
+
     }
-    
+
     var ensembleMembers: Int {
         switch self {
         case .ifs04, .ifs025, .wam025:
@@ -119,8 +119,8 @@ enum EcmwfDomain: String, GenericDomain {
             return 1
         }
     }
-    
-    
+
+
     var isEnsemble: Bool {
         return ensembleMembers > 1
     }

@@ -40,7 +40,7 @@ extension IconSurfaceVariable: IconVariableDownloadable {
         if forDownload && domain == .iconD2 && self != .weather_code {
             return false
         }
-        
+
         switch self {
         case .wind_gusts_10m: return true
         case .sensible_heat_flux: return true
@@ -57,7 +57,7 @@ extension IconSurfaceVariable: IconVariableDownloadable {
         default: return false
         }
     }
-    
+
     func getVarAndLevel(domain: IconDomains) -> (variable: String, cat: String, level: Int?)? {
         if domain == .iconEps || domain == .iconEuEps || domain == .iconD2Eps {
             switch self {
@@ -114,7 +114,7 @@ extension IconSurfaceVariable: IconVariableDownloadable {
                     return nil // not in global
                 }
                 break
-                
+
                 // all variables below are only in the D2 EPS model
             case .wind_u_component_120m:
                 fallthrough
@@ -141,7 +141,7 @@ extension IconSurfaceVariable: IconVariableDownloadable {
                 return nil
             }
         }
-        
+
         if domain == .iconD2_15min {
             switch self {
             case .direct_radiation:
@@ -167,7 +167,7 @@ extension IconSurfaceVariable: IconVariableDownloadable {
                 // All other variables are not in ICON-D2 15 minutes
             }
         }
-        
+
         switch self {
         case .soil_temperature_0cm: return ("t_so", "soil-level", 0)
         case .soil_temperature_6cm: return ("t_so", "soil-level", 6)
@@ -192,10 +192,10 @@ extension IconSurfaceVariable: IconVariableDownloadable {
         case .cloud_cover_low: return ("clcl", "single-level", nil)
         case .cloud_cover_mid: return ("clcm", "single-level", nil)
         case .cloud_cover_high: return ("clch", "single-level", nil)
-        case .convective_cloud_top: 
+        case .convective_cloud_top:
             let shallowOrDeepConvectionTop = domain == .iconD2 ? "htop_sc" : "htop_con"
             return (shallowOrDeepConvectionTop, "single-level", nil)
-        case .convective_cloud_base: 
+        case .convective_cloud_base:
             let shallowOrDeepConvectionBase = domain == .iconD2 ? "hbas_sc" : "hbas_con"
             return (shallowOrDeepConvectionBase, "single-level", nil)
         case .precipitation: return ("tot_prec", "single-level", nil)
@@ -226,7 +226,7 @@ extension IconSurfaceVariable: IconVariableDownloadable {
             return domain == .icon ? nil : ("vis", "single-level", nil) // not in icon global
         }
     }
-    
+
     var multiplyAdd: (multiply: Float, add: Float)? {
         switch self {
         case .temperature_2m: fallthrough
@@ -260,7 +260,7 @@ extension IconPressureVariable: IconVariableDownloadable {
     func skipHour(hour: Int, domain: IconDomains, forDownload: Bool, run: Timestamp) -> Bool {
         return false
     }
-    
+
     var multiplyAdd: (multiply: Float, add: Float)? {
         switch variable {
         case .temperature:
@@ -272,7 +272,7 @@ extension IconPressureVariable: IconVariableDownloadable {
             return nil
         }
     }
-    
+
     func getVarAndLevel(domain: IconDomains) -> (variable: String, cat: String, level: Int?)? {
         if domain == .iconD2_15min {
             return nil

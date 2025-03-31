@@ -5,25 +5,25 @@ import SwiftNetCDF
 struct Array2D {
     /// The underlying data storage for the 2D array.
     var data: [Float]
-    
+
     /// The number of elements in x dimension
     let nx: Int
-    
+
     /// The number of elements in y dimension
     let ny: Int
-    
+
     /// The total number of elements in this array
     var count: Int {
         return nx * ny
     }
-    
+
     init(data: [Float], nx: Int, ny: Int) {
         precondition(data.count == nx * ny)
         self.data = data
         self.nx = nx
         self.ny = ny
     }
-    
+
     func writeNetcdf(filename: String) throws {
         let file = try NetCDF.create(path: filename, overwriteExisting: true)
         try file.setAttribute("TITLE", "My data set")
@@ -34,11 +34,11 @@ struct Array2D {
         var variable = try file.createVariable(name: "data", type: Float.self, dimensions: dimensions)
         try variable.write(data)
     }
-    
+
     mutating func shift180LongitudeAndFlipLatitude() {
         data.shift180LongitudeAndFlipLatitude(nt: 1, ny: ny, nx: nx)
     }
-    
+
     mutating func flipEverySecondScanLine() {
         // flip every second line
         for y in stride(from: 1, to: ny, by: 2) {
@@ -49,11 +49,11 @@ struct Array2D {
             }
         }
     }
-    
+
     mutating func shift180Longitudee() {
         data.shift180Longitude(nt: 1, ny: ny, nx: nx)
     }
-    
+
     mutating func flipLatitude() {
         data.flipLatitude(nt: 1, ny: ny, nx: nx)
     }
@@ -61,27 +61,27 @@ struct Array2D {
 
 /**
  `Array2DFastSpace` is a struct that represents a 2D array of Float values with fast space indexing. It allows accessing and modifying individual elements using subscript notation.
- 
+
  Data is stored to be accessed quickly for multiple locatios in a row, while accessing timesteps is slower
 */
 struct Array2DFastSpace {
     /// The underlying data storage for the 2D array.
     var data: [Float]
-    
+
     /// The number of spatial locations in the array.
     let nLocations: Int
-    
+
     /// The number of time steps in the array.
     let nTime: Int
-    
+
     /**
      Initializes a new instance of `Array2DFastSpace`.
-     
+
      - Parameters:
         - data: The data to be used as the underlying storage of the 2D array. Its count should be equal to `nLocations * nTime`.
         - nLocations: The number of spatial locations in the array.
         - nTime: The number of time steps in the array.
-     
+
      - Precondition: `data.count` should be equal to `nLocations * nTime`, otherwise the initializer will fatalError.
      */
     public init(data: [Float], nLocations: Int, nTime: Int) {
@@ -92,10 +92,10 @@ struct Array2DFastSpace {
         self.nLocations = nLocations
         self.nTime = nTime
     }
-    
+
     /**
      Initializes a new instance of `Array2DFastSpace` with all elements set to `NaN`.
-     
+
      - Parameters:
         - nLocations: The number of spatial locations in the array.
         - nTime: The number of time steps in the array.
@@ -108,12 +108,12 @@ struct Array2DFastSpace {
 
     /**
      Writes the 2D array data to a NetCDF file.
-     
+
      - Parameters:
         - filename: The name of the file to write to.
         - nx: The number of grid points in the x (longitude) direction.
         - ny: The number of grid points in the y (latitude) direction.
-     
+
      - Throws: An error of type `NetCDFError` if the write operation fails.
      */
     func writeNetcdf(filename: String, nx: Int, ny: Int) throws {
@@ -130,7 +130,7 @@ struct Array2DFastSpace {
         var variable = try file.createVariable(name: "MyData", type: Float.self, dimensions: dimensions)
         try variable.write(data)
     }
-    
+
     /// Accesses the element at the specified time and location in the 2D array.
     ///
     /// - Parameters:
@@ -153,7 +153,7 @@ struct Array2DFastSpace {
             data[time * nLocations + location] = newValue
         }
     }
-    
+
     /// Accesses a range of values in the array for a specific time.
     ///
     /// Use this subscript to access a range of values from the `Array2DFastSpace` array
@@ -182,7 +182,7 @@ struct Array2DFastSpace {
             data[location.add(time * nLocations)] = newValue
         }
     }
-    
+
     /// Transpose to fast time
     func transpose() -> Array2DFastTime {
         precondition(data.count == nLocations * nTime)
@@ -203,27 +203,27 @@ struct Array2DFastSpace {
 
 /**
  `Array2DFastTime` is a struct that represents a 2D array of Float values with fast time indexing. It allows accessing and modifying individual elements using subscript notation.
- 
+
  Data is stored to be accessed quickly for multiple time temps in a row, while accessing locations is slower
 */
 public struct Array2DFastTime {
     /// The underlying data storage for the 2D array.
     public var data: [Float]
-    
+
     /// The number of spatial locations in the array.
     public let nLocations: Int
-    
+
     /// The number of time steps in the array.
     public let nTime: Int
-    
+
     /**
      Initializes a new instance of `Array2DFastTime`.
-     
+
      - Parameters:
         - data: The data to be used as the underlying storage of the 2D array. Its count should be equal to `nLocations * nTime`.
         - nLocations: The number of spatial locations in the array.
         - nTime: The number of time steps in the array.
-     
+
      - Precondition: `data.count` should be equal to `nLocations * nTime`, otherwise the initializer will fatalError.
      */
     public init(data: [Float], nLocations: Int, nTime: Int) {
@@ -234,10 +234,10 @@ public struct Array2DFastTime {
         self.nLocations = nLocations
         self.nTime = nTime
     }
-    
+
     /**
      Initializes a new instance of `Array2DFastTime` with all elements set to `NaN`.
-     
+
      - Parameters:
         - nLocations: The number of spatial locations in the array.
         - nTime: The number of time steps in the array.
@@ -247,7 +247,7 @@ public struct Array2DFastTime {
         self.nLocations = nLocations
         self.nTime = nTime
     }
-    
+
     /// Accesses the element at the specified time and location in the 2D array.
     ///
     /// - Parameters:
@@ -270,7 +270,7 @@ public struct Array2DFastTime {
             data[location * nTime + time] = newValue
         }
     }
-    
+
     /// Accesses a range of values in the array for a specific location.
     ///
     /// Use this subscript to access a range of values from the `Array2DFastTime` array
@@ -299,7 +299,7 @@ public struct Array2DFastTime {
             data[time.add(location * nTime)] = newValue
         }
     }
-    
+
     /// Accesses a range of values in the array for a specific time. This function is relatively slow, because data needs to be transposed.
     ///
     /// Use this subscript to access a range of values from the `Array2DFastTime` array
@@ -336,7 +336,7 @@ public struct Array2DFastTime {
             }
         }
     }
-    
+
     /// Transpose to fast space
     func transpose() -> Array2DFastSpace {
         precondition(data.count == nLocations * nTime)
@@ -371,7 +371,7 @@ public struct Array2DFastTime {
                 b[i] = true
                 i = (i*rows)%size
             } while i != cycleBegin
-     
+
             i = 1
             while i < size && b[i] == true {
                 i += 1
@@ -379,7 +379,7 @@ public struct Array2DFastTime {
         }
         return cycles
     }
-    
+
     /// Perform inplace transposition using `following cycles algorithm`. This is 10 slower than double buffer transpose, exclusing the cycle calculation
     /// See: https://en.wikipedia.org/wiki/In-place_matrix_transposition
     /// See: https://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/

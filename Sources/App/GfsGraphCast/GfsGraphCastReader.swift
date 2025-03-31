@@ -16,7 +16,7 @@ enum GfsGraphCastVariableDerivedSurface: String, CaseIterable, GenericVariableMi
     case cloudcover_low
     case cloudcover_mid
     case cloudcover_high
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -43,7 +43,7 @@ enum GfsGraphCastPressureVariableDerivedType: String, CaseIterable {
 struct GfsGraphCastPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: GfsGraphCastPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -55,17 +55,17 @@ typealias GfsGraphCastVariableCombined = VariableOrDerived<GfsGraphCastVariable,
 
 struct GfsGraphCastReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = GfsGraphCastDomain
-    
+
     typealias Variable = GfsGraphCastVariable
-    
+
     typealias Derived = GfsGraphCastVariableDerived
-    
+
     typealias MixingVar = GfsGraphCastVariableCombined
-    
+
     let reader: GenericReaderCached<GfsGraphCastDomain, GfsGraphCastVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -73,29 +73,29 @@ struct GfsGraphCastReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: GfsGraphCastVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: GfsGraphCastVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable: GfsGraphCastSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(variable: .raw(.surface(variable)), time: time)
     }
-    
+
     func get(raw: GfsGraphCastSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try get(variable: .raw(.surface(raw)), time: time)
     }
-    
+
     func prefetchData(derived: GfsGraphCastVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -143,7 +143,7 @@ struct GfsGraphCastReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: GfsGraphCastVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):

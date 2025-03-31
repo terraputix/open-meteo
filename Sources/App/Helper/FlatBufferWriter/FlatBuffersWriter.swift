@@ -58,7 +58,7 @@ struct FlatBufferVariableMeta {
     let depth: Int16
     let depthTo: Int16
     let previousDay: Int16
-    
+
     init(variable: openmeteo_sdk_Variable, aggregation: openmeteo_sdk_Aggregation = .none_, altitude: Int16 = 0, pressureLevel: Int16 = 0, depth: Int16 = 0, depthTo: Int16 = 0, previousDay: Int16 = 0) {
         self.variable = variable
         self.aggregation = aggregation
@@ -68,7 +68,7 @@ struct FlatBufferVariableMeta {
         self.depthTo = depthTo
         self.previousDay = previousDay
     }
-    
+
     fileprivate func encodeToFlatBuffers(_ fbb: inout FlatBufferBuilder) {
         openmeteo_sdk_VariableWithValues.add(variable: variable, &fbb)
         openmeteo_sdk_VariableWithValues.add(aggregation: aggregation, &fbb)
@@ -160,19 +160,19 @@ extension ForecastapiResult.PerModel {
         let daily = (try daily?()).map { $0.encodeFlatBuffers(&fbb, memberOffset: Model.memberOffset) } ?? Offset()
         let current = (try current?()).map { $0.encodeFlatBuffers(&fbb) } ?? Offset()
         let generationTimeMs = fixedGenerationTime ?? (Date().timeIntervalSince(generationTimeStart) * 1000)
-        
+
         let result = openmeteo_sdk_WeatherApiResponse.createWeatherApiResponse (
             &fbb,
             latitude: latitude,
             longitude: longitude,
             elevation: elevation ?? .nan,
-            generationTimeMilliseconds: Float32(generationTimeMs), 
+            generationTimeMilliseconds: Float32(generationTimeMs),
             locationId: Int64(locationId),
             model: model.flatBufferModel,
             utcOffsetSeconds: Int32(timezone.utcOffsetSeconds),
             timezoneOffset: timezone.identifier == "GMT" ? Offset() : fbb.create(string: timezone.identifier),
             timezoneAbbreviationOffset: timezone.abbreviation == "GMT" ? Offset() : fbb.create(string: timezone.abbreviation),
-            currentOffset: current, 
+            currentOffset: current,
             dailyOffset: daily,
             hourlyOffset: hourly,
             minutely15Offset: minutely15, sixHourlyOffset: sixHourly
@@ -180,5 +180,3 @@ extension ForecastapiResult.PerModel {
         fbb.finish(offset: result, addPrefix: true)
     }
 }
-
-

@@ -10,7 +10,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
     case gem_regional
     case gem_hrdps_continental
     case gem_global_ensemble
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .gem_global:
@@ -23,19 +23,19 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return .cmc_gem_geps
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var dtSeconds: Int {
         switch self {
         case .gem_global:
@@ -60,7 +60,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return true
         }
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .gem_global:
@@ -92,7 +92,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return t.add(-3*3600).floor(toNearest: 12*3600)
         }
     }
-    
+
     func getForecastHours(run: Timestamp) -> [Int] {
         switch self {
         case .gem_global:
@@ -106,7 +106,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return Array(stride(from: 0, to: 192, by: 3)) + Array(stride(from: 192, through: through, by: 6))
         }
     }
-    
+
     /// pressure levels
     var levels: [Int] {
         switch self {
@@ -121,7 +121,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return [50, 200, 250, 300, 500, 700, 850, 925, 1000]
         }
     }
-    
+
     var ensembleMembers: Int {
         switch self {
         case .gem_global:
@@ -134,7 +134,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return 20+1
         }
     }
-    
+
     func getUrl(run: Timestamp, hour: Int, gribName: String, server: String?) -> String {
         let h3 = hour.zeroPadded(len: 3)
         let yyyymmddhh = run.format_YYYYMMddHH
@@ -150,7 +150,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return "\(server)ensemble/geps/grib2/raw/\(run.hh)/\(h3)/CMC_geps-raw_\(gribName)_latlon0p5x0p5_\(yyyymmddhh)_P\(h3)_allmbrs.grib2"
         }
     }
-    
+
     var omFileLength: Int {
         switch self {
         case .gem_global:
@@ -163,7 +163,7 @@ enum GemDomain: String, GenericDomain, CaseIterable {
             return 384/3 + 48/3 // 144
         }
     }
-    
+
     var grid: Gridable {
         switch self {
         case .gem_global:

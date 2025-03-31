@@ -5,54 +5,54 @@ import AsyncHTTPClient
 /**
  Important: SARAH-3 data originally uses instantaneous solar radiation values. However, each line has a scan time offset of 0-15 minutes.
  In Europe the offset is closer to 15 minutes.
- 
+
  OpenMeteo corrects this scan time offset and stores backwards averaged 30 minutes values.
  */
 struct EumetsatSarahDownload: AsyncCommand {
     struct Signature: CommandSignature {
         @Argument(name: "domain")
         var domain: String
-        
+
         @Option(name: "run")
         var run: String?
-        
+
         @Flag(name: "create-netcdf")
         var createNetcdf: Bool
-        
+
         @Option(name: "only-variables")
         var onlyVariables: String?
-        
+
         @Option(name: "timeinterval", short: "t", help: "Timeinterval to download past forecasts. Format 20220101-20220131")
         var timeinterval: String?
-        
+
         @Option(name: "api-key", help: "Consumer api key for EUMETSAT API")
         var apiKey: String?
-        
+
         @Option(name: "api-secret", help: "Consumer api secret for EUMETSAT API")
         var apiSecret: String?
-        
+
         @Option(name: "concurrent", short: "c", help: "Number of concurrent download/conversion jobs")
         var concurrent: Int?
-        
+
         @Option(name: "upload-s3-bucket", help: "Upload open-meteo database to an S3 bucket after processing")
         var uploadS3Bucket: String?
     }
-    
+
     var help: String {
         "Download Eumetsat Sarah data"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         let logger = context.application.logger
         let domain = try EumetsatSarahDomain.load(rawValue: signature.domain)
         let nConcurrent = signature.concurrent ?? 1
-        
+
         guard let apiKey = signature.apiKey, let apiSecret = signature.apiSecret else {
             fatalError("Parameter api key and secret required")
         }
-        
+
         let variables = EumetsatSarahVariable.allCases
-        
+
         if let timeinterval = signature.timeinterval {
             let api = EumetsatApiDownloader(application: context.application, key: apiKey, secret: apiSecret, deadLineHours: 30*24)
             let chunkDt = domain.omFileLength * domain.dtSeconds
@@ -66,16 +66,16 @@ struct EumetsatSarahDownload: AsyncCommand {
             }
             return
         }
-        
+
         let api = EumetsatApiDownloader(application: context.application, key: apiKey, secret: apiSecret, deadLineHours: 3)
         let run = try signature.run.flatMap(Timestamp.fromRunHourOrYYYYMMDD) ?? Timestamp.now().with(hour: 0).subtract(days: 2)
         let handles = try await downloadRun(application: context.application, run: run, domain: domain, api: api, variables: variables)
         try await GenericVariableHandle.convert(logger: logger, domain: domain, createNetcdf: signature.createNetcdf, run: run, handles: handles, concurrent: nConcurrent, writeUpdateJson: true, uploadS3Bucket: signature.uploadS3Bucket, uploadS3OnlyProbabilities: false)
     }
-    
+
     fileprivate func downloadRun(application: Application, run: Timestamp, domain: EumetsatSarahDomain, api: EumetsatApiDownloader, variables: [EumetsatSarahVariable]) async throws -> [GenericVariableHandle] {
         let logger = application.logger
-        
+
         // Download meta data for elevation and scan time offsets
         let metaDataFile = "\(domain.downloadDirectory)/AuxilaryData_SARAH-3.nc"
         if !FileManager.default.fileExists(atPath: metaDataFile) {
@@ -109,7 +109,7 @@ struct EumetsatSarahDownload: AsyncCommand {
             }
             try elevation.writeOmFile2D(file: elevationFile.getFilePath(), grid: domain.grid, createNetCdf: false)
         }
-        
+
         return try await variables.asyncMap({ variable -> GenericVariableHandle in
             let wiredNumber = run >= Timestamp(2021, 1, 1) ? "I" : "0"
             let id = "\(variable.eumetsatApiName)\(run.format_YYYYMMdd)00000042310001\(wiredNumber)1MA"
@@ -117,7 +117,7 @@ struct EumetsatSarahDownload: AsyncCommand {
             let memory = try await api.download(url: url)
             let (time, data) = try memory.readNetcdf(name: variable.eumetsatName)
             var dataFastTime = Array2DFastSpace(data: data, nLocations: domain.grid.count, nTime: time.count).transpose().data
-            
+
             // Transform instant solar radiation values to backwards averaged values
             // Instant values have a scan time difference which needs to be corrected for
             if variable == .direct_radiation || variable == .shortwave_radiation {
@@ -133,7 +133,7 @@ struct EumetsatSarahDownload: AsyncCommand {
                 )
                 logger.info("\(variable) conversion took \(start.timeElapsedPretty())")
             }
-            
+
             let writer = OmFileSplitter.makeSpatialWriter(domain: domain, nTime: time.count)
             let fn = try writer.writeTemporary(compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, all: dataFastTime)
             return GenericVariableHandle(
@@ -149,11 +149,11 @@ struct EumetsatSarahDownload: AsyncCommand {
 /// Manages EUMETSAT API tokens and downloads
 fileprivate final class EumetsatApiDownloader {
     private let auth: String
-    
+
     private var token: String?
-    
+
     let curl: Curl
-    
+
     init(application: Application, key: String, secret: String, deadLineHours: Double) {
         self.auth = "\(key):\(secret)".base64String()
         self.token = nil
@@ -164,7 +164,7 @@ fileprivate final class EumetsatApiDownloader {
             retryError4xx: false
         )
     }
-    
+
     func getToken() async throws -> String {
         if let token {
             return token
@@ -177,7 +177,7 @@ fileprivate final class EumetsatApiDownloader {
         request.method = .POST
         request.headers.add(name: "Authorization", value: "Basic \(auth)")
         request.body = .bytes(.init(string: "grant_type=client_credentials"))
-        
+
         let response = try await curl.client.executeRetry(request, logger: curl.logger, deadline: .hours(1))
         if response.status.code == 400, let error = try await response.readStringImmutable() {
             throw CdsApiError.error(message: error, reason: "")
@@ -188,7 +188,7 @@ fileprivate final class EumetsatApiDownloader {
         self.token = token.access_token
         return token.access_token
     }
-    
+
     /// Download data to memory. Retries with a new API token if the old one expired
     func download(url: String) async throws -> ByteBuffer {
         let token = try await getToken()

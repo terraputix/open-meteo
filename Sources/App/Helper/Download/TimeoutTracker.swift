@@ -10,15 +10,15 @@ final class TimeoutTracker {
     private var lastPrint = Date(timeIntervalSince1970: 0)
     let logger: Logger
     let deadline: Date
-    
+
     /// Wait time after each download
     let retryDelaySeconds = 5
-    
+
     public init(logger: Logger, deadline: Date) {
         self.logger = logger
         self.deadline = deadline
     }
-    
+
     /// Print statistics, throw if deadline reached, sleep backoff timer
     func check(error: Error, delay: Int? = nil) async throws {
         if let error = error as? NonRetryError {

@@ -10,11 +10,11 @@ extension Sequence where Element == Float {
         }
         return count == 0 ? .nan : sum / Float(count)
     }
-    
+
     func onlyNaN() -> Bool {
         return first(where: {!$0.isNaN}) == nil
     }
-    
+
     func hasValidData() -> Bool {
         return !onlyNaN()
     }
@@ -54,25 +54,25 @@ extension Array where Element == Float {
             return self[i-by..<i].reduce(0, +) / Float(by)
         }
     }
-    
+
     mutating func rounded(digits: Int) {
         let roundExponent = powf(10, Float(digits))
         for i in indices {
             self[i] = Foundation.round(self[i] * roundExponent) / roundExponent
         }
     }
-    
+
     func round(digits: Int) -> [Float] {
         let roundExponent = powf(10, Float(digits))
         return map {
             return Foundation.round($0 * roundExponent) / roundExponent
         }
     }
-    
+
     func containsNaN() -> Bool {
         return first(where: {$0.isNaN}) != nil
     }
-    
+
     mutating func fillWithNaNs() {
         for i in self.indices {
             self[i] = .nan
@@ -106,7 +106,7 @@ extension Array where Element == Float {
             }
         }
     }
-    
+
     /// Shift longitudes by 180°
     mutating func shift180Longitude(nt: Int, ny: Int, nx: Int) {
         precondition(nt * ny * nx == count)
@@ -124,7 +124,7 @@ extension Array where Element == Float {
             }
         }
     }
-    
+
     /// Flip south.north
     mutating func flipLatitude(nt: Int, ny: Int, nx: Int) {
         precondition(nt * ny * nx == count)
@@ -141,7 +141,7 @@ extension Array where Element == Float {
             }
         }
     }
-    
+
     mutating func multiplyAdd(multiply: Float, add: Float) {
         self.withUnsafeMutableBufferPointer { data in
             for i in 0..<data.count {
@@ -162,7 +162,7 @@ extension Array where Element == Float {
             self[x] = self[x-1] - self[x]
         }
     }
-    
+
     /// Undo delta coding
     mutating func deltaDecode() {
         if count <= 1 {
@@ -175,7 +175,7 @@ extension Array where Element == Float {
             self[x] = self[x-1] - self[x]
         }
     }
-    
+
     /// Ensure data is greater equals than
     mutating func greater(than value: Float) {
         for x in 0..<count {
@@ -183,4 +183,3 @@ extension Array where Element == Float {
         }
     }
 }
-

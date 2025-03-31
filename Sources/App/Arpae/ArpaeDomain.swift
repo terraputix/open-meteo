@@ -7,12 +7,12 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
     case cosmo_2i
     case cosmo_2i_ruc
     case cosmo_5m
-    
+
     var grid: Gridable {
         switch self {
         case .cosmo_2i, .cosmo_2i_ruc:
             return ProjectionGrid(
-                nx: 576, 
+                nx: 576,
                 ny: 701,
                 latitude: 34.39697...47.973446,
                 longitude: 5.443863...21.491043,
@@ -20,7 +20,7 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
             )
         case .cosmo_5m:
             return ProjectionGrid(
-                nx: 1083, 
+                nx: 1083,
                 ny: 559,
                 latitude: 25.821411...49.898006,
                 longitude: -17.5374...47.080597,
@@ -28,7 +28,7 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
             )
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .cosmo_2i:
@@ -39,7 +39,7 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
             return .arpae_cosmo_5m
         }
     }
-    
+
     var apiName: String {
         switch self {
         case .cosmo_2i:
@@ -50,27 +50,27 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
             return "COSMO-5M"
         }
     }
-    
+
     var ensembleMembers: Int {
         return 1
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var dtSeconds: Int {
         return 3600
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var omFileLength: Int {
         switch self {
         case .cosmo_2i: return 48+48
@@ -78,7 +78,7 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
         case .cosmo_5m: return 72+48
         }
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .cosmo_2i:
@@ -89,7 +89,7 @@ enum ArpaeDomain: String, GenericDomain, CaseIterable {
             return 12*3600
         }
     }
-    
+
     /// Cams has delay of 8 hours
     var lastRun: Timestamp {
         let t = Timestamp.now()

@@ -81,7 +81,7 @@ enum MeteoFranceVariableDerivedSurface: String, CaseIterable, GenericVariableMix
     case cloudcover_high
     case windgusts_10m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -108,7 +108,7 @@ enum MeteoFrancePressureVariableDerivedType: String, CaseIterable {
 struct MeteoFrancePressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: MeteoFrancePressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -120,17 +120,17 @@ typealias MeteoFranceVariableCombined = VariableOrDerived<MeteoFranceVariable, M
 
 struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = MeteoFranceDomain
-    
+
     typealias Variable = MeteoFranceVariable
-    
+
     typealias Derived = MeteoFranceVariableDerived
-    
+
     typealias MixingVar = MeteoFranceVariableCombined
-    
+
     let reader: GenericReaderCached<MeteoFranceDomain, MeteoFranceVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -138,13 +138,13 @@ struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: MeteoFranceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         if case let .surface(variable) = raw, variable == .shortwave_radiation {
             // Note: Shortwave radiation was wrongly converted from Joules to Watt. Correct the value here.
@@ -152,20 +152,20 @@ struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
             let ssrd = try reader.get(variable: raw, time: time)
             return DataAndUnit(ssrd.data.map{$0 / (3600/10_000_000) * (1/3600)}, ssrd.unit)
         }
-        
+
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: MeteoFranceVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
-    
+
+
     /// TODO partly duplicate code with ICON
     /*private func interpolatePressureLevel(variable: MeteoFrancePressureVariableType, level: Int, lowerLevel: Int, upperLevel: Int, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         let lower = try get(raw: .pressure(MeteoFrancePressureVariable(variable: variable, level: lowerLevel)), time: time)
         let upper = try get(raw: .pressure(MeteoFrancePressureVariable(variable: variable, level: upperLevel)), time: time)
-        
+
         switch variable {
         case .temperature:
             // temperature/pressure is linear, therefore
@@ -196,15 +196,15 @@ struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
             }, lower.unit)
         }
     }*/
-    
+
     func prefetchData(variable: MeteoFranceSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(variable: .raw(.surface(variable)), time: time)
     }
-    
+
     func get(raw: MeteoFranceSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try get(variable: .raw(.surface(raw)), time: time)
     }
-    
+
     func prefetchData(derived: MeteoFranceVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -308,7 +308,7 @@ struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: MeteoFranceVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):
@@ -341,7 +341,7 @@ struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(derived: .surface(.windspeed_10m), time: time).data
                 let rh = try get(raw: .relative_humidity_2m, time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }
@@ -563,7 +563,7 @@ struct MeteoFranceReader: GenericReaderDerived, GenericReaderProtocol {
 
 struct MeteoFranceMixer: GenericReaderMixer {
     let reader: [MeteoFranceReader]
-    
+
     static func makeReader(domain: MeteoFranceReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> MeteoFranceReader? {
         return try MeteoFranceReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
     }

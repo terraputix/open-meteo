@@ -5,9 +5,9 @@ import NIOCore
 
 /**
  CDS APIv2 flow:
- 
+
  Submit request
- 
+
  curl --request POST \
    --url https://cds-beta.climate.copernicus.eu/api/retrieve/v1/processes/reanalysis-era5-single-levels/execute \
    --header 'PRIVATE-TOKEN: 169d504d-3axxxxxxxxxxxxxxxx" \
@@ -49,7 +49,7 @@ import NIOCore
      }
    }
  }
- 
+
  Check status at: https://cds-beta.climate.copernicus.eu/api/retrieve/v1/jobs/b4498619-24a9-41d4-9c7f-2a4fb00a4704
  RETURNS
  {
@@ -67,7 +67,7 @@ import NIOCore
      }
    ]
  }
- 
+
  Once finished:
  {
    "processID": "reanalysis-era5-single-levels",
@@ -90,7 +90,7 @@ import NIOCore
      }
    ]
  }
- 
+
  Result can be fetched here:
  https://cds-beta.climate.copernicus.eu/api/retrieve/v1/jobs/22e43b24-f036-41ba-a6d8-c7567926b69f/results
  RETURNS:
@@ -133,17 +133,17 @@ fileprivate struct CdsApiResponse: Decodable {
 fileprivate struct CdsApiErrorResponse: Decodable {
     /// E.g. `invalid request`
     let type: String
-    
+
     /// E.g. `invalid request`
     let title: String
-    
+
     /// E.g. `Request has not produced a valid combination of values, please check your selection.\n{'variable': ['formaldehyde'], 'type': ['validated_reanalysis'], 'level': ['0'], 'month': ['01'], 'year': ['2018'], 'model': ['ensemble']}`
     let detail: String
 }
 
 fileprivate struct CdsApiResults: Decodable {
     let asset: Asset
-    
+
     struct Asset: Decodable {
         let value: Value
     }
@@ -154,7 +154,7 @@ fileprivate struct CdsApiResults: Decodable {
         let checksum: String
         let size: Int
         let local_path: String
-        
+
         enum CodingKeys: String, CodingKey {
             case type
             case href
@@ -178,35 +178,35 @@ extension Curl {
      Get GRIB data from the CDS API
      */
     func withCdsApi<Query: Encodable, T>(dataset: String, query: Query, apikey: String, server: String = "https://cds.climate.copernicus.eu/api", body: (AnyAsyncSequence<GribMessage>) async throws -> (T)) async throws -> T {
-        
+
         let job = try await startCdsApiJob(dataset: dataset, query: query, apikey: apikey, server: server)
         let results = try await waitForCdsJob(job: job, apikey: apikey, server: server)
         let result = try await withGribStream(url: results.asset.value.href, bzip2Decode: false, body: body)
         try await cleanupCdsApiJob(job: job, apikey: apikey, server: server)
         return result
     }
-    
+
     /**
      Get GRIB data from the CDS API and store to file
      */
     func downloadCdsApi<Query: Encodable>(dataset: String, query: Query, apikey: String, server: String = "https://cds.climate.copernicus.eu/api", destinationFile: String) async throws {
-        
+
         let job = try await startCdsApiJob(dataset: dataset, query: query, apikey: apikey, server: server)
         let results = try await waitForCdsJob(job: job, apikey: apikey, server: server)
         try await download(url: results.asset.value.href, toFile: destinationFile, bzip2Decode: false, minSize: results.asset.value.size)
         try await cleanupCdsApiJob(job: job, apikey: apikey, server: server)
     }
-    
+
     /// Start a new job using POST
     fileprivate func startCdsApiJob<Query: Encodable>(dataset: String, query: Query, apikey: String, server: String) async throws -> CdsApiResponse {
         //var request = HTTPClientRequest(url: "\(server)/resources/\(dataset)")
         var request = HTTPClientRequest(url: "\(server)/retrieve/v1/processes/\(dataset)/execute")
-    
+
         request.method = .POST
         request.headers.add(name: "PRIVATE-TOKEN", value: apikey)
         request.headers.add(name: "content-type", value: "application/json")
         request.body = .bytes(ByteBuffer(data: try JSONEncoder().encode(["inputs": query])))
-        
+
         let response = try await client.executeRetry(request, logger: logger, deadline: .hours(6))
         if response.status.code == 400, let errorJson = try await response.readJSONDecodable(CdsApiErrorResponse.self), errorJson.detail.contains("Request has not produced a valid combination of values") {
             throw CdsApiError.invalidCombinationOfValues
@@ -218,7 +218,7 @@ extension Curl {
         logger.info("Submitted job \(job)")
         return job
     }
-    
+
     /// Wait for josb to finish and return download URL
     fileprivate func waitForCdsJob(job: CdsApiResponse, apikey: String, server: String) async throws -> CdsApiResults {
         let timeout = TimeoutTracker(logger: self.logger, deadline: .hours(24))
@@ -227,7 +227,7 @@ extension Curl {
             switch job.status {
             case .accepted, .running:
                 try await timeout.check(error: CdsApiError.waiting(status: job.status), delay: 1)
-                
+
                 var request = HTTPClientRequest(url: "\(server)/retrieve/v1/jobs/\(job.jobID)")
                 request.headers.add(name: "PRIVATE-TOKEN", value: apikey)
                 /// CDS may return error 404 from time to time......
@@ -261,7 +261,7 @@ extension Curl {
             }
         }
     }
-    
+
     fileprivate func cleanupCdsApiJob(job: CdsApiResponse, apikey: String, server: String) async throws {
         var request = HTTPClientRequest(url: "\(server)/retrieve/v1/jobs/\(job.jobID)")
         request.method = .DELETE

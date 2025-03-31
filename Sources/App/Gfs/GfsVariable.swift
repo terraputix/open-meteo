@@ -8,82 +8,82 @@ enum GfsSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
     case temperature_2m
     case temperature_80m
     case temperature_100m
-    
+
     case cloud_cover
     case cloud_cover_low
     case cloud_cover_mid
     case cloud_cover_high
     case pressure_msl
-    
+
     case relative_humidity_2m
-    
+
     /// accumulated since forecast start
     case precipitation
-    
+
     case wind_v_component_10m
     case wind_u_component_10m
     case wind_v_component_80m
     case wind_u_component_80m
     case wind_v_component_100m
     case wind_u_component_100m
-    
+
     case surface_temperature
     case soil_temperature_0_to_10cm
     case soil_temperature_10_to_40cm
     case soil_temperature_40_to_100cm
     case soil_temperature_100_to_200cm
-    
+
     case soil_moisture_0_to_10cm
     case soil_moisture_10_to_40cm
     case soil_moisture_40_to_100cm
     case soil_moisture_100_to_200cm
-    
+
     case snow_depth
-    
+
     /// averaged since model start
     case sensible_heat_flux
     case latent_heat_flux
-    
+
     case showers
-    
+
     /// CPOFP Percent frozen precipitation [%]
     /// Download only to calculate `snowfall_water_equivalent` on the fly
     case frozen_precipitation_percent
-    
+
     /// CFRZR Categorical Freezing Rain (0 or 1)
     case categorical_freezing_rain
-    
+
     case snowfall_water_equivalent
-    
+
     /// :CIN:surface: convective inhibition
     case convective_inhibition
-    
+
     //case rain
     //case snowfall_convective_water_equivalent
     //case snowfall_water_equivalent
-    
+
     case wind_gusts_10m
     case freezing_level_height
     case shortwave_radiation
     /// Only for HRRR domain. Otherwise diff could be estimated with https://arxiv.org/pdf/2007.01639.pdf 3) method
     case diffuse_radiation
     //case direct_radiation
-    
+
     /// only GFS
     case uv_index
     case uv_index_clear_sky
-    
+
     case cape
     case lifted_index
-    
+
     case visibility
-    
+
     case boundary_layer_height
-    
+
     case total_column_integrated_water_vapour
 
     case mass_density_8m
-    
+
     var storePreviousForecast: Bool {
         switch self {
         case .temperature_2m, .relative_humidity_2m: return true
@@ -101,7 +101,7 @@ enum GfsSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
         default: return false
         }
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         switch self {
         case .soil_moisture_0_to_10cm: return true
@@ -112,11 +112,11 @@ enum GfsSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
         default: return false
         }
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .temperature_2m: return 20
@@ -165,7 +165,7 @@ enum GfsSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
         case .mass_density_8m: return 0.1
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .temperature_2m:
@@ -258,7 +258,7 @@ enum GfsSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
             return .linear
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .temperature_2m: return .celsius
@@ -306,7 +306,7 @@ enum GfsSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
         case .mass_density_8m: return .microgramsPerCubicMetre
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         switch self {
         case .surface_temperature:
@@ -351,19 +351,19 @@ enum GfsPressureVariableType: String, CaseIterable, RawRepresentableString {
 struct GfsPressureVariable: PressureVariableRespresentable, GenericVariable, Hashable, GenericVariableMixable {
     let variable: GfsPressureVariableType
     let level: Int
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         // Upper level data are more dynamic and that is bad for compression. Use lower scalefactors
         switch variable {
@@ -385,7 +385,7 @@ struct GfsPressureVariable: PressureVariableRespresentable, GenericVariable, Has
             return (20..<100).interpolated(atFraction: (0..<500).fraction(of: Float(level)))
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch variable {
         case .temperature:
@@ -404,7 +404,7 @@ struct GfsPressureVariable: PressureVariableRespresentable, GenericVariable, Has
             return .hermite(bounds: nil)
         }
     }
-    
+
     var unit: SiUnit {
         switch variable {
         case .temperature:
@@ -423,7 +423,7 @@ struct GfsPressureVariable: PressureVariableRespresentable, GenericVariable, Has
             return .metrePerSecondNotUnitConverted
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         return false
     }

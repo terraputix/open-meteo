@@ -3,7 +3,7 @@ import Vapor
 
 /**
  API controller to return ensemble models data from ICON, GFS, IFS and GEM ensemble models
- 
+
  Endpoint https://ensemble-api.open-meteo.com/v1/ensemble?latitude=52.52&longitude=13.41&models=icon_seamless&hourly=temperature_2m
  */
 public struct EnsembleApiController {
@@ -13,18 +13,18 @@ public struct EnsembleApiController {
         let numberOfLocationsMaximum = try await req.ensureApiKey("ensemble-api", apikey: params.apikey)
         let currentTime = Timestamp.now()
         let allowedRange = Timestamp(2023, 4, 1) ..< currentTime.add(86400 * 36)
-        
+
         let domains = try EnsembleMultiDomains.load(commaSeparatedOptional: params.models) ?? [.gfs_seamless]
         let prepared = try GenericReaderMulti<EnsembleVariable, EnsembleMultiDomains>.prepareReaders(domains: domains, params: params, currentTime: currentTime, forecastDayDefault: 7, forecastDaysMax: 36, pastDaysMax: 92, allowedRange: allowedRange)
-        
+
         let paramsHourly = try EnsembleVariableWithoutMember.load(commaSeparatedOptional: params.hourly)
         let nVariables = (paramsHourly?.count ?? 0) * domains.reduce(0, {$0 + $1.countEnsembleMember})
-        
+
         let locations: [ForecastapiResult<EnsembleMultiDomains>.PerLocation] = try prepared.map { prepared in
             let timezone = prepared.timezone
             let time = prepared.time
             let timeLocal = TimerangeLocal(range: time.dailyRead.range, utcOffsetSeconds: timezone.utcOffsetSeconds)
-            
+
             let readers: [ForecastapiResult<EnsembleMultiDomains>.PerModel] = try prepared.perModel.compactMap { readerAndDomain in
                 guard let reader = try readerAndDomain.reader() else {
                     return nil
@@ -33,7 +33,7 @@ public struct EnsembleApiController {
                 let timeHourlyRead = time.hourlyRead.with(dtSeconds: hourlyDt)
                 let timeHourlyDisplay = time.hourlyDisplay.with(dtSeconds: hourlyDt)
                 let domain = readerAndDomain.domain
-                
+
                 return .init(
                     model: domain,
                     latitude: reader.modelLat,
@@ -107,20 +107,20 @@ enum EnsembleMultiDomains: String, RawRepresentableString, CaseIterable, MultiDo
     case icon_global
     case icon_eu
     case icon_d2
-    
+
     case ecmwf_ifs04
     case ecmwf_ifs025
-    
+
     case gem_global
-    
+
     case bom_access_global_ensemble
-    
+
     case gfs_seamless
     case gfs025
     case gfs05
-    
+
     case ukmo_global_ensemble_20km
-    
+
 
     /// Return the required readers for this domain configuration
     /// Note: last reader has highes resolution data
@@ -154,7 +154,7 @@ enum EnsembleMultiDomains: String, RawRepresentableString, CaseIterable, MultiDo
             return try UkmoReader(domain: .global_ensemble_20km, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options).flatMap({[$0]}) ?? []
         }
     }
-    
+
     /// Number of ensenble members including control
     var countEnsembleMember: Int {
         switch self {
@@ -184,11 +184,11 @@ enum EnsembleMultiDomains: String, RawRepresentableString, CaseIterable, MultiDo
             return UkmoDomain.global_ensemble_20km.ensembleMembers
         }
     }
-    
+
     var genericDomain: (any GenericDomain)? {
         return nil
     }
-    
+
     func getReader(gridpoint: Int, options: GenericReaderOptions) throws -> (any GenericReaderProtocol)? {
         return nil
     }
@@ -250,20 +250,20 @@ enum EnsembleSurfaceVariable: String, GenericVariableMixable, Equatable, RawRepr
     case uv_index
     case uv_index_clear_sky
     case cape
-    
+
     case surface_temperature
     case soil_temperature_0_to_10cm
     case soil_temperature_10_to_40cm
     case soil_temperature_40_to_100cm
     case soil_temperature_100_to_200cm
-    
+
     case soil_moisture_0_to_10cm
     case soil_moisture_10_to_40cm
     case soil_moisture_40_to_100cm
     case soil_moisture_100_to_200cm
-    
+
     case sunshine_duration
-    
+
     /// Soil moisture or snow depth are cumulative processes and have offests if mutliple models are mixed
     var requiresOffsetCorrectionForMixing: Bool {
         switch self {
@@ -292,7 +292,7 @@ enum EnsemblePressureVariableType: String, GenericVariableMixable {
     case cloudcover
     case cloud_cover
     case vertical_velocity
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -301,7 +301,7 @@ enum EnsemblePressureVariableType: String, GenericVariableMixable {
 struct EnsemblePressureVariable: PressureVariableRespresentable, GenericVariableMixable {
     let variable: EnsemblePressureVariableType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -353,7 +353,7 @@ typealias EnsembleVariable = EnsembleVariableWithoutMember
     case cloudcover_mean
     /*case uv_index_max
     case uv_index_clear_sky_max*/
-    
+
     var aggregation: DailyAggregation<EnsembleVariable> {
         switch self {
         case .temperature_2m_max:

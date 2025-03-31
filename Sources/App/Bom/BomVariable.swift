@@ -15,7 +15,7 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
     case surface_temperature
     case snow_depth
     case snowfall_water_equivalent
-    
+
     case wind_speed_10m
     case wind_direction_10m
     case wind_speed_40m
@@ -24,21 +24,21 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
     case wind_direction_80m
     case wind_speed_120m
     case wind_direction_120m
-    
+
     case soil_temperature_0_to_10cm
     case soil_temperature_10_to_35cm
     case soil_temperature_35_to_100cm
     case soil_temperature_100_to_300cm
-    
+
     case soil_moisture_0_to_10cm
     case soil_moisture_10_to_35cm
     case soil_moisture_35_to_100cm
     case soil_moisture_100_to_300cm
-    
+
     case weather_code
     case visibility
     case wind_gusts_10m
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         switch self {
         case .soil_moisture_0_to_10cm: return true
@@ -49,7 +49,7 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
         default: return false
         }
     }
-    
+
     var storePreviousForecast: Bool {
         switch self {
         case .temperature_2m, .relative_humidity_2m: return true
@@ -64,7 +64,7 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
         default: return false
         }
     }
-    
+
     var multiplyAdd: (multiply: Float, add: Float)? {
         switch self {
         case .temperature_2m, .surface_temperature, .soil_temperature_0_to_10cm, .soil_temperature_10_to_35cm, .soil_temperature_35_to_100cm, .soil_temperature_100_to_300cm:
@@ -87,11 +87,11 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
             return nil
         }
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .temperature_2m: return 20
@@ -140,7 +140,7 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
             return 1
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .temperature_2m:
@@ -209,7 +209,7 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
             return .backwards
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .temperature_2m: return .celsius
@@ -244,7 +244,7 @@ enum BomVariable: String, CaseIterable, GenericVariableMixable, GenericVariable 
             return .wmoCode
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         switch self {
         case .surface_temperature:

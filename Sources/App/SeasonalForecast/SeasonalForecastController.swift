@@ -7,7 +7,7 @@ typealias SeasonalForecastReader = GenericReader<SeasonalForecastDomain, CfsVari
 
 enum SeasonalForecastDomainApi: String, RawRepresentableString, CaseIterable {
     case cfsv2
-    
+
     var forecastDomain: SeasonalForecastDomain {
         switch self {
         case .cfsv2:
@@ -58,7 +58,7 @@ extension SeasonalForecastReader {
             }
         }
     }
-    
+
     func get(variable: SeasonalForecastVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch variable {
         case .raw(let variable):
@@ -82,7 +82,7 @@ extension SeasonalForecastReader {
             }
         }
     }
-    
+
     func prefetchData(variable: DailyCfsVariable, time timeDaily: TimerangeDtAndSettings) throws {
         let time = timeDaily.with(dtSeconds: modelDtSeconds)
         switch variable {
@@ -105,7 +105,7 @@ extension SeasonalForecastReader {
             try prefetchData(variable: .precipitation, time: time)
         }
     }
-    
+
     func getDaily(variable: DailyCfsVariable, params: ApiQueryParameter, time timeDaily: TimerangeDtAndSettings) throws -> DataAndUnit {
         let time = timeDaily.with(dtSeconds: modelDtSeconds)
         switch variable {
@@ -153,27 +153,27 @@ struct SeasonalForecastController {
         let numberOfLocationsMaximum = try await req.ensureApiKey("seasonal-api", apikey: params.apikey)
         let currentTime = Timestamp.now()
         let allowedRange = Timestamp(2022, 6, 8) ..< currentTime.add(86400 * 400)
-        
+
         let prepared = try params.prepareCoordinates(allowTimezones: false)
         guard case .coordinates(let prepared) = prepared else {
             throw ForecastapiError.generic(message: "Bounding box not supported")
         }
         /// Will be configurable by API later
         let domains = [SeasonalForecastDomainApi.cfsv2]
-        
+
         let paramsSixHourly = try SeasonalForecastVariable.load(commaSeparatedOptional: params.six_hourly)
         let paramsDaily = try DailyCfsVariable.load(commaSeparatedOptional: params.daily)
         let nVariables = ((paramsSixHourly?.count ?? 0) + (paramsDaily?.count ?? 0)) * domains.reduce(0, {$0 + $1.forecastDomain.nMembers})
-        
+
         let locations: [ForecastapiResult<SeasonalForecastDomainApi>.PerLocation] = try prepared.map { prepared in
             let coordinates = prepared.coordinate
             let timezone = prepared.timezone
             let time = try params.getTimerange2(timezone: timezone, current: currentTime, forecastDaysDefault: 92, forecastDaysMax: 366, startEndDate: prepared.startEndDate, allowedRange: allowedRange, pastDaysMax: 92)
             let timeLocal = TimerangeLocal(range: time.dailyRead.range, utcOffsetSeconds: timezone.utcOffsetSeconds)
-            
+
             let timeSixHourlyRead = time.dailyRead.with(dtSeconds: 3600*6)
             let timeSixHourlyDisplay = time.dailyDisplay.with(dtSeconds: 3600*6)
-            
+
             let readers: [ForecastapiResult<SeasonalForecastDomainApi>.PerModel] = try domains.compactMap { domain in
                 guard let reader = try SeasonalForecastReader(domain: domain.forecastDomain, lat: coordinates.latitude, lon: coordinates.longitude, elevation: coordinates.elevation, mode: params.cell_selection ?? .land) else {
                     return nil
@@ -249,4 +249,3 @@ struct SeasonalForecastController {
         return try await result.response(format: params.format ?? .json, numberOfLocationsMaximum: numberOfLocationsMaximum)
     }
 }
-

@@ -8,32 +8,32 @@ protocol GenericVariableMixable: RawRepresentableString {
 /// Mix differnet domains together, that offer the same or similar variable set
 protocol GenericReaderMixerRaw: GenericReaderProtocol {
     associatedtype Reader: GenericReaderProtocol
-    
+
     var reader: [Reader] { get }
     init(reader: [Reader])
 }
 
 protocol GenericReaderMixer: GenericReaderMixerRaw {
     associatedtype Domain: GenericDomain
-    
+
     static func makeReader(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> Reader?
 }
 
-struct GenericReaderMixerSameDomain<Reader: GenericReaderProtocol>: GenericReaderMixerRaw, GenericReaderProtocol {    
+struct GenericReaderMixerSameDomain<Reader: GenericReaderProtocol>: GenericReaderMixerRaw, GenericReaderProtocol {
     typealias MixingVar = Reader.MixingVar
-    
+
     let reader: [Reader]
-    
+
     init(reader: [Reader]) {
         self.reader = reader
     }
 }
 
-extension GenericReaderMixer {    
+extension GenericReaderMixer {
     public init?(domains: [Domain], lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         /// Initiaise highest resolution domain first. If `elevation` is NaN, use the elevation of the highest domain,
         var elevation = elevation
-        
+
         let reader: [Reader] = try domains.reversed().compactMap { domain -> (Reader?) in
             guard let domain = try Self.makeReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options) else {
                 return nil
@@ -43,7 +43,7 @@ extension GenericReaderMixer {
             }
             return domain
         }.reversed()
-        
+
         guard !reader.isEmpty else {
             return nil
         }
@@ -67,23 +67,23 @@ extension GenericReaderMixerRaw {
     var modelDtSeconds: Int {
         reader.last!.modelDtSeconds
     }
-    
+
     func prefetchData(variable: Reader.MixingVar, time: TimerangeDtAndSettings) throws {
         for reader in reader {
             try reader.prefetchData(variable: variable, time: time)
         }
     }
-    
+
     func prefetchData(variables: [Reader.MixingVar], time: TimerangeDtAndSettings) throws {
         try variables.forEach { variable in
             try prefetchData(variable: variable, time: time)
         }
     }
-    
+
     func getStatic(type: ReaderStaticVariable) throws -> Float? {
         return try reader.last?.getStatic(type: type)
     }
-    
+
     func get(variable: Reader.MixingVar, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         // Last reader return highest resolution data. therefore reverse iteration
         // Integrate now lower resolution models

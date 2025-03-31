@@ -5,7 +5,7 @@ typealias GloFasVariableMember = GloFasVariable
 
 struct GloFasMixer: GenericReaderMixer {
     let reader: [GloFasReader]
-    
+
     static func makeReader(domain: GloFasReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> GloFasReader? {
         return try GloFasReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode)
     }
@@ -18,7 +18,7 @@ enum GlofasDerivedVariable: String, CaseIterable, GenericVariableMixable {
     case river_discharge_median
     case river_discharge_p25
     case river_discharge_p75
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -29,26 +29,26 @@ typealias GloFasVariableOrDerivedMember = VariableOrDerived<GloFasVariableMember
 
 struct GloFasReader: GenericReaderDerivedSimple, GenericReaderProtocol {
     let reader: GenericReaderCached<GloFasDomain, GloFasVariableMember>
-    
+
     typealias Domain = GloFasDomain
-    
+
     typealias Variable = GloFasVariableMember
-    
+
     typealias Derived = GlofasDerivedVariable
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
         }
         self.reader = GenericReaderCached(reader: reader)
     }
-    
+
     func prefetchData(derived: GlofasDerivedVariable, time: TimerangeDtAndSettings) throws {
         for member in 0..<51 {
             try reader.prefetchData(variable: .river_discharge, time: time.with(ensembleMember: member))
         }
     }
-    
+
     func get(derived: GlofasDerivedVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         let data = try (0..<51).map({
             try reader.get(variable: .river_discharge, time: time.with(ensembleMember: $0)).data
@@ -92,7 +92,7 @@ struct GloFasController {
         let numberOfLocationsMaximum = try await req.ensureApiKey("flood-api", apikey: params.apikey)
         let currentTime = Timestamp.now()
         let allowedRange = Timestamp(1984, 1, 1) ..< currentTime.add(86400 * 230)
-        
+
         let prepared = try params.prepareCoordinates(allowTimezones: false)
         guard case .coordinates(let prepared) = prepared else {
             throw ForecastapiError.generic(message: "Bounding box not supported")
@@ -102,13 +102,13 @@ struct GloFasController {
             throw ForecastapiError.generic(message: "Parameter 'daily' required")
         }
         let nVariables = (params.ensemble ? 51 : 1) * domains.count
-        
+
         let locations: [ForecastapiResult<GlofasDomainApi>.PerLocation] = try prepared.map { prepared in
             let coordinates = prepared.coordinate
             let timezone = prepared.timezone
             let time = try params.getTimerange2(timezone: timezone, current: currentTime, forecastDaysDefault: 92, forecastDaysMax: 366, startEndDate: prepared.startEndDate, allowedRange: allowedRange, pastDaysMax: 92)
             let timeLocal = TimerangeLocal(range: time.dailyRead.range, utcOffsetSeconds: timezone.utcOffsetSeconds)
-            
+
             let readers: [ForecastapiResult<GlofasDomainApi>.PerModel] = try domains.compactMap { domain in
                 guard let reader = try domain.getReader(lat: coordinates.latitude, lon: coordinates.longitude, elevation: .nan, mode: params.cell_selection ?? .nearest, options: params.readerOptions) else {
                     return nil
@@ -164,15 +164,15 @@ struct GloFasController {
 
 enum GlofasDomainApi: String, RawRepresentableString, CaseIterable {
     case best_match
-    
+
     case seamless_v3
     case forecast_v3
     case consolidated_v3
-    
+
     case seamless_v4
     case forecast_v4
     case consolidated_v4
-    
+
     /// Return the required readers for this domain configuration
     /// Note: last reader has highes resolution data
     func getReader(lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> GloFasMixer? {

@@ -10,7 +10,7 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
     case ncep
     case jma
     case eccc
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .ecmwf:
@@ -31,19 +31,19 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
             fatalError()
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var lastRun: Timestamp {
         switch self {
         case .ecmwf:
@@ -68,7 +68,7 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
         }
 
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .ecmwf:
@@ -89,7 +89,7 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
             fatalError()
         }
     }
-    
+
     /// 14 days longer than actual one update
     var omFileLength: Int {
         switch self {
@@ -98,9 +98,9 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
         default:
             return nForecastHours + 14*24 / dtHours
         }
-        
+
     }
-    
+
     var grid: Gridable {
         switch self {
         case .ecmwf:
@@ -121,7 +121,7 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
             fatalError()
         }
     }
-    
+
     var nForecastHours: Int {
         switch self {
         case .ecmwf:
@@ -143,15 +143,15 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
             fatalError()
         }
     }
-    
+
     var dtSeconds: Int {
         return 6*3600
     }
-    
+
     var dtHours: Int {
         dtSeconds / 3600
     }
-    
+
     var version: Int {
         switch self {
         case .ecmwf:
@@ -172,7 +172,7 @@ enum SeasonalForecastDomain: String, GenericDomain, CaseIterable {
             return 3
         }
     }
-    
+
     var nMembers: Int {
         switch self {
         case .ecmwf:
@@ -212,15 +212,15 @@ enum CfsVariable: String, CaseIterable, GenericVariable {
     case showers
     case relative_humidity_2m
     case pressure_msl
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .temperature_2m:
@@ -245,7 +245,7 @@ enum CfsVariable: String, CaseIterable, GenericVariable {
             return .hermite(bounds: nil)
         }
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         switch self {
         case .soil_moisture_0_to_10cm:
@@ -260,11 +260,11 @@ enum CfsVariable: String, CaseIterable, GenericVariable {
             return false
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         return self == .temperature_2m || self == .temperature_2m_max || self == .temperature_2m_min
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .temperature_2m:
@@ -301,7 +301,7 @@ enum CfsVariable: String, CaseIterable, GenericVariable {
             return 10
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .temperature_2m:

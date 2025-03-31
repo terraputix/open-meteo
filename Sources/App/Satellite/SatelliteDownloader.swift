@@ -5,7 +5,7 @@ import OmFileFormat
 
 /**
  Download satellite datasets like IMERG
- 
+
  NASA auth:
  echo "machine urs.earthdata.nasa.gov login <uid> password <password>" >> ~/.netrc
  echo "HTTP.NETRC=/Users/patrick/.netrc\nHTTP.COOKIEJAR=/Users/patrick/.urs_cookies" > ~/.dodsrc
@@ -15,17 +15,17 @@ import OmFileFormat
 struct SatelliteDownloadCommand: AsyncCommand {
     /// 6k locations require around 200 MB memory for a yearly time-series
     static var nLocationsPerChunk = 6_000
-    
+
     struct Signature: CommandSignature {
         @Argument(name: "domain")
         var domain: String
-        
+
         @Option(name: "timeinterval", short: "t", help: "Timeinterval to download with format 20220101-20220131")
         var timeinterval: String?
-        
+
         @Option(name: "year", short: "y", help: "Download one year")
         var year: String?
-        
+
         /// Get the specified timerange in the command, or use the last 7 days as range
         func getTimeinterval() throws -> TimerangeDt {
             let dt = 3600*24
@@ -39,18 +39,18 @@ struct SatelliteDownloadCommand: AsyncCommand {
             return TimerangeDt(start: time0z.add(days: -1 * lastDays), to: time0z.add(days: 1), dtSeconds: dt)
         }
     }
-    
+
     var help: String {
         "Download satellite datasets"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         fatalError("IMERG downloader not available anymore")
-        
+
         //let logger  = context.application.logger
         //try createImergMaster(logger: logger, domain: .imerg_daily)
     }
-    
+
     /*func createImergMaster(logger: Logger, domain: SatelliteDomain) throws {
         guard let master = domain.masterTimeRange else {
             fatalError("no master file defined")
@@ -59,7 +59,7 @@ struct SatelliteDownloadCommand: AsyncCommand {
         let masterFile = OmFileManagerReadable.domainChunk(domain: domain.domainRegistry, variable: "precipitation_sum", type: .master, chunk: 0, ensembleMember: 0, previousDay: 0)
         if !FileManager.default.fileExists(atPath: masterFile.getFilePath()) {
             try downloadImergDaily(logger: logger, domain: .imerg_daily, timerange: masterTime)
-            
+
             try masterFile.createDirectory()
             logger.info("Generating master files")
             let readers = try masterTime.map { time in
@@ -69,12 +69,12 @@ struct SatelliteDownloadCommand: AsyncCommand {
             try OmFileWriter(dim0: domain.grid.count, dim1: masterTime.count, chunk0: 8, chunk1: 512)
                 .write(logger: logger, file: masterFile.getFilePath(), compressionType: .pfor_delta2d_int16, scalefactor: 10, nLocationsPerChunk: Self.nLocationsPerChunk, chunkedFiles: readers, dataCallback: nil)
         }
-        
+
         if !FileManager.default.fileExists(atPath: domain.getBiasCorrectionFile(for: SatelliteVariable.precipitation_sum.omFileName.file).getFilePath()) {
             try generateBiasCorrectionFields(logger: logger, domain: domain, variables: [.precipitation_sum], time: masterTime)
         }
     }*/
-    
+
     /// Generate seasonal averages for bias corrections
     /*func generateBiasCorrectionFields(logger: Logger, domain: SatelliteDomain, variables: [SatelliteVariable], time: TimerangeDt) throws {
         logger.info("Calculating bias correction fields")
@@ -101,14 +101,14 @@ struct SatelliteDownloadCommand: AsyncCommand {
             progress.finish()
         }
     }
-    
+
     /**
      Loop over timerange, download daily files and convert them to om files
      */
     func downloadImergDaily(logger: Logger, domain: SatelliteDomain, timerange: TimerangeDt) throws {
         try FileManager.default.createDirectory(atPath: domain.downloadDirectory, withIntermediateDirectories: true)
         let progress = ProgressTracker(logger: logger, total: timerange.count, label: "Total download")
-        
+
         for time in timerange {
             let year = time.toComponents().year
             let month = time.toComponents().month.zeroPadded(len: 2)
@@ -116,12 +116,12 @@ struct SatelliteDownloadCommand: AsyncCommand {
             let openDap = "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/GPM_L3/GPM_3IMERGDL.06/\(year)/\(month)/3B-DAY-L.metrePerSecond.MRG.3IMERG.\(yyyymmdd)-S000000-E235959.V06.nc4"
             let destination = "\(domain.downloadDirectory)precipitation_\(yyyymmdd).om"
             let domain = SatelliteDomain.imerg_daily
-            
+
             if FileManager.default.fileExists(atPath: destination) {
                 continue
             }
             logger.info("Downloading \(yyyymmdd)")
-            
+
             let ncFile = try NetCDF.openOrWait(path: openDap, deadline: Date().addingTimeInterval(60), logger: logger)
             let dimensions = ncFile.getDimensions()
             guard dimensions.count == 4 else {
@@ -129,11 +129,11 @@ struct SatelliteDownloadCommand: AsyncCommand {
             }
             let nx = dimensions.first(where: {$0.name == "lon"})!.length
             let ny = dimensions.first(where: {$0.name == "lat"})!.length
-            
+
             guard nx == domain.grid.nx, ny == domain.grid.ny else {
                 fatalError("Wrong domain dimensions \(nx), \(ny)")
             }
-            
+
             guard var data = try ncFile.getVariable(name: "precipitationCal")?.asType(Float.self)?.read() else {
                 fatalError("No precipitationCal in netcdf file")
             }
@@ -144,10 +144,10 @@ struct SatelliteDownloadCommand: AsyncCommand {
             }
             // lat and lon dimensions are flipped in original data. Transpose [lon,lat] to [lat,lon]
             let transposed = Array2DFastTime(data: data, nLocations: nx, nTime: ny).transpose().data
-            
+
             //try Array2DFastSpace(data: transposed, nLocations: nx*ny, nTime: 1).writeNetcdf(filename: "imerg.nc", nx: nx, ny: ny)
             //fatalError()
-            
+
             try OmFileWriter(dim0: 1, dim1: data.count, chunk0: 1, chunk1: Self.nLocationsPerChunk)
                 .write(file: destination, compressionType: .pfor_delta2d_int16, scalefactor: 10, all: transposed)
             progress.add(1)
@@ -158,34 +158,34 @@ struct SatelliteDownloadCommand: AsyncCommand {
 
 enum SatelliteVariable: String, CaseIterable, GenericVariableMixable, GenericVariable {
     case precipitation_sum
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         return 10
     }
-    
+
     var interpolation: ReaderInterpolation {
         return .backwards_sum
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .precipitation_sum:
             return .millimetre
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         return false
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -193,40 +193,40 @@ enum SatelliteVariable: String, CaseIterable, GenericVariableMixable, GenericVar
 
 enum SatelliteDomain: String, CaseIterable, GenericDomain {
     case imerg_daily
-    
+
     var dtSeconds: Int {
         switch self {
         case .imerg_daily:
             return 3600*24
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .imerg_daily:
             return .nasa_imerg_daily
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var hasYearlyFiles: Bool {
         return true
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return Timestamp(2000,06,01) ..< Timestamp(2023, 1, 1)
     }
-    
+
     var updateIntervalSeconds: Int {
         switch self {
         case .imerg_daily:
             0
         }
     }
-    
+
     /// Use store 14 days per om file
     var omFileLength: Int {
         // 24 hours over 21 days = 504 timesteps per file
@@ -235,29 +235,27 @@ enum SatelliteDomain: String, CaseIterable, GenericDomain {
         // In case for a 1 year API call, around 51 kb will have to be decompressed with 34 IO operations
         return 24 * 21
     }
-    
+
     var grid: Gridable {
         switch self {
         case .imerg_daily:
             return RegularGrid(nx: 3600, ny: 1800, latMin: -89.95, lonMin: -179.95, dx: 0.1, dy: 0.1)
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var interpolation: ReaderInterpolation {
         fatalError("Interpolation not required for cerra")
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
          return false
     }
 }
-
-

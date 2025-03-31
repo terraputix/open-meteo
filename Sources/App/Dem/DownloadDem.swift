@@ -16,31 +16,31 @@ struct Dem90: GenericDomain {
     var grid: Gridable {
         fatalError("Dem90 does not offer a grid")
     }
-    
+
     var domainRegistry: DomainRegistry {
         return .copernicus_dem90
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return .copernicus_dem90
     }
-    
+
     var dtSeconds: Int {
         return 0
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         return nil
     }
-    
+
     var omFileLength: Int {
         return 0
     }
-    
+
     var updateIntervalSeconds: Int {
         return 0
     }

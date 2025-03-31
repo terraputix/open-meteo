@@ -7,16 +7,16 @@ extension Process {
     /*static func bunzip2(file: String) throws {
         try spawn(cmd: "bunzip2", args: ["--keep", "-f", file])
     }*/
-    
+
     /*static public func grib2ToNetcdf(in inn: String, out: String) throws {
         try spawn(cmd: "cdo", args: ["-s","-f", "nc", "copy", inn, out])
     }
-    
+
     /// Convert to NetCDF and shift to -180;180 longitude. Only works for global grids
     static public func grib2ToNetcdfShiftLongitudeInvertLatitude(in inn: String, out: String) throws {
         try spawn(cmd: "cdo", args: ["-s","-f", "nc", "-invertlat", "-sellonlatbox,-180,180,-90,90", inn, out])
     }
-    
+
     static public func grib2ToNetCDFInvertLatitude(in inn: String, out: String) throws {
         try spawn(cmd: "cdo", args: ["-s","-f", "nc", "invertlat", inn, out])
     }*/
@@ -27,11 +27,11 @@ struct CdoHelper {
     let grid: Gridable
     let domain: IconDomains
     let curl: Curl
-    
+
     var needsRemapping: Bool {
         return cdo != nil
     }
-    
+
     init(domain: IconDomains, logger: Logger, curl: Curl) async throws {
         // icon global needs resampling to plate carree
         self.curl = curl
@@ -39,7 +39,7 @@ struct CdoHelper {
         grid = domain.grid
         self.domain = domain
     }
-    
+
     // Uncompress bz2, reproject to regular grid and read into memory
     func downloadAndRemap(_ url: String) async throws -> [GribMessage] {
         guard let cdo else {
@@ -50,7 +50,7 @@ struct CdoHelper {
         // GRIB messages need to be reordered by timestep
         // Otherwise CDO does not work
         let buffer = try await curl.downloadInMemoryAsync(url: url, minSize: nil, bzip2Decode: true)
-        
+
         var m = [(ptr: UnsafeRawBufferPointer, endStep: Int)]()
         try buffer.withUnsafeReadableBytes({
             var ptr: UnsafeRawBufferPointer = $0
@@ -65,7 +65,7 @@ struct CdoHelper {
             }
         })
         m.sort(by: {$0.endStep < $1.endStep})
-        
+
         let gribFile = "\(domain.downloadDirectory)temp_\(Int.random(in: 0..<Int.max)).grib2"
         try {
             let size = m.reduce(0, {$0 + $1.ptr.count})
@@ -74,10 +74,10 @@ struct CdoHelper {
                 try file.write(contentsOf: ptr)
             }
         }()
-        
+
         let gribFileRemapped = "\(domain.downloadDirectory)remapped_\(Int.random(in: 0..<Int.max)).grib2"
         try cdo.remap(in: gribFile, out: gribFileRemapped)
-        
+
         let messages = try SwiftEccodes.getMessages(fileName: gribFileRemapped, multiSupport: true)
         try FileManager.default.removeItem(atPath: gribFile)
         try FileManager.default.removeItem(atPath: gribFileRemapped)
@@ -126,7 +126,7 @@ struct CdoIconGlobal {
         gridFile = "\(workDirectory)grid_icogl2world_0125.txt"
         weightsFile = "\(workDirectory)weights_icogl2world_0125.nc"
         let fm = FileManager.default
-        
+
         let grid = domain.grid as! RegularGrid
 
         if fm.fileExists(atPath: gridFile) && fm.fileExists(atPath: weightsFile) {

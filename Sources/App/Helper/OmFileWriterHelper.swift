@@ -7,12 +7,12 @@ import SwiftNetCDF
 public final class OmFileWriterHelper {
     public let dimensions: [Int]
     public let chunks: [Int]
-    
+
     public init(dimensions: [Int], chunks: [Int]) {
         self.dimensions = dimensions
         self.chunks = chunks
     }
-    
+
     /// Write all data at once without any streaming
     /// If `overwrite` is set, overwrite existing files atomically
     @discardableResult
@@ -27,7 +27,7 @@ public final class OmFileWriterHelper {
         try FileManager.default.moveFileOverwrite(from: fileTemp, to: file)
         return fn
     }
-    
+
     public func writeTemporary(compressionType: CompressionType, scalefactor: Float, all: [Float]) throws -> FileHandle {
         let file = "\(OpenMeteo.tempDirectory)/\(Int.random(in: 0..<Int.max)).om"
         try FileManager.default.removeItemIfExists(at: file)
@@ -51,10 +51,10 @@ extension Array where Element == Float {
         try FileManager.default.removeItemIfExists(at: tempFile)
         let writeFn = try FileHandle.createNewFile(file: tempFile)
         try writeOmFile(fn: writeFn, dimensions: dimensions, chunks: chunks, compression: compression, scalefactor: scalefactor)
-        
+
         // Overwrite existing file, with newly created
         try FileManager.default.moveFileOverwrite(from: tempFile, to: file)
-        
+
         if createNetCdf {
             let ncPath = file.replacingOccurrences(of: ".om", with: ".nc")
             let ncFile = try NetCDF.create(path: ncPath, overwriteExisting: true)
@@ -66,7 +66,7 @@ extension Array where Element == Float {
         }
         return writeFn
     }
-    
+
     /// Write the current array as an om file to an open file handle
     func writeOmFile(fn: FileHandle, dimensions: [Int], chunks: [Int], compression: CompressionType, scalefactor: Float) throws {
         guard dimensions.reduce(1, *) == self.count else {
@@ -85,7 +85,7 @@ extension Array where Element == Float {
         let root = try writeFile.write(array: writer.finalise(), name: "", children: [])
         try writeFile.writeTrailer(rootVariable: root)
     }
-    
+
     /// Write a spatial om file using grid dimensions and 20x20 chunks. Mostly used to write elevation files
     func writeOmFile2D(file: String, grid: Gridable, chunk0: Int = 20, chunk1: Int = 20, compression: CompressionType = .pfor_delta2d_int16, scalefactor: Float = 1, createNetCdf: Bool = false) throws {
         let chunk0 = Swift.min(grid.ny, 20)

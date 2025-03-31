@@ -55,9 +55,9 @@ enum GfsVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case windgusts_10m
     case freezinglevel_height
     case mass_density_8m
-    
+
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -83,7 +83,7 @@ enum GfsPressureVariableDerivedType: String, CaseIterable {
 struct GfsPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: GfsPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -94,92 +94,92 @@ struct GfsReaderLowLevel: GenericReaderProtocol {
     var modelLat: Float {
         reader.modelLat
     }
-    
+
     var modelLon: Float {
         reader.modelLon
     }
-    
+
     var modelElevation: ElevationOrSea {
         reader.modelElevation
     }
-    
+
     var targetElevation: Float {
         reader.targetElevation
     }
-    
+
     var modelDtSeconds: Int {
         reader.modelDtSeconds
     }
-    
+
     func getStatic(type: ReaderStaticVariable) throws -> Float? {
         return try reader.getStatic(type: type)
     }
-    
+
     typealias MixingVar = GfsVariable
-    
+
     let reader: GenericReaderCached<GfsDomain, GfsVariable>
     let domain: GfsDomain
-    
+
     func get(variable raw: GfsVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         /// HRRR domain has no cloud cover for pressure levels, calculate from RH
         if domain == .hrrr_conus, case let .pressure(pressure) = raw, pressure.variable == .cloud_cover {
             let rh = try reader.get(variable: .pressure(GfsPressureVariable(variable: .relative_humidity, level: pressure.level)), time: time)
             return DataAndUnit(rh.data.map({Meteorology.relativeHumidityToCloudCover(relativeHumidity: $0, pressureHPa: Float(pressure.level))}), .percentage)
         }
-        
+
         /// Make sure showers are `0` instead of `NaN` in HRRR, otherwise it is mixed with GFS showers
         if (domain == .hrrr_conus || domain == .hrrr_conus_15min), case let .surface(variable) = raw, variable == .showers {
             let precipitation = try reader.get(variable: .surface(.precipitation), time: time)
             return DataAndUnit(precipitation.data.map({min($0, 0)}), precipitation.unit)
         }
-        
+
         /// Adjust surface pressure to target elevation. Surface pressure is stored for `modelElevation`, but we want to get the pressure on `targetElevation`
         /*if case let .surface(variable) = raw.variable, variable == .pressure_msl {
             let pressure = try reader.get(variable: raw, time: time)
-            
+
             let factor = Meteorology.sealevelPressureFactor(temperature: 20 - 0.0065 * (reader.modelElevation.numeric - reader.modelElevation.numeric), elevation: reader.modelElevation.numeric) / Meteorology.sealevelPressureFactor(temperature: 20, elevation: reader.targetElevation)
             print("target \(reader.targetElevation) model \(reader.modelElevation.numeric) factor \(factor)")
             return DataAndUnit(pressure.data.map({$0*factor}), pressure.unit)
         }*/
-        
+
         /// GFS ensemble has no diffuse radiation
         if (domain == .gfs025_ens || domain == .gfs05_ens), case let .surface(variable) = raw, variable == .diffuse_radiation {
             let ghi = try reader.get(variable: .surface(.shortwave_radiation), time: time)
             let dhi = Zensun.calculateDiffuseRadiationBackwards(shortwaveRadiation: ghi.data, latitude: reader.modelLat, longitude: reader.modelLon, timerange: time.time)
             return DataAndUnit(dhi, ghi.unit)
         }
-        
+
         /// Only GFS013 has showers
         if domain != .gfs013, case let .surface(variable) = raw, variable == .showers {
             // Use precip to return an array with 0, but preserve NaNs if the timerange is unavailable
             let precip = try reader.get(variable: .surface(.precipitation), time: time)
             return DataAndUnit(precip.data.map({ $0 * 0 }), precip.unit)
         }
-        
+
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable raw: GfsVariable, time: TimerangeDtAndSettings) throws {
         /// HRRR domain has no cloud cover for pressure levels, calculate from RH
         if domain == .hrrr_conus, case let .pressure(pressure) = raw, pressure.variable == .cloud_cover {
             return try reader.prefetchData(variable: .pressure(GfsPressureVariable(variable: .relative_humidity, level: pressure.level)), time: time)
         }
-        
+
         /// Make sure showers are `0` in HRRR, otherwise it is mixed with GFS showers
         if (domain == .hrrr_conus || domain == .hrrr_conus_15min), case let .surface(variable) = raw, variable == .showers {
             return try reader.prefetchData(variable: .surface(.precipitation), time: time)
         }
-        
+
         /// GFS ensemble has no diffuse radiation
         if (domain == .gfs025_ens || domain == .gfs05_ens), case let .surface(variable) = raw, variable == .diffuse_radiation {
             return try reader.prefetchData(variable: .surface(.shortwave_radiation), time: time)
         }
-        
+
         /// Only GFS013 has showers
         if domain != .gfs013, case let .surface(variable) = raw, variable == .showers {
             return try reader.prefetchData(variable: .surface(.precipitation), time: time)
         }
-        
+
         try reader.prefetchData(variable: raw, time: time)
     }
 }
@@ -191,17 +191,17 @@ typealias GfsVariableCombined = VariableOrDerived<GfsVariable, GfsVariableDerive
 
 struct GfsReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = GfsDomain
-    
+
     typealias Variable = GfsVariable
-    
+
     typealias Derived = GfsVariableDerived
-    
+
     typealias MixingVar = GfsVariableCombined
-    
+
     let reader: GenericReaderMixerSameDomain<GfsReaderLowLevel>
-        
+
     let options: GenericReaderOptions
-    
+
     public init?(domains: [Domain], lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         let readers: [GfsReaderLowLevel] = try domains.compactMap { domain in
             guard let reader = try GenericReader<GfsDomain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
@@ -215,21 +215,21 @@ struct GfsReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderMixerSameDomain(reader: readers)
         self.options = options
     }
-    
+
     public init?(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<GfsDomain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderMixerSameDomain(reader: [GfsReaderLowLevel(reader: GenericReaderCached(reader: reader), domain: domain)])
         self.options = options
     }
-    
+
     func prefetchData(raw: GfsReaderLowLevel.MixingVar, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func get(raw: GfsReaderLowLevel.MixingVar, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(derived: Derived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -388,7 +388,7 @@ struct GfsReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: Derived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let gfsVariableDerivedSurface):
@@ -473,7 +473,7 @@ struct GfsReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(derived: .surface(.windspeed_10m), time: time).data
                 let rh = try get(raw: .surface(.relative_humidity_2m), time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }

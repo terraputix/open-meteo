@@ -8,7 +8,7 @@ enum ArpaeVariableDerived: String, CaseIterable, GenericVariableMixable {
     case wind_speed_10m
     case winddirection_10m
     case wind_direction_10m
-    
+
     case vapour_pressure_deficit
     case vapor_pressure_deficit
     case surface_pressure
@@ -20,7 +20,7 @@ enum ArpaeVariableDerived: String, CaseIterable, GenericVariableMixable {
     case showers
     case wet_bulb_temperature_2m
     case cloudcover
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -30,17 +30,17 @@ typealias ArpaeVariableCombined = VariableOrDerived<ArpaeSurfaceVariable, ArpaeV
 
 struct ArpaeReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = ArpaeDomain
-    
+
     typealias Variable = ArpaeSurfaceVariable
-    
+
     typealias Derived = ArpaeVariableDerived
-    
+
     typealias MixingVar = ArpaeVariableCombined
-    
+
     let reader: GenericReaderCached<ArpaeDomain, ArpaeSurfaceVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -48,21 +48,21 @@ struct ArpaeReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: ArpaeSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: ArpaeSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(derived: ArpaeVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .apparent_temperature:
@@ -106,7 +106,7 @@ struct ArpaeReader: GenericReaderDerived, GenericReaderProtocol {
             try prefetchData(raw: .snowfall_water_equivalent, time: time)
         }
     }
-    
+
     func get(derived: ArpaeVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .windspeed_10m,. wind_speed_10m:
@@ -182,7 +182,7 @@ struct ArpaeReader: GenericReaderDerived, GenericReaderProtocol {
 
 struct ArpaeMixer: GenericReaderMixer {
     let reader: [ArpaeReader]
-    
+
     static func makeReader(domain: ArpaeReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> ArpaeReader? {
         return try ArpaeReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
     }

@@ -38,7 +38,7 @@ enum JmaVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case cloudcover_mid
     case cloudcover_high
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -65,7 +65,7 @@ enum JmaPressureVariableDerivedType: String, CaseIterable {
 struct JmaPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: JmaPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -77,17 +77,17 @@ typealias JmaVariableCombined = VariableOrDerived<JmaVariable, JmaVariableDerive
 
 struct JmaReader: GenericReaderDerivedSimple, GenericReaderProtocol {
     typealias MixingVar = JmaVariableCombined
-    
+
     typealias Domain = JmaDomain
-    
+
     typealias Variable = JmaVariable
-    
+
     typealias Derived = JmaVariableDerived
-    
+
     let reader: GenericReaderCached<JmaDomain, JmaVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -95,7 +95,7 @@ struct JmaReader: GenericReaderDerivedSimple, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: SurfaceAndPressureVariable<JmaSurfaceVariable, JmaPressureVariable>, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch raw {
         case .pressure(let variable):
@@ -106,18 +106,18 @@ struct JmaReader: GenericReaderDerivedSimple, GenericReaderProtocol {
         default:
             break
         }
-        
+
         return try self.reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: JmaSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(raw: .surface(raw), time: time)
     }
-    
+
     func get(raw: JmaSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         try get(raw: .surface(raw), time: time)
     }
-    
+
     func prefetchData(derived: JmaVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -233,7 +233,7 @@ struct JmaReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: JmaVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):
@@ -272,7 +272,7 @@ struct JmaReader: GenericReaderDerivedSimple, GenericReaderProtocol {
                 let windspeed = try get(derived: .surface(.windspeed_10m), time: time).data
                 let rh = try get(raw: .relative_humidity_2m, time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }
@@ -419,7 +419,7 @@ struct JmaReader: GenericReaderDerivedSimple, GenericReaderProtocol {
 
 struct JmaMixer: GenericReaderMixer {
     let reader: [JmaReader]
-    
+
     static func makeReader(domain: JmaReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> JmaReader? {
         return try JmaReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
     }

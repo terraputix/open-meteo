@@ -55,13 +55,13 @@ enum Era5VariableDerived: String, RawRepresentableString, GenericVariableMixable
     case sunshine_duration
     case global_tilted_irradiance
     case global_tilted_irradiance_instant
-    
+
     case wind_speed_10m_spread
     case wind_speed_100m_spread
     case wind_direction_10m_spread
     case wind_direction_100m_spread
     case snowfall_spread
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -76,13 +76,13 @@ struct Era5Factory {
         }
         return .init(reader: GenericReaderCached(reader: reader), options: options)
     }
-    
+
     /// Build a single reader for a given CdsDomain
     public static func makeReader(domain: CdsDomain, gridpoint: Int, options: GenericReaderOptions) throws -> Era5Reader<GenericReaderCached<CdsDomain, Era5Variable>> {
         let reader = try GenericReader<CdsDomain, Era5Variable>(domain: domain, position: gridpoint)
         return .init(reader: GenericReaderCached(reader: reader), options: options)
     }
-    
+
     /// Combine ERA5 and ensemble spread. Used to generate wind speed uncertainties scaled from 0.5° ERA5-Ensemble to 0.25° ERA5.
     public static func makeEra5WithEnsemble(lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> Era5Reader<GenericReaderMixerSameDomain<GenericReaderCached<CdsDomain, Era5Variable>>> {
         guard let era5 = try GenericReader<CdsDomain, Era5Variable>(domain: .era5, lat: lat, lon: lon, elevation: elevation, mode: mode),
@@ -93,7 +93,7 @@ struct Era5Factory {
         }
         return .init(reader: GenericReaderMixerSameDomain(reader: [GenericReaderCached(reader: era5ens), GenericReaderCached(reader: era5)]), options: options)
     }
-    
+
     /**
      Build a combined ERA5 and ERA5-Land reader.
      Derived variables are calculated after combinding both variables to make it possible to calculate ET0 evapotransipiration with temperature from ERA5-Land, but radiation from ERA5
@@ -108,7 +108,7 @@ struct Era5Factory {
         }
         return .init(reader: GenericReaderMixerSameDomain(reader: [/*GenericReaderCached(reader: era5ocean), */GenericReaderCached(reader: era5), GenericReaderCached(reader: era5land)]), options: options)
     }
-    
+
     public static func makeArchiveBestMatch(lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> Era5Reader<GenericReaderMixerSameDomain<GenericReaderCached<CdsDomain, Era5Variable>>> {
         guard let era5 = try GenericReader<CdsDomain, Era5Variable>(domain: .era5, lat: lat, lon: lon, elevation: elevation, mode: mode),
               let era5land = try GenericReader<CdsDomain, Era5Variable>(domain: .era5_land, lat: lat, lon: lon, elevation: elevation, mode: mode),
@@ -127,20 +127,20 @@ struct Era5Factory {
 
 struct Era5Reader<Reader: GenericReaderProtocol>: GenericReaderDerivedSimple, GenericReaderProtocol where Reader.MixingVar == Era5Variable {
     let reader: Reader
-    
+
     let options: GenericReaderOptions
-    
+
     typealias Domain = CdsDomain
-    
+
     typealias Variable = Era5Variable
-    
+
     typealias Derived = Era5VariableDerived
-    
+
     public init(reader: Reader, options: GenericReaderOptions) {
         self.reader = reader
         self.options = options
     }
-    
+
     func prefetchData(variables: [Era5HourlyVariable], time: TimerangeDtAndSettings) throws {
         for variable in variables {
             switch variable {
@@ -151,7 +151,7 @@ struct Era5Reader<Reader: GenericReaderProtocol>: GenericReaderDerivedSimple, Ge
             }
         }
     }
-    
+
     func prefetchData(derived: Era5VariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .wind_speed_10m:
@@ -288,7 +288,7 @@ struct Era5Reader<Reader: GenericReaderProtocol>: GenericReaderDerivedSimple, Ge
             try prefetchData(raw: .snowfall_water_equivalent, time: time)
         }
     }
-    
+
     func get(variable: Era5HourlyVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch variable {
         case .raw(let variable):
@@ -297,7 +297,7 @@ struct Era5Reader<Reader: GenericReaderProtocol>: GenericReaderDerivedSimple, Ge
             return try get(derived: variable, time: time)
         }
     }
-    
+
     func get(derived: Era5VariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .wind_speed_10m:
@@ -353,7 +353,7 @@ struct Era5Reader<Reader: GenericReaderProtocol>: GenericReaderDerivedSimple, Ge
             let temperature = try get(raw: .temperature_2m, time: time).data
             let windspeed = try get(derived: .windspeed_10m, time: time).data
             let dewpoint = try get(raw: .dew_point_2m, time: time).data
-            
+
             let et0 = swrad.indices.map { i in
                 return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: self.modelElevation.numeric, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
             }

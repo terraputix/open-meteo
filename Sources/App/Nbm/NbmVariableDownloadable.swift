@@ -7,10 +7,10 @@ protocol NbmVariableDownloadable: GenericVariable {
 extension NbmSurfaceVariable: NbmVariableDownloadable {
     func gribIndexName(for domain: NbmDomain, timestep: Int, previousTimestep: Int, run: Int) -> String? {
         // Note: Aggregations are only available every 6 hours, while instant values are 3 hourly after hour 40
-        
+
         /// NBM uses 6 hourly models below. Probabilities are emited to 6 hours alignments
         let relTime = timestep + run % 6
-        
+
         switch self {
         case .temperature_2m:
             return ":TMP:2 m above ground:\(timestep) hour fcst:"
@@ -71,7 +71,7 @@ extension NbmSurfaceVariable: NbmVariableDownloadable {
             return ":PTYPE:surface:\(timestep) hour fcst:prob >=5 <7:prob fcst 1/1"
         }
     }
-    
+
     func multiplyAdd(domain: NbmDomain) -> (multiply: Float, add: Float)? {
         switch self {
         case .temperature_2m, .surface_temperature:
@@ -88,11 +88,11 @@ extension NbmPressureVariable: NbmVariableDownloadable {
     func gribIndexName(for domain: NbmDomain, timestep: Int, previousTimestep: Int, run: Int) -> String? {
         return nil
     }
-    
+
     func skipHour0(for domain: NbmDomain) -> Bool {
         return false
     }
-    
+
     func multiplyAdd(domain: NbmDomain) -> (multiply: Float, add: Float)? {
         switch variable {
         case .temperature:

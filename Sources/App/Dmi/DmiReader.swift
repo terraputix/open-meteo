@@ -11,7 +11,7 @@ enum DmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case winddirection_10m
     case windspeed_100m
     case winddirection_100m
-    
+
     /// Is using 100m wind
     case windspeed_80m
     case winddirection_80m
@@ -21,7 +21,7 @@ enum DmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     /// Is using 150m wind
     case windspeed_180m
     case winddirection_180m
-    
+
     /// Is using 100m wind
     case wind_speed_80m
     case wind_direction_80m
@@ -63,7 +63,7 @@ enum DmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case cloudcover_high
     case windgusts_10m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -90,7 +90,7 @@ enum DmiPressureVariableDerivedType: String, CaseIterable {
 struct DmiPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: DmiPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -102,17 +102,17 @@ typealias DmiVariableCombined = VariableOrDerived<DmiVariable, DmiVariableDerive
 
 struct DmiReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = DmiDomain
-    
+
     typealias Variable = DmiVariable
-    
+
     typealias Derived = DmiVariableDerived
-    
+
     typealias MixingVar = DmiVariableCombined
-    
+
     let reader: GenericReaderCached<DmiDomain, DmiVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -120,29 +120,29 @@ struct DmiReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: DmiVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: DmiVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable: DmiSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(variable: .raw(.surface(variable)), time: time)
     }
-    
+
     func get(raw: DmiSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try get(variable: .raw(.surface(raw)), time: time)
     }
-    
+
     func prefetchData(derived: DmiVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -244,7 +244,7 @@ struct DmiReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: DmiVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):
@@ -289,7 +289,7 @@ struct DmiReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(raw: .wind_speed_10m, time: time).data
                 let rh = try get(raw: .relative_humidity_2m, time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }
@@ -431,7 +431,7 @@ struct DmiReader: GenericReaderDerived, GenericReaderProtocol {
 
 /*struct DmiMixer: GenericReaderMixer {
     let reader: [DmiReader]
-    
+
     static func makeReader(domain: DmiReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> DmiReader? {
         return try DmiReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
     }

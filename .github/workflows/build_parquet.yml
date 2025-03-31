@@ -8,7 +8,7 @@ env:
     swift_build: ENABLE_PARQUET=TRUE MARCH_SKYLAKE=TRUE swift build -c release -Xswiftc -g -Xswiftc -static-stdlib
     swift_test: swift test
     cache_version: 2
-  
+
 jobs:
     linux:
       runs-on: ubuntu-22.04

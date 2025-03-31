@@ -4,10 +4,10 @@ import Foundation
 /// Represent a variable combined with a pressure level and helps decoding it
 protocol PressureVariableRespresentable: RawRepresentable where RawValue == String, Variable.RawValue == String {
     associatedtype Variable: RawRepresentable
-    
+
     var variable: Variable { get }
     var level: Int { get }
-    
+
     init(variable: Variable, level: Int)
 }
 
@@ -20,7 +20,7 @@ extension PressureVariableRespresentable {
         guard let variable = Variable(rawValue: String(variableString)) else {
             return nil
         }
-        
+
         let start = rawValue.index(after: pos)
         let levelString = rawValue[start..<posEnd.lowerBound]
         guard let level = Int(levelString) else {
@@ -28,11 +28,11 @@ extension PressureVariableRespresentable {
         }
         self.init(variable: variable, level: level)
     }
-    
+
     var rawValue: String {
         return "\(variable.rawValue)_\(level)hPa"
     }
-    
+
     init(from decoder: Decoder) throws {
         let s = try decoder.singleValueContainer().decode(String.self)
         guard let initialised = Self.init(rawValue: s) else {
@@ -40,7 +40,7 @@ extension PressureVariableRespresentable {
         }
         self = initialised
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var e = encoder.singleValueContainer()
         try e.encode(rawValue)
@@ -50,10 +50,10 @@ extension PressureVariableRespresentable {
 /// Represent a variable combined with a pressure level and helps decoding it
 protocol HeightVariableRespresentable: RawRepresentable where RawValue == String, Variable.RawValue == String {
     associatedtype Variable: RawRepresentable
-    
+
     var variable: Variable { get }
     var level: Int { get }
-    
+
     init(variable: Variable, level: Int)
 }
 
@@ -66,7 +66,7 @@ extension HeightVariableRespresentable {
         guard let variable = Variable(rawValue: String(variableString)) else {
             return nil
         }
-        
+
         let start = rawValue.index(after: pos)
         let levelString = rawValue[start..<posEnd.lowerBound]
         guard let level = Int(levelString) else {
@@ -74,11 +74,11 @@ extension HeightVariableRespresentable {
         }
         self.init(variable: variable, level: level)
     }
-    
+
     var rawValue: String {
         return "\(variable.rawValue)_\(level)m"
     }
-    
+
     init(from decoder: Decoder) throws {
         let s = try decoder.singleValueContainer().decode(String.self)
         guard let initialised = Self.init(rawValue: s) else {
@@ -86,7 +86,7 @@ extension HeightVariableRespresentable {
         }
         self = initialised
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var e = encoder.singleValueContainer()
         try e.encode(rawValue)
@@ -116,7 +116,7 @@ extension SurfaceAndPressureVariable: RawRepresentableString where Pressure: Raw
         }
         return nil
     }
-    
+
     var rawValue: String {
         switch self {
         case .surface(let variable): return variable.rawValue
@@ -126,7 +126,7 @@ extension SurfaceAndPressureVariable: RawRepresentableString where Pressure: Raw
 }
 
 extension SurfaceAndPressureVariable: Hashable, Equatable where Pressure: Hashable, Surface: Hashable {
-    
+
 }
 
 extension SurfaceAndPressureVariable: GenericVariable where Surface: GenericVariable, Pressure: GenericVariable {
@@ -138,27 +138,27 @@ extension SurfaceAndPressureVariable: GenericVariable where Surface: GenericVari
             return pressure
         }
     }
-    
+
     var storePreviousForecast: Bool {
         asGenericVariable.storePreviousForecast
     }
-    
+
     var omFileName: (file: String, level: Int) {
         asGenericVariable.omFileName
     }
-    
+
     var scalefactor: Float {
         asGenericVariable.scalefactor
     }
-    
+
     var interpolation: ReaderInterpolation {
         asGenericVariable.interpolation
     }
-    
+
     var unit: SiUnit {
         asGenericVariable.unit
     }
-    
+
     var isElevationCorrectable: Bool {
         asGenericVariable.isElevationCorrectable
     }
@@ -194,7 +194,7 @@ extension SurfacePressureAndHeightVariable: RawRepresentableString where Pressur
         }
         return nil
     }
-    
+
     var rawValue: String {
         switch self {
         case .surface(let variable): return variable.rawValue
@@ -205,7 +205,7 @@ extension SurfacePressureAndHeightVariable: RawRepresentableString where Pressur
 }
 
 extension SurfacePressureAndHeightVariable: Hashable, Equatable where Pressure: Hashable, Surface: Hashable, Height: Hashable {
-    
+
 }
 
 extension SurfacePressureAndHeightVariable: GenericVariable where Surface: GenericVariable, Pressure: GenericVariable, Height: GenericVariable {
@@ -219,27 +219,27 @@ extension SurfacePressureAndHeightVariable: GenericVariable where Surface: Gener
             return height
         }
     }
-    
+
     var storePreviousForecast: Bool {
         asGenericVariable.storePreviousForecast
     }
-    
+
     var omFileName: (file: String, level: Int) {
         asGenericVariable.omFileName
     }
-    
+
     var scalefactor: Float {
         asGenericVariable.scalefactor
     }
-    
+
     var interpolation: ReaderInterpolation {
         asGenericVariable.interpolation
     }
-    
+
     var unit: SiUnit {
         asGenericVariable.unit
     }
-    
+
     var isElevationCorrectable: Bool {
         asGenericVariable.isElevationCorrectable
     }
@@ -262,7 +262,7 @@ extension SurfacePressureAndHeightVariable: GenericVariableMixable where Surface
 enum VariableOrDerived<Raw: RawRepresentableString, Derived: RawRepresentableString>: RawRepresentableString {
     case raw(Raw)
     case derived(Derived)
-    
+
     init?(rawValue: String) {
         if let val = Derived.init(rawValue: rawValue) {
             self = .derived(val)
@@ -274,7 +274,7 @@ enum VariableOrDerived<Raw: RawRepresentableString, Derived: RawRepresentableStr
         }
         return nil
     }
-    
+
     var rawValue: String {
         switch self {
         case .raw(let raw):
@@ -283,7 +283,7 @@ enum VariableOrDerived<Raw: RawRepresentableString, Derived: RawRepresentableStr
             return derived.rawValue
         }
     }
-    
+
     var name: String {
         switch self {
         case .raw(let variable): return variable.rawValue

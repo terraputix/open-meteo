@@ -7,10 +7,10 @@ enum UkmoVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case relativehumidity_2m
     case dewpoint_2m
     case dew_point_2m
-    
+
     case windspeed_10m
     case winddirection_10m
-    
+
     case direct_normal_irradiance
     case direct_normal_irradiance_instant
     case direct_radiation_instant
@@ -38,7 +38,7 @@ enum UkmoVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case cloudcover_high
     case windgusts_10m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -63,7 +63,7 @@ enum UkmoPressureVariableDerivedType: String, CaseIterable {
 struct UkmoPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: UkmoPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -75,19 +75,19 @@ typealias UkmoVariableCombined = VariableOrDerived<UkmoVariable, UkmoVariableDer
 
 struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = UkmoDomain
-    
+
     typealias Variable = UkmoVariable
-    
+
     typealias Derived = UkmoVariableDerived
-    
+
     typealias MixingVar = UkmoVariableCombined
-    
+
     let reader: GenericReaderCached<UkmoDomain, UkmoVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     let domain: UkmoDomain
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -96,14 +96,14 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
         self.options = options
         self.domain = domain
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
         self.domain = domain
     }
-    
+
     func get(raw: UkmoVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         if domain == .global_deterministic_10km, case let .surface(variable) = raw {
             // Global domain does not have amounts for showers and snowfall.
@@ -114,10 +114,10 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
                 let temperature = try get(raw: .temperature_2m, time: time).data
                 let rain = try get(raw: .rain, time: time).data
                 let precipitation = try get(raw: .precipitation, time: time).data
-                return variable == .showers ? 
+                return variable == .showers ?
                     DataAndUnit(zip(temperature, zip(precipitation, rain)).map({
                         $0 > 0 ? $1.0 - $1.1 : 0
-                    }), .millimetre) : 
+                    }), .millimetre) :
                     DataAndUnit(zip(temperature, zip(precipitation, rain)).map({
                         $0 <= 0 ? $1.0 - $1.1 : 0
                     }), .millimetre)
@@ -126,7 +126,7 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
         }
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: UkmoVariable, time: TimerangeDtAndSettings) throws {
         if domain == .global_deterministic_10km, case let .surface(variable) = raw {
             // Global domain does not have amounts for showers and snowfall.
@@ -143,15 +143,15 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
         }
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable: UkmoSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(variable: .raw(.surface(variable)), time: time)
     }
-    
+
     func get(raw: UkmoSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try get(variable: .raw(.surface(raw)), time: time)
     }
-    
+
     func prefetchData(derived: UkmoVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -233,7 +233,7 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: UkmoVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):
@@ -260,7 +260,7 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(raw: .wind_speed_10m, time: time).data
                 let rh = try get(raw: .relative_humidity_2m, time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }
@@ -386,7 +386,7 @@ struct UkmoReader: GenericReaderDerived, GenericReaderProtocol {
 
 /*struct UkmoMixer: GenericReaderMixer {
     let reader: [UkmoReader]
-    
+
     static func makeReader(domain: UkmoReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> UkmoReader? {
         return try UkmoReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
     }

@@ -7,25 +7,25 @@ import SwiftNetCDF
 /**
  https://esgf-data.dkrz.de/search/cmip6-dkrz/
  https://esgf-node.llnl.gov/search/cmip6/
- 
+
  Robustness of CMIP6 Historical Global Mean Temperature Simulations: Trends, Long-Term Persistence, Autocorrelation, and Distributional Shape
  https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020EF001667
- 
+
  precip biases
  https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021EF002196
- 
+
  droughts
  https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021EF002150
- 
+
  INTERESSTING:
- 
+
  CMCC-CM2-VHR4 (CMCC Italy) https://www.wdc-climate.de/ui/cmip6?input=CMIP6.HighResMIP.CMCC.CMCC-CM2-VHR4
  0.3125°
  6h: 2m temp, humidity, wind, surface temp,
  daily: 2m temp, humidity. wind, precip, longwave,
  monthly: temp, clouds, precip, runoff, wind, soil moist 1 level, humidity, snow,
  NO daily min/max directly
- 
+
  FGOALS-f3  (CAS China) https://www.wdc-climate.de/ui/cmip6?input=CMIP6.HighResMIP.CAS.FGOALS-f3-H.highresSST-future
  https://www.tandfonline.com/doi/full/10.1080/16742834.2020.1814675
  0.25°
@@ -34,59 +34,59 @@ import SwiftNetCDF
  day: missing temperature for land,clc, wind, hum, precip, sw,
  monthly: temp, clc, wind, hum, precip,
  NO daily min/max directly
- 
+
  HiRAM-SIT-HR (RCEC taiwan) https://www.wdc-climate.de/ui/cmip6?input=CMIP6.HighResMIP.AS-RCEC.HiRAM-SIT-HR
  0.23°
  daily: 2m temp, surface temp (min max), clc, precip, wind, snow, swrad
  monthly: 2m temp, clc, wind, hum, snow, swrad,
- 
+
  MRI-AGCM3-2-S (MRI Japan, ) https://www.wdc-climate.de/ui/cmip6?input=CMIP6.HighResMIP.MRI.MRI-AGCM3-2-S.highresSST-present
  0.1875°
  3h: 2m temp, wind, soil moisture, hum, surface temperature
  day: temp, clc, soild moist, wind, hum, runoff, precip, snow, swrad,
  month: same
- 
+
  MEDIUM:
- 
+
  NICAM16-9S https://gmd.copernicus.org/articles/14/795/2021/
  0.14°, but only 2040-2050 and 1950–1960, 2000–2010 (high computational cost hindered us from running NICAM16-9S for 100 years)
  1h: precip
  3h: precip, clc, snow, swrad (+cs), temp, wind, pres, hum
  day: temp, clc, wind, precip, snow, hum, swrad,
  month: temp, (clc), precio, runoff,
- 
+
  LESS:
- 
+
  CESM1-CAM5-SE-HR -> old model from 2012
  native ne120 spectral element grid... 25km
  day: only ocean
  monthly: NO 2m temp, surface (min,max), clc, wind, hum, snow, swrad,
- 
+
  HiRAM-SIT-LR: only present
- 
+
  ACCESS-OM2-025: only ocean
  AWI-CM-1-1-HR: only ocean
- 
+
  ECMWF-IFS-HR: only present, not forecast
  0.5°
  6h: 2m temp, wind, hum, pres
  day: 2m temp, clouds, precip, wind, hum, snow, swrad, surface temp (min/max),
  month: temp 2m, clc, wind, leaf area index, precip, runoff, soil moist, soil temp, hum,
- 
+
  IPSL-CM6A-ATM-ICO-VHR: ipsl france: only 1950-2014
- 
+
  MRI-AGCM3-2-H
  0.5°
  6h: pres, 2m temp, wind, hum
  day: 2m temp, clc, wind, soil moist, precip, runoff, snow, hum, swrad, (T pressure levels = only 1000hpa.. massive holes!)
  mon: 2m temp, surface temp, clc, wind, hum, swrad,
- 
- 
+
+
  Sizes:
  MRI: Raw 2.15TB, Compressed 413 GB
  HiRAM_SIT_HR_daily: Raw 1.3TB, Compressed 210 GB
  FGLOALS: Raw 1.2 TB, Compressed 120 GB
- 
+
  */
 enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
     case CMCC_CM2_VHR4
@@ -97,11 +97,11 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
     case EC_Earth3P_HR
     case MPI_ESM1_2_XR
     case NICAM16_8S
-    
+
     /// https://gmd.copernicus.org/articles/12/4999/2019/gmd-12-4999-2019.pdf
     /// Disabled because uses 360 days
     //case HadGEM3_GC31_HM
-    
+
     var soureName: String {
         switch self {
         case .CMCC_CM2_VHR4:
@@ -124,7 +124,7 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return "NICAM16-8S"
         }
     }
-    
+
     // gn = native
     // gr = resampled
     var gridName: String {
@@ -149,7 +149,7 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return "gr"
         }
     }
-    
+
     var institute: String {
         switch self {
         case .CMCC_CM2_VHR4:
@@ -172,7 +172,7 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return "MIROC"
         }
     }
-    
+
     var domainRegistry: DomainRegistry {
         switch self {
         case .CMCC_CM2_VHR4:
@@ -193,15 +193,15 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return .cmip_NICAM16_8S
         }
     }
-    
+
     var domainRegistryStatic: DomainRegistry? {
         return domainRegistry
     }
-    
+
     var hasYearlyFiles: Bool {
         return false
     }
-    
+
     var masterTimeRange: Range<Timestamp>? {
         switch self {
         case .EC_Earth3P_HR:
@@ -210,21 +210,21 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return Timestamp(1950,1,1) ..< Timestamp(2051,1,1)
         }
     }
-    
+
     var dtSeconds: Int {
         return 24*3600
     }
-    
+
     var omFileLength: Int {
         // has no realtime updates -> large number takes only 1 file lookup
         return 1000000000000000
     }
-    
+
     /// true if feb 29 is missing
     var needsLeapYearFix: Bool {
         return self == .CMCC_CM2_VHR4 || self == .FGOALS_f3_H /*|| self == .FGOALS_f3_H_highresSST*/
     }
-    
+
     var grid: Gridable {
         switch self {
         case .CMCC_CM2_VHR4:
@@ -247,7 +247,7 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return RegularGrid(nx: 1280, ny: 640, latMin: -90, lonMin: -180, dx: 360/1280, dy: 180/640)
         }
     }
-    
+
     var versionOrography: (altitude: String, landmask: String)? {
         switch self {
         case .CMCC_CM2_VHR4:
@@ -270,7 +270,7 @@ enum Cmip6Domain: String, RawRepresentableString, CaseIterable, GenericDomain {
             return nil
         }
     }
-    
+
     var updateIntervalSeconds: Int {
         return 0
     }
@@ -281,7 +281,7 @@ extension GenericDomain {
     func getBiasCorrectionFile(for variable: String) -> OmFileManagerReadable {
         return .domainChunk(domain: domainRegistry, variable: variable, type: .linear_bias_seasonal, chunk: nil, ensembleMember: 0, previousDay: 0)
     }
-    
+
     func openBiasCorrectionFile(for variable: String) throws -> OmFileReaderArray<MmapFile, Float>? {
         return try OmFileManager.get(getBiasCorrectionFile(for: variable))
     }
@@ -306,17 +306,17 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
     case relative_humidity_2m_mean
     case wind_speed_10m_mean
     case wind_speed_10m_max
-    
+
     //case surface_temperature
-    
+
     /// Moisture in Upper Portion of Soil Column.
     case soil_moisture_0_to_10cm_mean
     case shortwave_radiation_sum
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     enum TimeType {
         case restoreFrom(dt: Int, shortName: String, aggregate: TimeTypeAggregate)
         case monthly
@@ -324,21 +324,21 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
         case yearly
         case tenYearly
     }
-    
+
     enum TimeTypeAggregate {
         case min
         case max
         case mean
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .pressure_msl_mean:
@@ -373,7 +373,7 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             return .hermite(bounds: 0...1800*24)
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .pressure_msl_mean:
@@ -408,12 +408,12 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             return .megajoulePerSquareMetre
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         // should not be corrected because BIAS correction is used later
         return false
     }
-    
+
     var biasCorrectionType: QuantileDeltaMappingBiasCorrection.ChangeType {
         switch self {
         case .temperature_2m_min:
@@ -446,7 +446,7 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             return .relativeChange(maximum: nil)
         }
     }
-    
+
     func version(for domain: Cmip6Domain, isFuture: Bool) -> String {
         switch domain {
         case .CMCC_CM2_VHR4:
@@ -513,7 +513,7 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             return isFuture ? "20210122" : "20190830"
         }
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .pressure_msl_mean:
@@ -550,7 +550,7 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             return 10
         }
     }
-    
+
     func domainTimeRange(for domain: Cmip6Domain, isFuture: Bool) -> TimeType? {
         switch domain {
         case .EC_Earth3P_HR:
@@ -782,7 +782,7 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             }
         }
     }
-    
+
     /// hourly the same but no min/max. Hourly one file per month. Daily = yearly file
     var shortname: String {
         switch self {
@@ -820,16 +820,16 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
             return "sfcWindmax"
         }
     }
-    
+
     func getMultiplyAdd(domain: Cmip6Domain) -> (multiply: Float, add: Float)? {
         if domain == .NICAM16_8S && [Cmip6Variable.relative_humidity_2m_mean, .relative_humidity_2m_max, .relative_humidity_2m_min].contains(self) {
             return (100, 0)
         }
-        
+
         if (domain == .NICAM16_8S || domain == .FGOALS_f3_H) && self == .cloud_cover_mean {
             return (100, 0)
         }
-        
+
         switch self {
         case .temperature_2m_min:
             fallthrough
@@ -858,20 +858,20 @@ enum Cmip6Variable: String, CaseIterable, GenericVariable, GenericVariableMixabl
 struct DownloadCmipCommand: AsyncCommand {
     /// 6k locations require around 200 MB memory for a yearly time-series
     static var nLocationsPerChunk = 6_000
-    
+
     struct Signature: CommandSignature {
         @Argument(name: "domain")
         var domain: String
-        
+
         @Option(name: "only-variables")
         var onlyVariables: String?
-        
+
         @Option(name: "year")
         var year: String?
-        
+
         @Flag(name: "keep-netcdf")
         var keepNetCdf: Bool
-        
+
         var years: ClosedRange<Int> {
             if let year, let yearInt = Int(year) {
                 return yearInt...yearInt
@@ -883,22 +883,22 @@ struct DownloadCmipCommand: AsyncCommand {
             return 1950...2050
         }
     }
-    
+
     var help: String {
         "Download CMIP6 data and convert"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         fatalError("CMIP downloader not available anymore du to file format changes")
-        
+
         /*let logger = context.application.logger
         let deleteNetCDF = !signature.keepNetCdf
         let years = signature.years
-        
+
         let variables = try Cmip6Variable.load(commaSeparatedOptional: signature.onlyVariables) ?? Cmip6Variable.allCases
-        
+
         let domain = try Cmip6Domain.load(rawValue: signature.domain)
-        
+
         // Automatically try all servers. From fastest to slowest
         let servers = ["https://esgf3.dkrz.de/thredds/fileServer/cmip6/",
                        "https://esgf.ceda.ac.uk/thredds/fileServer/esg_cmip6/CMIP6/",
@@ -907,15 +907,15 @@ struct DownloadCmipCommand: AsyncCommand {
                        "https://esgf-data03.diasjp.net/thredds/fileServer/esg_dataroot/CMIP6/",
                        "https://esg.lasg.ac.cn/thredds/fileServer/esg_dataroot/CMIP6/"
         ]
-        
+
         let domainDirectory = domain.domainRegistry.directory
         try FileManager.default.createDirectory(atPath: domain.downloadDirectory, withIntermediateDirectories: true)
         try FileManager.default.createDirectory(atPath: domainDirectory, withIntermediateDirectories: true)
-        
+
         let curl = Curl(logger: logger, client: context.application.dedicatedHttpClient, deadLineHours: 24*14, readTimeout: 3600*3, retryError4xx: false)
         let source = domain.soureName
         let grid = domain.gridName
-        
+
         /// Make sure elevation information is present. Otherwise download it
         if let version = domain.versionOrography, !FileManager.default.fileExists(atPath: domain.surfaceElevationFileOm.getFilePath()) {
             let ncFileAltitude = "\(domain.downloadDirectory)orog_fx.nc"
@@ -931,20 +931,20 @@ struct DownloadCmipCommand: AsyncCommand {
             }
             var altitude = try NetCDF.read(path: ncFileAltitude, short: "orog", fma: nil, duplicateTimeStep: nil)
             let landFraction = try NetCDF.read(path: ncFileLandFraction, short: "sftlf", fma: nil, duplicateTimeStep: nil)
-            
+
             for i in altitude.data.indices {
                 if landFraction.data[i] < 0.5 {
                     altitude.data[i] = -999
                 }
             }
             try altitude.data.writeOmFile2D(file: domain.surfaceElevationFileOm.getFilePath(), grid: domain.grid)
-            
+
             if deleteNetCDF {
                 try FileManager.default.removeItem(atPath: ncFileAltitude)
                 try FileManager.default.removeItem(atPath: ncFileLandFraction)
             }
         }
-        
+
         for year in years {
             for variable in variables {
                 try FileManager.default.createDirectory(atPath: "\(domainDirectory)\(variable.rawValue)", withIntermediateDirectories: true)
@@ -958,20 +958,20 @@ struct DownloadCmipCommand: AsyncCommand {
                 logger.info("Downloading \(variable) for year \(year)")
                 let version = variable.version(for: domain, isFuture: isFuture)
                 let experimentId = domain == .FGOALS_f3_H ? (isFuture ? "highres-future" : "hist-1950") : (isFuture ? "highresSST-future" : "highresSST-present")
-                
+
                 let omFile = "\(domainDirectory)\(variable.rawValue)/year_\(year).om"
                 if FileManager.default.fileExists(atPath: omFile) {
                     continue
                 }
-                
+
                 switch timeType {
                 case .restoreFrom(dt: let dt, shortName: let shortName, aggregate: let aggregate):
                     // download 6h for cmcc or 3h for fgoals
                     let timeRes = dt == 3*3600 ? "3hr" : "6hrPlevPt"
-                    
+
                     // download specific humidity instead of relative humidity
                     let short = shortName == "hurs" ? "huss" : shortName
-                    
+
                     // Download netcdf files and generate monthly om files
                     for month in 1...12 {
                         let ncFile = "\(domain.downloadDirectory)\(short)_\(year)\(month).nc"
@@ -989,7 +989,7 @@ struct DownloadCmipCommand: AsyncCommand {
                             }
                             let uri = "HighResMIP/\(domain.institute)/\(source)/\(experimentId)/r1i1p1f1/\(timeRes)/\(short)/\(grid)/v\(version)/\(short)_\(timeRes)_\(source)_\(experimentId)_r1i1p1f1_\(grid)_\(year)\(month.zeroPadded(len: 2))01\(firstHour)-\(year)\(month.zeroPadded(len: 2))\(day)\(lastHour).nc"
                             try await curl.download(servers: servers, uri: uri, toFile: ncFile)
-                            
+
                             let isLeapMonth = month == 2 && Timestamp(year, 2, 28).add(days: 1).toComponents().day == 29
                             var duplicateTimeStep = (domain.needsLeapYearFix && isLeapMonth) ? (27 * 86400/dt) ..< (28 * 86400/dt) : nil
                             if singleBrokenMonthInFgoalsDrivingAnyoneInsaneWorkingWithThisData {
@@ -1000,15 +1000,15 @@ struct DownloadCmipCommand: AsyncCommand {
                             try array.data.writeOmFile(file: monthlyOmFile, dimensions: [array.nLocations, array.nTime], chunks: [Self.nLocationsPerChunk, array.nTime], scalefactor: short == "huss" ? 100 : variable.scalefactor)
                         }
                     }
-                    
+
                     /// number of days in this year
                     let nt = TimerangeDt(start: Timestamp(year,1,1), to: Timestamp(year+1,1,1), dtSeconds: domain.dtSeconds).count
-                    
+
                     let monthlyReader = try (1...12).map { month in
                         let monthlyOmFile = "\(domain.downloadDirectory)\(short)_\(year)\(month).om"
                         return try OmFileReader(file: monthlyOmFile)
                     }
-                    
+
                     if shortName == "ps" {
                         let monthlyTemperature = try (1...12).map { month in
                             let monthlyOmFile = "\(domain.downloadDirectory)tas_\(year)\(month).om"
@@ -1016,14 +1016,14 @@ struct DownloadCmipCommand: AsyncCommand {
                         }
                         let elevation = try domain.getStaticFile(type: .elevation)!.readAll()
                         try OmFileWriter(dim0: domain.grid.count, dim1: nt, chunk0: 6, chunk1: 183).write(logger: logger, file: omFile, compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, nLocationsPerChunk: Self.nLocationsPerChunk, chunkedFiles: monthlyReader, dataCallback: { (surfacePressure6h, locationRange) in
-                            
+
                             let temperature = try monthlyTemperature.combine(locationRange: locationRange)
                             surfacePressure6h.data = Meteorology.sealevelPressure(temperature2m: temperature, surfacePressure: surfacePressure6h, elevation: Array(elevation[locationRange]))
                             surfacePressure6h.interpolateAndAggregate(dt6h: dt, variable: variable, aggregate: aggregate)
                         })
                         break
                     }
-                    
+
                     if shortName == "hurs" {
                         // Calculate relative humidity from specific humidity, temperature and pressure
                         let monthlyTemperature = try (1...12).map { month in
@@ -1035,7 +1035,7 @@ struct DownloadCmipCommand: AsyncCommand {
                             return try OmFileReader(file: monthlyOmFile)
                         }
                         let elevation = try domain.getStaticFile(type: .elevation)!.readAll()
-                        
+
                         let progress = ProgressTracker(logger: logger, total: domain.grid.count, label: "Convert \(omFile)")
                         try OmFileWriter(dim0: domain.grid.count, dim1: nt, chunk0: 6, chunk1: 183).write(file: omFile, compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, overwrite: false, supplyChunk: { dim0 in
                             let locationRange = dim0..<min(dim0+Self.nLocationsPerChunk, domain.grid.count)
@@ -1044,9 +1044,9 @@ struct DownloadCmipCommand: AsyncCommand {
                             let temperature = try monthlyTemperature.combine(locationRange: locationRange)
                             let pressureMsl = try monthlyPressure.combine(locationRange: locationRange)
                             specificHumidity.data = Meteorology.specificToRelativeHumidity(specificHumidity: specificHumidity, temperature: temperature, sealLevelPressure: pressureMsl, elevation: Array(elevation[locationRange]))
-                            
+
                             specificHumidity.interpolateAndAggregate(dt6h: dt, variable: variable, aggregate: aggregate)
-                            
+
                             guard specificHumidity.nTime == nt else {
                                 fatalError("chunked files did not contain all timesteps (fasttime.nTime=\(specificHumidity.nTime), dim1=\(nt))")
                             }
@@ -1056,12 +1056,12 @@ struct DownloadCmipCommand: AsyncCommand {
                         progress.finish()
                         break
                     }
-                    
+
                     // Interpolate and afterwards aggregate to get min/max values
                     try OmFileWriter(dim0: domain.grid.count, dim1: nt, chunk0: 6, chunk1: 183).write(logger: logger, file: omFile, compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, nLocationsPerChunk: Self.nLocationsPerChunk, chunkedFiles: monthlyReader, dataCallback: { (data6h, locationRange) in
                         data6h.interpolateAndAggregate(dt6h: dt, variable: variable, aggregate: aggregate)
                     })
-                    
+
                 case .monthly:
                     // download month files and combine to yearly file
                     let short = variable.shortname
@@ -1073,7 +1073,7 @@ struct DownloadCmipCommand: AsyncCommand {
                             let day = (domain.needsLeapYearFix && month == 2) ? 28 : YearMonth(year: year, month: month).advanced(by: 1).timestamp.add(hours: -1).toComponents().day
                             let uri = "HighResMIP/\(domain.institute)/\(source)/\(experimentId)/r1i1p1f1/day/\(short)/\(grid)/v\(version)/\(short)_day_\(source)_\(experimentId)_r1i1p1f1_\(grid)_\(year)\(month.zeroPadded(len: 2))01-\(year)\(month.zeroPadded(len: 2))\(day).nc"
                             try await curl.download(servers: servers, uri: uri, toFile: ncFile)
-                            
+
                             let isLeapMonth = month == 2 && Timestamp(year, 2, 28).add(days: 1).toComponents().day == 29
                             let duplicateTimeStep = (domain.needsLeapYearFix && isLeapMonth) ? 27..<28 : nil
                             let array = try NetCDF.read(path: ncFile, short: short, fma: variable.getMultiplyAdd(domain: domain), duplicateTimeStep: duplicateTimeStep)
@@ -1090,7 +1090,7 @@ struct DownloadCmipCommand: AsyncCommand {
 
                     /// Process around 200 MB memory at once
                     try OmFileWriter(dim0: domain.grid.count, dim1: nt, chunk0: 6, chunk1: 183).write(logger: logger, file: omFile, compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, nLocationsPerChunk: Self.nLocationsPerChunk, chunkedFiles: monthlyReader, dataCallback: nil)
-                    
+
                     if deleteNetCDF {
                         for month in 1...12 {
                             try FileManager.default.removeItem(atPath: "\(domain.downloadDirectory)\(short)_\(year)\(month).om")
@@ -1098,7 +1098,7 @@ struct DownloadCmipCommand: AsyncCommand {
                     }
 
                     //try Array2DFastTime(data: try OmFileReader(file: omFile).readAll(), nLocations: domain.grid.count, nTime: nt).transpose().writeNetcdf(filename: "\(domain.downloadDirectory)\(variable.shortname)_\(year)_converted.nc", nx: domain.grid.nx, ny: domain.grid.ny)
-                    
+
                 /*case .halfYearly:
                     // data split in 6 month chunks
                     let short = variable.shortname
@@ -1123,10 +1123,10 @@ struct DownloadCmipCommand: AsyncCommand {
 
                     let monthlyReader = [try OmFileReader(file: monthlyOmFile), try OmFileReader(file: monthlyOmFile2)]
                     let nt = TimerangeDt(start: Timestamp(year,1,1), to: Timestamp(year+1,1,1), dtSeconds: domain.dtSeconds).count
-                    
+
                     /// Process around 200 MB memory at once
                     try OmFileWriter(dim0: domain.grid.count, dim1: nt, chunk0: 6, chunk1: 183).write(logger: logger, file: omFile, compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, nLocationsPerChunk: Self.nLocationsPerChunk, chunkedFiles: monthlyReader)
-                    
+
                     if deleteNetCDF {
                         try FileManager.default.removeItem(atPath: monthlyOmFile)
                         try FileManager.default.removeItem(atPath: monthlyOmFile2)
@@ -1151,8 +1151,8 @@ struct DownloadCmipCommand: AsyncCommand {
                     }
                     // NOTE: maybe note required if 3h data is used
                     if calculateRhFromSpecificHumidity {
-                        
-                        
+
+
                         let pressure = try OmFileReader(file: "\(domainDirectory)pressure_msl/year_\(year).om").readAll2D()
                         let elevation = try domain.getStaticFile(type: .elevation)!.readAll()
                         let temp = try OmFileReader(file: "\(domainDirectory)temperature_2m_mean/year_\(year).om").readAll2D()
@@ -1169,7 +1169,7 @@ struct DownloadCmipCommand: AsyncCommand {
                     fatalError("ten yearly")
                 }
             }
-            
+
             for variable in variables {
                 let isFuture = year >= 2015
                 guard let timeType = variable.domainTimeRange(for: domain, isFuture: isFuture) else {
@@ -1188,7 +1188,7 @@ struct DownloadCmipCommand: AsyncCommand {
                 }
             }
         }
-        
+
         // Generate a single master file instead of yearly files
         // ~80 MB memory for 600 location chunks
         logger.info("Generating master files")
@@ -1208,10 +1208,10 @@ struct DownloadCmipCommand: AsyncCommand {
             try OmFileWriter(dim0: domain.grid.count, dim1: TimerangeDt(range: domain.masterTimeRange!, dtSeconds: domain.dtSeconds).count, chunk0: 8, chunk1: 512)
                 .write(logger: logger, file: masterFile, compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, nLocationsPerChunk: 600, chunkedFiles: yearlyReader, dataCallback: nil)
         }
-        
+
         try generateBiasCorrectionFields(logger: logger, domain: domain, variables: variables)*/
     }
-    
+
     /// Generate seasonal averages for bias corrections
     /*func generateBiasCorrectionFields(logger: Logger, domain: Cmip6Domain, variables: [Cmip6Variable]) throws {
         logger.info("Calculating bias correction fields")
@@ -1219,7 +1219,7 @@ struct DownloadCmipCommand: AsyncCommand {
         let time = TimerangeDt(start: Timestamp(1960,1,1), to: Timestamp(2022+1,1,1), dtSeconds: 24*3600).toSettings()
         let writer = OmFileWriter(dim0: domain.grid.count, dim1: binsPerYear, chunk0: 200, chunk1: binsPerYear)
         let variables = Cmip6Variable.allCases.map({ Cmip6VariableOrDerived.raw($0) }) + Cmip6VariableDerivedBiasCorrected.allCases.map({ Cmip6VariableOrDerived.derived($0) })
-        
+
         logger.info("Calculating bias correction fields")
         for variable in variables {
             let biasFile = domain.getBiasCorrectionFile(for: variable.rawValue).getFilePath()
@@ -1249,7 +1249,7 @@ struct DownloadCmipCommand: AsyncCommand {
         let time6h = TimerangeDt(start: Timestamp(0), to: Timestamp(self.nTime * dt6h), dtSeconds: dt6h)
         let time1h = time6h.with(dtSeconds: 3600)
         var out = Array2DFastTime(nLocations: self.nLocations, nTime: time1h.count / 24)
-        
+
         for l in 0..<self.nLocations {
             let slice = Array(self[l, 0..<self.nTime])
             let data1h = slice.interpolate(type: variable.interpolation, timeOld: time6h, timeNew: time1h, latitude: Float.nan, longitude: Float .nan, scalefactor: variable.scalefactor)
@@ -1275,9 +1275,9 @@ extension OmFileWriter {
             let locationRange = dim0..<min(dim0+nLocationsPerChunk, self.dim0)
 
             var fasttime = try chunkedFiles.combine(locationRange: locationRange)
-            
+
             try dataCallback?(&fasttime, locationRange)
-            
+
             guard fasttime.nTime == dim1 else {
                 fatalError("chunked files did not contain all timesteps (fasttime.nTime=\(fasttime.nTime), dim1=\(dim1))")
             }

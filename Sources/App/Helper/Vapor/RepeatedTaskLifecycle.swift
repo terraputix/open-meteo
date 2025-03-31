@@ -11,7 +11,7 @@ final class RepeatedTaskLifecycle: LifecycleHandler {
     private let initialDelay: TimeAmount
     private let delay: TimeAmount
     private let taskFn: @Sendable (Application) async throws -> Void
-            
+
     public init(initialDelay: TimeAmount,
                  delay: TimeAmount,
                  _ task: @escaping @Sendable (Application) async throws -> Void) {
@@ -20,7 +20,7 @@ final class RepeatedTaskLifecycle: LifecycleHandler {
         self.delay = delay
         self.taskFn = task
     }
-    
+
     /// Start background task
     func didBoot(_ application: Application) throws {
         let eventloop = application.eventLoopGroup.next()
@@ -35,7 +35,7 @@ final class RepeatedTaskLifecycle: LifecycleHandler {
             }
         })
     }
-    
+
     ///
     func shutdown(_ application: Application) {
         backgroundWatcher.withLockedValue {

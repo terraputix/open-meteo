@@ -7,7 +7,7 @@ enum KnmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case relativehumidity_2m
     case dewpoint_2m
     case dew_point_2m
-    
+
     case windspeed_10m
     case winddirection_10m
     case windspeed_100m
@@ -25,7 +25,7 @@ enum KnmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     /// Is using 200m wind
     case windspeed_180m
     case winddirection_180m
-    
+
     /// Is using 100m wind
     case wind_speed_80m
     case wind_direction_80m
@@ -35,7 +35,7 @@ enum KnmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     /// Is using 200m wind
     case wind_speed_180m
     case wind_direction_180m
-    
+
     case temperature_80m
     case temperature_120m
     case temperature_180m
@@ -67,7 +67,7 @@ enum KnmiVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case cloudcover_high
     case windgusts_10m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -92,7 +92,7 @@ enum KnmiPressureVariableDerivedType: String, CaseIterable {
 struct KnmiPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: KnmiPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -104,17 +104,17 @@ typealias KnmiVariableCombined = VariableOrDerived<KnmiVariable, KnmiVariableDer
 
 struct KnmiReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = KnmiDomain
-    
+
     typealias Variable = KnmiVariable
-    
+
     typealias Derived = KnmiVariableDerived
-    
+
     typealias MixingVar = KnmiVariableCombined
-    
+
     let reader: GenericReaderCached<KnmiDomain, KnmiVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -122,29 +122,29 @@ struct KnmiReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: KnmiVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: KnmiVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable: KnmiSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(variable: .raw(.surface(variable)), time: time)
     }
-    
+
     func get(raw: KnmiSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try get(variable: .raw(.surface(raw)), time: time)
     }
-    
+
     func prefetchData(derived: KnmiVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -243,7 +243,7 @@ struct KnmiReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: KnmiVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):
@@ -294,7 +294,7 @@ struct KnmiReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(raw: .wind_speed_10m, time: time).data
                 let rh = try get(raw: .relative_humidity_2m, time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }
@@ -432,7 +432,7 @@ struct KnmiReader: GenericReaderDerived, GenericReaderProtocol {
 
 /*struct KnmiMixer: GenericReaderMixer {
     let reader: [KnmiReader]
-    
+
     static func makeReader(domain: KnmiReader.Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> KnmiReader? {
         return try KnmiReader(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
     }

@@ -25,7 +25,7 @@ enum NbmSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
     case ice_pellets_probability
     case snowfall_probability
     case surface_temperature
-    
+
     var storePreviousForecast: Bool {
         switch self {
         case .temperature_2m, .relative_humidity_2m: return true
@@ -39,15 +39,15 @@ enum NbmSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
         default: return false
         }
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         switch self {
         case .temperature_2m: return 20
@@ -67,7 +67,7 @@ enum NbmSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
             return 1
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch self {
         case .temperature_2m, .surface_temperature:
@@ -98,7 +98,7 @@ enum NbmSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
             return .linear
         }
     }
-    
+
     var unit: SiUnit {
         switch self {
         case .temperature_2m, .surface_temperature: return .celsius
@@ -116,7 +116,7 @@ enum NbmSurfaceVariable: String, CaseIterable, GenericVariable, GenericVariableM
             return .percentage
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         switch self {
         case .temperature_2m, .surface_temperature:
@@ -147,19 +147,19 @@ enum NbmPressureVariableType: String, CaseIterable, RawRepresentableString {
 struct NbmPressureVariable: PressureVariableRespresentable, GenericVariable, Hashable, GenericVariableMixable {
     let variable: NbmPressureVariableType
     let level: Int
-    
+
     var storePreviousForecast: Bool {
         return false
     }
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
-    
+
     var omFileName: (file: String, level: Int) {
         return (rawValue, 0)
     }
-    
+
     var scalefactor: Float {
         // Upper level data are more dynamic and that is bad for compression. Use lower scalefactors
         switch variable {
@@ -181,7 +181,7 @@ struct NbmPressureVariable: PressureVariableRespresentable, GenericVariable, Has
             return (20..<100).interpolated(atFraction: (0..<500).fraction(of: Float(level)))
         }
     }
-    
+
     var interpolation: ReaderInterpolation {
         switch variable {
         case .temperature:
@@ -200,7 +200,7 @@ struct NbmPressureVariable: PressureVariableRespresentable, GenericVariable, Has
             return .hermite(bounds: nil)
         }
     }
-    
+
     var unit: SiUnit {
         switch variable {
         case .temperature:
@@ -219,7 +219,7 @@ struct NbmPressureVariable: PressureVariableRespresentable, GenericVariable, Has
             return .metrePerSecondNotUnitConverted
         }
     }
-    
+
     var isElevationCorrectable: Bool {
         return false
     }

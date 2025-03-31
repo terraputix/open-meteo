@@ -7,7 +7,7 @@ import AsyncHTTPClient
  */
 public final actor ApiKeyManager {
     public static var instance = ApiKeyManager()
-    
+
     private init() {
         guard let apikeysPath = Environment.get("API_APIKEYS_PATH") else {
             return
@@ -16,11 +16,11 @@ public final actor ApiKeyManager {
         self.apiKeys = keys
         self.usage = .init(repeating: (0,0), count: keys.count)
     }
-    
+
     var apiKeys = [String.SubSequence]()
-    
+
     var usage = [(calls: Int32, weight: Float)]()
-    
+
     func set(_ keys: [String.SubSequence]) {
         if self.apiKeys == keys {
             return
@@ -28,29 +28,29 @@ public final actor ApiKeyManager {
         self.apiKeys = keys
         self.usage = .init(repeating: (0,0), count: keys.count)
     }
-    
+
     /// Return current API key usage
     func getUsage() -> String {
         let usage = zip(self.apiKeys, self.usage).sorted { $0.1.weight > $1.1.weight }
         return usage[0..<min(10, usage.count)].map{"\($0.0)=\($0.1.calls) (w\($0.1.weight))"}.joined(separator: ", ")
     }
-    
-    
+
+
     func isEmpty() -> Bool {
         return apiKeys.isEmpty
     }
-    
+
     func contains(_ string: String.SubSequence) -> Bool {
         return apiKeys.contains(string)
     }
-    
+
     func increment(apikey: String.SubSequence, weight: Float) {
         guard let index = apiKeys.firstIndex(where: { $0 == apikey }) else {
             return
         }
         usage[index] = (usage[index].calls + 1, usage[index].weight + weight)
     }
-    
+
     /// Fetch API keys and update database
     @Sendable public static func update(application: Application) async {
         guard let apikeysPath = Environment.get("API_APIKEYS_PATH") else {
@@ -81,11 +81,11 @@ extension Request {
         let isDevNode = host.contains("eu0") || host.contains("us0")
         let isFreeApi = host.starts(with: subdomain) || alias.contains(where: {host.starts(with: $0)}) == true || isDevNode
         let isCustomerApi = host.starts(with: "customer-\(subdomain)") || alias.contains(where: {host.starts(with: "customer-\($0)")}) == true
-        
+
         if !(isFreeApi || isCustomerApi) {
             throw Abort.init(.notFound)
         }
-        
+
         if isFreeApi {
             guard let address = peerAddress ?? remoteAddress else {
                 return host
@@ -94,14 +94,14 @@ extension Request {
         }
         return host
     }
-    
+
     /// For customer API endpoints, check API key.
     func ensureApiKey(_ subdomain: String, alias: [String] = [], apikey: String?) async throws -> (numberOfLocations: Int, apikey: String?) {
         guard let host = headers[.host].first(where: {$0.contains("open-meteo.com")}) else {
             return (OpenMeteo.numberOfLocationsMaximum, nil)
         }
         let isCustomerApi = host.starts(with: "customer-\(subdomain)") || alias.contains(where: {host.starts(with: "customer-\($0)")}) == true
-        
+
         /// API node dedicated to customers
         if await !ApiKeyManager.instance.isEmpty() && isCustomerApi {
             guard let apikey else {
@@ -130,7 +130,7 @@ extension ApiKeyManagerError: AbortError {
             return .badRequest
         }
     }
-    
+
     var reason: String {
         switch self {
         case .apiKeyRequired:
@@ -140,4 +140,3 @@ extension ApiKeyManagerError: AbortError {
         }
     }
 }
-

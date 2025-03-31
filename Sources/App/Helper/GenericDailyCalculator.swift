@@ -16,7 +16,7 @@ enum DailyAggregation<WeatherVariable> {
     case precipitationHours(WeatherVariable)
     case dominantDirection(velocity: WeatherVariable, direction: WeatherVariable)
     case dominantDirectionComponents(u: WeatherVariable, v: WeatherVariable)
-    
+
     /// Return 0, 1 or 2 weahter variables which should be prefetched
     var variables: (WeatherVariable?, WeatherVariable?) {
         switch self {
@@ -47,7 +47,7 @@ enum DailyAggregation<WeatherVariable> {
         let time = timeDaily.with(dtSeconds: 3600)
         fatalError()
     }
-    
+
     func prefetchDaily<V: DailyVariableCalculatable>(variables: [V], time timeDaily: TimerangeDt) throws where V.Variable == MixingVar {
         fatalError()
     }
@@ -56,7 +56,7 @@ enum DailyAggregation<WeatherVariable> {
 extension GenericReaderMulti {
     func getDaily<V: DailyVariableCalculatable, Units: ApiUnitsSelectable>(variable: V, params: Units, time timeDaily: TimerangeDtAndSettings) throws -> DataAndUnit? where V.Variable == Variable {
         let time = timeDaily.with(dtSeconds: 3600)
-        
+
         switch variable.aggregation {
         case .none:
             return nil
@@ -108,7 +108,7 @@ extension GenericReaderMulti {
             return DataAndUnit(Meteorology.windirectionFast(u: u.sum(by: 24), v: v.sum(by: 24)), .degreeDirection)
         }
     }
-    
+
 
     func prefetchData<V: DailyVariableCalculatable>(variables: [V], time timeDaily: TimerangeDtAndSettings) throws where V.Variable == Variable {
         let time = timeDaily.with(dtSeconds: 3600)

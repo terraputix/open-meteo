@@ -3,18 +3,18 @@ import Foundation
 
 protocol MultiDomainMixerDomain: RawRepresentableString, GenericDomainProvider {
     var countEnsembleMember: Int { get }
-    
+
     func getReader(lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> [any GenericReaderProtocol]
-    
+
     func getReader(gridpoint: Int, options: GenericReaderOptions) throws -> (any GenericReaderProtocol)?
 }
 
 /// Combine multiple independent weather models, that may not have given forecast variable
 struct GenericReaderMulti<Variable: GenericVariableMixable, Domain: MultiDomainMixerDomain>: GenericReaderProvider {
     private let reader: [any GenericReaderProtocol]
-    
+
     let domain: Domain
-    
+
     var modelLat: Float {
         reader.last!.modelLat
     }
@@ -30,12 +30,12 @@ struct GenericReaderMulti<Variable: GenericVariableMixable, Domain: MultiDomainM
     var modelElevation: ElevationOrSea {
         reader.last!.modelElevation
     }
-    
+
     public init(domain: Domain, reader: [any GenericReaderProtocol]) {
         self.reader = reader
         self.domain = domain
     }
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         let reader = try domain.getReader(lat: lat, lon: lon, elevation: elevation, mode: mode, options: options)
         guard !reader.isEmpty else {
@@ -44,7 +44,7 @@ struct GenericReaderMulti<Variable: GenericVariableMixable, Domain: MultiDomainM
         self.domain = domain
         self.reader = reader
     }
-    
+
     public init?(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         guard let reader = try domain.getReader(gridpoint: gridpoint, options: options) else {
             return nil
@@ -52,7 +52,7 @@ struct GenericReaderMulti<Variable: GenericVariableMixable, Domain: MultiDomainM
         self.domain = domain
         self.reader = [reader]
     }
-    
+
     func prefetchData(variable: Variable, time: TimerangeDtAndSettings) throws {
         for reader in reader {
             if try reader.prefetchData(mixed: variable.rawValue, time: time) {
@@ -60,13 +60,13 @@ struct GenericReaderMulti<Variable: GenericVariableMixable, Domain: MultiDomainM
             }
         }
     }
-    
+
     func prefetchData(variables: [Variable], time: TimerangeDtAndSettings) throws {
         try variables.forEach { variable in
             try prefetchData(variable: variable, time: time)
         }
     }
-    
+
     func get(variable: Variable, time: TimerangeDtAndSettings) throws -> DataAndUnit? {
         // Last reader return highest resolution data. therefore reverse iteration
         // Integrate now lower resolution models
@@ -125,7 +125,7 @@ extension GenericReaderProtocol {
         }
         return try self.get(variable: v, time: time)
     }
-    
+
     func prefetchData(mixed: String, time: TimerangeDtAndSettings) throws -> Bool {
         guard let v = MixingVar(rawValue: mixed) else {
             return false

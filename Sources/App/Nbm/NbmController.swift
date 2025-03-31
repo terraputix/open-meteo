@@ -26,7 +26,7 @@ enum NbmVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case is_day
     case wet_bulb_temperature_2m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -52,7 +52,7 @@ enum NbmPressureVariableDerivedType: String, CaseIterable {
 struct NbmPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: NbmPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -63,36 +63,36 @@ struct NbmReaderLowLevel: GenericReaderProtocol {
     var modelLat: Float {
         reader.modelLat
     }
-    
+
     var modelLon: Float {
         reader.modelLon
     }
-    
+
     var modelElevation: ElevationOrSea {
         reader.modelElevation
     }
-    
+
     var targetElevation: Float {
         reader.targetElevation
     }
-    
+
     var modelDtSeconds: Int {
         reader.modelDtSeconds
     }
-    
+
     func getStatic(type: ReaderStaticVariable) throws -> Float? {
         return try reader.getStatic(type: type)
     }
-    
+
     typealias MixingVar = NbmVariable
-    
+
     let reader: GenericReaderCached<NbmDomain, NbmVariable>
     let domain: NbmDomain
-    
+
     func get(variable raw: NbmVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable raw: NbmVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
@@ -105,17 +105,17 @@ typealias NbmVariableCombined = VariableOrDerived<NbmVariable, NbmVariableDerive
 
 struct NbmReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = NbmDomain
-    
+
     typealias Variable = NbmVariable
-    
+
     typealias Derived = NbmVariableDerived
-    
+
     typealias MixingVar = NbmVariableCombined
-    
+
     let reader: GenericReaderMixerSameDomain<NbmReaderLowLevel>
-        
+
     let options: GenericReaderOptions
-    
+
     public init?(domains: [Domain], lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         let readers: [NbmReaderLowLevel] = try domains.compactMap { domain in
             guard let reader = try GenericReader<NbmDomain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
@@ -129,21 +129,21 @@ struct NbmReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderMixerSameDomain(reader: readers)
         self.options = options
     }
-    
+
     public init?(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<NbmDomain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderMixerSameDomain(reader: [NbmReaderLowLevel(reader: GenericReaderCached(reader: reader), domain: domain)])
         self.options = options
     }
-    
+
     func prefetchData(raw: NbmReaderLowLevel.MixingVar, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func get(raw: NbmReaderLowLevel.MixingVar, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(derived: Derived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -231,7 +231,7 @@ struct NbmReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: Derived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let gfsVariableDerivedSurface):
@@ -256,7 +256,7 @@ struct NbmReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(raw: .surface(.wind_speed_10m), time: time).data
                 let rh = try get(raw: .surface(.relative_humidity_2m), time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }

@@ -7,7 +7,7 @@ import curl_swift
  L2 10 min data is instantaneous with scan time offset, but has missing steps
  L3 1h hourly seem to be averaged 10 minutes values, completely ignoring zenith angle -> which makes no sense whatsoever.
  Himawari notes state: "This product is a beta version and is intended to show the preliminary result from Himawari-8. Users should keep in mind that the data is NOT quality assured."
- 
+
  https://www.eorc.jaxa.jp/ptree/userguide.html
  https://www.eorc.jaxa.jp/ptree/documents/README_HimawariGeo_en.txt
  */
@@ -15,48 +15,48 @@ struct JaxaHimawariDownload: AsyncCommand {
     struct Signature: CommandSignature {
         @Argument(name: "domain")
         var domain: String
-        
+
         @Option(name: "run")
         var run: String?
-        
+
         @Flag(name: "create-netcdf")
         var createNetcdf: Bool
-        
+
         @Option(name: "only-variables")
         var onlyVariables: String?
-        
+
         @Option(name: "timeinterval", short: "t", help: "Timeinterval to download past forecasts. Format 20220101-20220131")
         var timeinterval: String?
-        
+
         @Option(name: "username", help: "FTP username")
         var username: String?
-        
+
         @Option(name: "password", help: "FTP password")
         var password: String?
-        
+
         @Option(name: "concurrent", short: "c", help: "Number of concurrent download/conversion jobs")
         var concurrent: Int?
-        
+
         @Option(name: "upload-s3-bucket", help: "Upload open-meteo database to an S3 bucket after processing")
         var uploadS3Bucket: String?
     }
-    
+
     var help: String {
         "Download Jaxa Himawari satellite data download"
     }
-    
+
     func run(using context: CommandContext, signature: Signature) async throws {
         disableIdleSleep()
         let logger = context.application.logger
         let domain = try JaxaHimawariDomain.load(rawValue: signature.domain)
         let nConcurrent = signature.concurrent ?? 1
-        
+
         guard let username = signature.username, let password = signature.password else {
             fatalError("Parameter api key and secret required")
         }
         let downloader = JaxaFtpDownloader(username: username, password: password)
         let variables = JaxaHimawariVariable.allCases
-        
+
         if let timeinterval = signature.timeinterval {
             let chunkDt = domain.omFileLength * domain.dtSeconds
             let timerange = try Timestamp.parseRange(yyyymmdd: timeinterval).toRange(dt: 86400).with(dtSeconds: domain.dtSeconds)
@@ -69,7 +69,7 @@ struct JaxaHimawariDownload: AsyncCommand {
             }
             return
         }
-        
+
         let downloadRange: TimerangeDt
         let lastTimestampFile: String?
         if let run = try signature.run.flatMap(Timestamp.fromRunHourOrYYYYMMDD) {
@@ -104,16 +104,16 @@ struct JaxaHimawariDownload: AsyncCommand {
         }
         try await GenericVariableHandle.convert(logger: logger, domain: domain, createNetcdf: signature.createNetcdf, run: nil, handles: handles, concurrent: nConcurrent, writeUpdateJson: true, uploadS3Bucket: signature.uploadS3Bucket, uploadS3OnlyProbabilities: false)
     }
-    
+
     fileprivate func downloadRun(application: Application, run: Timestamp, domain: JaxaHimawariDomain, variables: [JaxaHimawariVariable], downloader: JaxaFtpDownloader) async throws -> [GenericVariableHandle] {
         let logger = application.logger
-        
+
         if run.minute == 40 && [2, 14].contains(run.hour) {
             // Please note that no observations are planned at 0240-0250UTC and 1440-1450UTC everyday for house-keeping of the Himawai-8 and -9 satellites
             logger.info("Skipping run \(run) because it is during a house-keeping window")
             return []
         }
-        
+
         // Download meta data for scan time offsets
         let metaDataFile = "\(domain.downloadDirectory)/AuxilaryData.nc"
         if !FileManager.default.fileExists(atPath: metaDataFile) {
@@ -123,7 +123,7 @@ struct JaxaHimawariDownload: AsyncCommand {
             try data?.write(to: URL(fileURLWithPath: metaDataFile), options: .atomic)
         }
         let timeDifference = try Data(contentsOf: URL(fileURLWithPath: metaDataFile)).readNetcdf(name: "Hour")
-        
+
         return try await variables.asyncCompactMap({ variable -> GenericVariableHandle? in
             logger.info("Downloading \(variable) \(run.iso8601_YYYY_MM_dd_HH_mm)")
             let c = run.toComponents()
@@ -135,14 +135,14 @@ struct JaxaHimawariDownload: AsyncCommand {
             //case .himawari_hourly:
             //    path = "/pub/himawari/L3/PAR/021/\(c.year)\(c.mm)/\(c.dd)/H09_\(run.format_YYYYMMdd)_\(run.hh)00_1H_RFL021_FLDK.02401_02401.nc"
             }
-            
+
             guard let data = try await downloader.get(logger: logger, path: path) else {
                 logger.warning("File missing")
                 return nil
             }
             do {
                 var sw = try data.readNetcdf(name: "SWR")
-                
+
                 // Transform instant solar radiation values to backwards averaged values
                 // Instant values have a scan time difference which needs to be corrected for
                 if variable == .shortwave_radiation {
@@ -158,7 +158,7 @@ struct JaxaHimawariDownload: AsyncCommand {
                     )
                     logger.info("\(variable) conversion took \(start.timeElapsedPretty())")
                 }
-                
+
                 let writer = OmFileSplitter.makeSpatialWriter(domain: domain, nTime: 1)
                 let fn = try writer.writeTemporary(compressionType: .pfor_delta2d_int16, scalefactor: variable.scalefactor, all: sw.data)
                 return GenericVariableHandle(
@@ -182,12 +182,12 @@ struct JaxaHimawariDownload: AsyncCommand {
 fileprivate struct JaxaFtpDownloader {
     let ftp: FtpDownloader
     let auth: String
-    
+
     public init(username: String, password: String) {
         self.auth = "\(username):\(password)"
         self.ftp = .init()
     }
-    
+
     public func get(logger: Logger, path: String) async throws -> Data? {
         let url = "ftp://\(auth)@ftp.ptree.jaxa.jp\(path)"
         return try await ftp.get(logger: logger, url: url)

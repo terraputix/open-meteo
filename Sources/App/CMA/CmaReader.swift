@@ -27,7 +27,7 @@ enum CmaVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case winddirection_180m
     case windspeed_200m
     case winddirection_200m
-    
+
     case wind_speed_10m
     case wind_direction_10m
     case wind_speed_30m
@@ -50,7 +50,7 @@ enum CmaVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case wind_direction_180m
     case wind_speed_200m
     case wind_direction_200m
-    
+
     case direct_normal_irradiance
     case direct_normal_irradiance_instant
     case direct_radiation
@@ -77,7 +77,7 @@ enum CmaVariableDerivedSurface: String, CaseIterable, GenericVariableMixable {
     case cloudcover_high
     case windgusts_10m
     case sunshine_duration
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -103,7 +103,7 @@ enum CmaPressureVariableDerivedType: String, CaseIterable {
 struct CmaPressureVariableDerived: PressureVariableRespresentable, GenericVariableMixable {
     let variable: CmaPressureVariableDerivedType
     let level: Int
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -115,17 +115,17 @@ typealias CmaVariableCombined = VariableOrDerived<CmaVariable, CmaVariableDerive
 
 struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
     typealias Domain = CmaDomain
-    
+
     typealias Variable = CmaVariable
-    
+
     typealias Derived = CmaVariableDerived
-    
+
     typealias MixingVar = CmaVariableCombined
-    
+
     let reader: GenericReaderCached<CmaDomain, CmaVariable>
-    
+
     let options: GenericReaderOptions
-    
+
     public init?(domain: Domain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws {
         guard let reader = try GenericReader<Domain, Variable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -133,29 +133,29 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     public init(domain: Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         let reader = try GenericReader<Domain, Variable>(domain: domain, position: gridpoint)
         self.reader = GenericReaderCached(reader: reader)
         self.options = options
     }
-    
+
     func get(raw: CmaVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try reader.get(variable: raw, time: time)
     }
-    
+
     func prefetchData(raw: CmaVariable, time: TimerangeDtAndSettings) throws {
         try reader.prefetchData(variable: raw, time: time)
     }
-    
+
     func prefetchData(variable: CmaSurfaceVariable, time: TimerangeDtAndSettings) throws {
         try prefetchData(variable: .raw(.surface(variable)), time: time)
     }
-    
+
     func get(raw: CmaSurfaceVariable, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         return try get(variable: .raw(.surface(raw)), time: time)
     }
-    
+
     func prefetchData(derived: CmaVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .surface(let surface):
@@ -261,7 +261,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
             }
         }
     }
-    
+
     func get(derived: CmaVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .surface(let variableDerivedSurface):
@@ -294,7 +294,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let windspeed = try get(derived: .surface(.windspeed_10m), time: time).data
                 let rh = try get(raw: .relative_humidity_2m, time: time).data
                 let dewpoint = zip(temperature,rh).map(Meteorology.dewpoint)
-                
+
                 let et0 = swrad.indices.map { i in
                     return Meteorology.et0Evapotranspiration(temperature2mCelsius: temperature[i], windspeed10mMeterPerSecond: windspeed[i], dewpointCelsius: dewpoint[i], shortwaveRadiationWatts: swrad[i], elevation: reader.targetElevation, extraTerrestrialRadiation: exrad[i], dtSeconds: 3600)
                 }
@@ -407,7 +407,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let v = try get(raw: .wind_v_component_100m, time: time).data
                 let speed = zip(u,v).map(Meteorology.windspeed)
                 return DataAndUnit(speed, .metrePerSecond)
-                
+
             case .winddirection_120m, .wind_direction_120m:
                 let u = try get(raw: .wind_u_component_120m, time: time).data
                 let v = try get(raw: .wind_v_component_120m, time: time).data
@@ -418,7 +418,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let v = try get(raw: .wind_v_component_120m, time: time).data
                 let speed = zip(u,v).map(Meteorology.windspeed)
                 return DataAndUnit(speed, .metrePerSecond)
-                
+
             case .winddirection_140m, .wind_direction_140m:
                 let u = try get(raw: .wind_u_component_140m, time: time).data
                 let v = try get(raw: .wind_v_component_140m, time: time).data
@@ -429,7 +429,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let v = try get(raw: .wind_v_component_140m, time: time).data
                 let speed = zip(u,v).map(Meteorology.windspeed)
                 return DataAndUnit(speed, .metrePerSecond)
-                
+
             case .winddirection_160m, .wind_direction_160m:
                 let u = try get(raw: .wind_u_component_160m, time: time).data
                 let v = try get(raw: .wind_v_component_160m, time: time).data
@@ -440,7 +440,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let v = try get(raw: .wind_v_component_160m, time: time).data
                 let speed = zip(u,v).map(Meteorology.windspeed)
                 return DataAndUnit(speed, .metrePerSecond)
-                
+
             case .winddirection_180m, .wind_direction_180m:
                 let u = try get(raw: .wind_u_component_180m, time: time).data
                 let v = try get(raw: .wind_v_component_180m, time: time).data
@@ -451,7 +451,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let v = try get(raw: .wind_v_component_180m, time: time).data
                 let speed = zip(u,v).map(Meteorology.windspeed)
                 return DataAndUnit(speed, .metrePerSecond)
-                
+
             case .windspeed_200m, .wind_speed_200m:
                 let u = try get(raw: .wind_u_component_200m, time: time).data
                 let v = try get(raw: .wind_v_component_200m, time: time).data
@@ -462,7 +462,7 @@ struct CmaReader: GenericReaderDerived, GenericReaderProtocol {
                 let v = try get(raw: .wind_v_component_200m, time: time).data
                 let direction = Meteorology.windirectionFast(u: u, v: v)
                 return DataAndUnit(direction, .degreeDirection)
-                
+
             case .wet_bulb_temperature_2m:
                 let temperature = try get(raw: .temperature_2m, time: time)
                 let rh = try get(raw: .relative_humidity_2m, time: time)

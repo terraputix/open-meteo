@@ -21,7 +21,7 @@ extension CamsMixer: GenericReaderProvider {
         }
         self = reader
     }
-    
+
     init?(domain: CamsQuery.Domain, gridpoint: Int, options: GenericReaderOptions) throws {
         switch domain {
         case .auto:
@@ -44,24 +44,24 @@ struct CamsController {
         _ = try await req.ensureSubdomain("air-quality-api")
         let params = req.method == .POST ? try req.content.decode(ApiQueryParameter.self) : try req.query.decode(ApiQueryParameter.self)
         let numberOfLocationsMaximum = try await req.ensureApiKey("air-quality-api", apikey: params.apikey)
-        
+
         let currentTime = Timestamp.now()
         let allowedRange = Timestamp(2013, 1, 1) ..< currentTime.add(86400 * 6)
-        
+
         let paramsHourly = try VariableOrDerived<CamsVariable, CamsVariableDerived>.load(commaSeparatedOptional: params.hourly)
         let paramsCurrent = try VariableOrDerived<CamsVariable, CamsVariableDerived>.load(commaSeparatedOptional: params.current)
         let domains = try (params.domains.map({[$0]}) ?? CamsQuery.Domain.load(commaSeparatedOptional: params.models) ?? [.auto])
 
         let nVariables = (paramsHourly?.count ?? 0) * domains.count
-        
+
         let prepared = try CamsMixer.prepareReaders(domains: domains, params: params, currentTime: currentTime, forecastDayDefault: 5, forecastDaysMax: 7, pastDaysMax: 92, allowedRange: allowedRange)
-        
+
         let locations: [ForecastapiResult<CamsQuery.Domain>.PerLocation] = try prepared.map { prepared in
             let timezone = prepared.timezone
             let time = prepared.time
             let timeLocal = TimerangeLocal(range: time.dailyRead.range, utcOffsetSeconds: timezone.utcOffsetSeconds)
             let currentTimeRange = TimerangeDt(start: currentTime.floor(toNearest: 3600), nTime: 1, dtSeconds: 3600)
-            
+
             let readers: [ForecastapiResult<CamsQuery.Domain>.PerModel] = try prepared.perModel.compactMap { readerAndDomain in
                 guard let reader = try readerAndDomain.reader() else {
                     return nil
@@ -70,7 +70,7 @@ struct CamsController {
                 let timeHourlyRead = time.hourlyRead.with(dtSeconds: hourlyDt)
                 let timeHourlyDisplay = time.hourlyDisplay.with(dtSeconds: hourlyDt)
                 let domain = readerAndDomain.domain
-                
+
                 let hourlyFn: (() throws -> ApiSection<ForecastapiResult<CamsQuery.Domain>.SurfacePressureAndHeightVariable>)? = paramsHourly.map { variables in
                     return {
                         return .init(name: "hourly", time: timeHourlyDisplay, columns: try variables.map { variable in
@@ -80,7 +80,7 @@ struct CamsController {
                         })
                     }
                 }
-                
+
                 let currentFn: (() throws -> ApiSectionSingle<ForecastapiResult<CamsQuery.Domain>.SurfacePressureAndHeightVariable>)? = paramsCurrent.map { variables in
                     return {
                         return .init(name: "current", time: currentTimeRange.range.lowerBound, dtSeconds: currentTimeRange.dtSeconds, columns: try variables.map { variable in
@@ -89,7 +89,7 @@ struct CamsController {
                         })
                     }
                 }
-                
+
                 return ForecastapiResult<CamsQuery.Domain>.PerModel.init(
                     model: domain,
                     latitude: reader.modelLat,
@@ -131,7 +131,7 @@ enum CamsVariableDerived: String, GenericVariableMixable {
     case european_aqi_nitrogen_dioxide
     case european_aqi_ozone
     case european_aqi_sulphur_dioxide
-    
+
     case us_aqi
     case us_aqi_pm2_5
     case us_aqi_pm10
@@ -143,9 +143,9 @@ enum CamsVariableDerived: String, GenericVariableMixable {
     case us_aqi_ozone
     case us_aqi_sulphur_dioxide
     case us_aqi_carbon_monoxide
-    
+
     case is_day
-    
+
     var requiresOffsetCorrectionForMixing: Bool {
         return false
     }
@@ -153,15 +153,15 @@ enum CamsVariableDerived: String, GenericVariableMixable {
 
 struct CamsReader: GenericReaderDerivedSimple, GenericReaderProtocol {
     typealias MixingVar = VariableOrDerived<CamsVariable, CamsVariableDerived>
-    
+
     typealias Domain = CamsDomain
-    
+
     typealias Variable = CamsVariable
-    
+
     typealias Derived = CamsVariableDerived
-    
+
     let reader: GenericReaderCached<CamsDomain, CamsVariable>
-    
+
     func get(derived: CamsVariableDerived, time: TimerangeDtAndSettings) throws -> DataAndUnit {
         switch derived {
         case .european_aqi:
@@ -249,7 +249,7 @@ struct CamsReader: GenericReaderDerivedSimple, GenericReaderProtocol {
             return DataAndUnit(Zensun.calculateIsDay(timeRange: time.time, lat: reader.modelLat, lon: reader.modelLon), .dimensionlessInteger)
         }
     }
-    
+
     func prefetchData(derived: CamsVariableDerived, time: TimerangeDtAndSettings) throws {
         switch derived {
         case .european_aqi:
@@ -324,7 +324,7 @@ extension Array where Element == Float {
 
 struct CamsMixer: GenericReaderMixer {
     let reader: [CamsReader]
-    
+
     static func makeReader(domain: CamsDomain, lat: Float, lon: Float, elevation: Float, mode: GridSelectionMode, options: GenericReaderOptions) throws -> CamsReader? {
         guard let reader = try GenericReader<CamsDomain, CamsVariable>(domain: domain, lat: lat, lon: lon, elevation: elevation, mode: mode) else {
             return nil
@@ -342,7 +342,7 @@ extension CamsQuery {
         case auto
         case cams_global
         case cams_europe
-        
+
         var camsDomains: [CamsDomain] {
             switch self {
             case .auto:
